@@ -1,4 +1,5 @@
 import { formatMoney } from "../../domain/money";
+import { t } from "../../i18n/translations";
 import type { Language, MemberBalance, SettlementPayment, Trip } from "../../domain/types";
 import { Avatar } from "../shared/Avatar";
 import { SettlementList } from "../balances/SettlementList";
@@ -20,7 +21,7 @@ export function SummaryRail({
   return (
     <>
       <div className="railPanel">
-        <h2>Balances (Net)</h2>
+        <h2>{t(language, "balancesSettlement")}</h2>
         {balances.map((balance) => (
           <div className="balanceRow" key={balance.memberId}>
             <Avatar member={trip.members.find((member) => member.id === balance.memberId)} />
@@ -32,7 +33,7 @@ export function SummaryRail({
         ))}
       </div>
       <div className="railPanel">
-        <h2>Settlement</h2>
+        <h2>{t(language, "settlement")}</h2>
         <SettlementList language={language} onMarkPaid={onMarkPaid} payments={settlement.slice(0, 3)} trip={trip} compact />
       </div>
       {settlement[0] && <PaymentCard language={language} payment={settlement[0]} trip={trip} />}

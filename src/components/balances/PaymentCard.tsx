@@ -1,6 +1,7 @@
 import { Banknote } from "lucide-react";
 import { useEffect, useState } from "react";
 import { formatMoney } from "../../domain/money";
+import { t } from "../../i18n/translations";
 import type { Language, SettlementPayment, Trip } from "../../domain/types";
 import { generatePaymentQr } from "../../payment/qr";
 
@@ -37,17 +38,17 @@ export function PaymentCard({
 
   return (
     <div className="railPanel paymentCard">
-      <h2>Payment to {receiver.name}</h2>
+      <h2>{t(language, "paymentTo")} {receiver.name}</h2>
       <div className="bankBox">
         <Banknote size={24} />
         <span>
-          <strong>{receiver.payment?.bankName ?? "Bank not added"}</strong>
-          <small>{receiver.payment?.accountNumber ?? "Add account number"}</small>
+          <strong>{receiver.payment?.bankName ?? t(language, "bankNotAdded")}</strong>
+          <small>{receiver.payment?.accountNumber ?? t(language, "addAccountNumber")}</small>
           <small>{receiver.payment?.accountHolder ?? receiver.name}</small>
         </span>
       </div>
-      {qr && <img alt={`QR for ${receiver.name}`} src={receiver.payment?.qrImageDataUrl || qr} />}
-      <small>{formatMoney(payment.amountMinor, language)} · transfer manually after checking formulas.</small>
+      {qr && <img alt={`${t(language, "paymentTo")} ${receiver.name}`} src={receiver.payment?.qrImageDataUrl || qr} />}
+      <small>{formatMoney(payment.amountMinor, language)} · {t(language, "transferManually")}</small>
     </div>
   );
 }

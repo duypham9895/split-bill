@@ -1,4 +1,5 @@
 import { formatMoney } from "../../domain/money";
+import { t } from "../../i18n/translations";
 import type { Language, MemberBalance } from "../../domain/types";
 
 export function BalancesTable({ balances, language }: { balances: MemberBalance[]; language: Language }) {
@@ -7,12 +8,12 @@ export function BalancesTable({ balances, language }: { balances: MemberBalance[
       <table>
         <thead>
           <tr>
-            <th>Member</th>
-            <th>Paid</th>
-            <th>Owed</th>
-            <th>Transfer paid</th>
-            <th>Transfer received</th>
-            <th>Balance</th>
+            <th>{t(language, "memberName")}</th>
+            <th>{t(language, "paid")}</th>
+            <th>{t(language, "owed")}</th>
+            <th>{t(language, "transferPaid")}</th>
+            <th>{t(language, "transferReceived")}</th>
+            <th>{t(language, "balance")}</th>
           </tr>
         </thead>
         <tbody>

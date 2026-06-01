@@ -34,7 +34,7 @@ export function BalancesSection({
 
   return (
     <div>
-      <PanelHeader title={t(language, "balancesSettlement")} subtitle="Audit totals, settlement modes, and paid transfers." />
+      <PanelHeader title={t(language, "balancesSettlement")} subtitle={t(language, "balancesSubtitle")} />
 
       {/* Balance Cards */}
       <div className="balanceCards">
@@ -58,10 +58,10 @@ export function BalancesSection({
                 {balance.balance >= 0 ? "+" : ""}{formatMoney(balance.balance, language)}
               </div>
               <div className="balanceCardDetail">
-                <span>Paid: {formatMoney(balance.totalPaid, language)}</span>
-                <span>Owed: {formatMoney(balance.totalOwed, language)}</span>
-                {balance.transferPaid > 0 && <span>Transfer paid: {formatMoney(balance.transferPaid, language)}</span>}
-                {balance.transferReceived > 0 && <span>Transfer received: {formatMoney(balance.transferReceived, language)}</span>}
+                <span>{t(language, "paid")}: {formatMoney(balance.totalPaid, language)}</span>
+                <span>{t(language, "owed")}: {formatMoney(balance.totalOwed, language)}</span>
+                {balance.transferPaid > 0 && <span>{t(language, "transferPaid")}: {formatMoney(balance.transferPaid, language)}</span>}
+                {balance.transferReceived > 0 && <span>{t(language, "transferReceived")}: {formatMoney(balance.transferReceived, language)}</span>}
               </div>
             </div>
           );
@@ -70,21 +70,21 @@ export function BalancesSection({
 
       {/* Full balance table (collapsed by default) */}
       <details className="balanceTableToggle">
-        <summary>View full balance breakdown</summary>
+        <summary>{t(language, "viewFullBreakdown")}</summary>
         <BalancesTable balances={balances} language={language} />
       </details>
 
       {/* Settlement Mode */}
       <div className="settlementSection">
-        <h2>Settlement</h2>
+        <h2>{t(language, "settlement")}</h2>
         <div className="settlementControls">
           <button className={mode === "simplified" ? "active" : ""} onClick={() => setMode("simplified")} type="button">
             <span>{t(language, "simplified")}</span>
-            <small>Fewest transfers</small>
+            <small>{t(language, "fewestTransfers")}</small>
           </button>
           <button className={mode === "direct" ? "active" : ""} onClick={() => setMode("direct")} type="button">
             <span>{t(language, "directPayback")}</span>
-            <small>Pay who you owe</small>
+            <small>{t(language, "payWhoYouOwe")}</small>
           </button>
         </div>
       </div>
@@ -93,12 +93,12 @@ export function BalancesSection({
 
       {/* Transfers Timeline */}
       <div className="transferList">
-        <h3>Transfers</h3>
+        <h3>{t(language, "transfers")}</h3>
         {!hasTransfers ? (
           <div className="emptyState">
             <ArrowRight size={24} />
-            <strong>No transfers yet</strong>
-            <p>Mark a settlement payment as paid to record a transfer.</p>
+            <strong>{t(language, "noTransfersYet")}</strong>
+            <p>{t(language, "noTransfersDesc")}</p>
           </div>
         ) : (
           <div className="transferTimeline">

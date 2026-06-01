@@ -24,7 +24,7 @@ export function SharingSection({
 }) {
   return (
     <div>
-      <PanelHeader title={t(language, "sharingPayment")} subtitle="Share a read-only summary and payment details." />
+      <PanelHeader title={t(language, "sharingPayment")} subtitle={t(language, "sharingSubtitle")} />
 
       {/* Primary actions */}
       <div className="actionGrid actionGrid--primary">
@@ -57,28 +57,25 @@ export function SharingSection({
 
       {/* Message */}
       {message && (
-        <div className={message.includes("copied") || message.includes("imported") ? "formulaBox" : "formulaBox warning"}>
+        <div className={message.includes("copied") || message.includes("imported") || message.includes("Đã") ? "formulaBox" : "formulaBox warning"}>
           {message}
         </div>
       )}
 
       {/* Privacy notice */}
       <div className="privacyNotice">
-        <strong>⚠️ Privacy note</strong>
-        <p>
-          Anyone with an exported file or link can see member payment details. Share only with
-          your trip group.
-        </p>
+        <strong>⚠️ {t(language, "privacyNote")}</strong>
+        <p>{t(language, "privacyWarning")}</p>
       </div>
 
       {/* Payment profiles */}
       <div className="shareSummary">
-        <h3>{trip.name} — Payment profiles</h3>
+        <h3>{trip.name} — {t(language, "paymentProfiles")}</h3>
         {trip.members.length === 0 ? (
           <div className="emptyState">
             <QrCode size={24} />
-            <strong>No members yet</strong>
-            <p>Add members with payment info to see their profiles here.</p>
+            <strong>{t(language, "noMembersYet")}</strong>
+            <p>{t(language, "noMembersDesc")}</p>
           </div>
         ) : (
           trip.members.map((member) => (
@@ -87,7 +84,7 @@ export function SharingSection({
               <div>
                 <strong>{member.name}</strong>
                 <small>
-                  {member.payment?.bankName ?? "No bank"} · {member.payment?.accountNumber ?? "No account"}
+                  {member.payment?.bankName ?? t(language, "noBank")} · {member.payment?.accountNumber ?? t(language, "noAccountLabel")}
                 </small>
                 {member.payment?.accountHolder && (
                   <small>{member.payment.accountHolder}</small>
@@ -95,7 +92,7 @@ export function SharingSection({
               </div>
               {member.payment?.qrImageDataUrl ? (
                 <img
-                  alt={`Payment QR for ${member.name}`}
+                  alt={`${t(language, "paymentTo")} ${member.name}`}
                   className="paymentProfileQr"
                   src={member.payment.qrImageDataUrl}
                 />

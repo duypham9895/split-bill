@@ -20,7 +20,7 @@ export function SettlementList({
   trip: Trip;
 }) {
   if (payments.length === 0) {
-    return <div className="emptyState">No payments needed. Everyone is settled.</div>;
+    return <div className="emptyState">{t(language, "noPaymentsNeeded")}</div>;
   }
 
   return (
@@ -28,7 +28,7 @@ export function SettlementList({
       {payments.map((payment, index) => (
         <div className="settlementRow" key={`${payment.fromMemberId}-${payment.toMemberId}-${index}`}>
           <span>
-            {getMemberName(trip, payment.fromMemberId)} pays {getMemberName(trip, payment.toMemberId)}
+            {getMemberName(trip, payment.fromMemberId)} → {getMemberName(trip, payment.toMemberId)}
           </span>
           <strong>{formatMoney(payment.amountMinor, language)}</strong>
           {!compact && (

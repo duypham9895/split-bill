@@ -201,7 +201,7 @@ function App() {
   function addTrip() {
     const nextTrip = createSampleTrip();
     nextTrip.id = `trip-${Date.now()}`;
-    nextTrip.name = `New trip ${store.trips.length + 1}`;
+    nextTrip.name = `${t(language, "trip")} ${store.trips.length + 1}`;
     nextTrip.expenses = [];
     nextTrip.transfers = [];
     setStore((currentStore) => ({
@@ -213,13 +213,13 @@ function App() {
 
   function addMember() {
     if (!memberForm.name.trim()) {
-      setFormError("Member name is required.");
+      setFormError(t(language, "memberNameRequired"));
       return;
     }
 
     const memberId = slugId(memberForm.name);
     if (activeTrip.members.some((existingMember) => existingMember.id === memberId)) {
-      setFormError("Duplicate member name.");
+      setFormError(t(language, "duplicateMemberName"));
       return;
     }
 
@@ -263,7 +263,7 @@ function App() {
     }
 
     if (!memberForm.name.trim()) {
-      setFormError("Member name is required.");
+      setFormError(t(language, "memberNameRequired"));
       return;
     }
 
@@ -305,7 +305,7 @@ function App() {
       setEditingExpenseId(null);
       setFormError("");
     } catch (error) {
-      setFormError(error instanceof Error ? error.message : "Cannot save expense.");
+      setFormError(error instanceof Error ? error.message : t(language, "cannotSaveExpense"));
     }
   }
 
@@ -344,7 +344,7 @@ function App() {
           toMemberId: payment.toMemberId,
           amountMinor: payment.amountMinor,
           date: today(),
-          note: "Marked paid from settlement",
+          note: t(language, "markedPaidNote"),
           status: "paid",
         },
       ],
@@ -366,7 +366,7 @@ function App() {
     const payload = encodeURIComponent(btoa(unescape(encodeURIComponent(exportTripJson(activeTrip)))));
     const url = `${window.location.origin}${window.location.pathname}?trip=${payload}`;
     await navigator.clipboard.writeText(url);
-    setShareMessage("Share link copied. Keep in mind that payment details are visible to anyone with the link.");
+    setShareMessage(t(language, "shareCopied"));
   }
 
   function importJson(event: ChangeEvent<HTMLInputElement>) {
@@ -386,9 +386,9 @@ function App() {
             importedTrip,
           ],
         }));
-        setShareMessage("Trip imported.");
+        setShareMessage(t(language, "tripImported"));
       } catch (error) {
-        setShareMessage(error instanceof Error ? error.message : "Import failed.");
+        setShareMessage(error instanceof Error ? error.message : t(language, "importFailed"));
       }
     };
     reader.readAsText(file);
@@ -403,7 +403,7 @@ function App() {
           </div>
           <div>
             <strong>{t(language, "appName")}</strong>
-            <span>Full local app</span>
+            <span>{t(language, "fullLocalApp")}</span>
           </div>
         </div>
 
@@ -455,13 +455,13 @@ function App() {
                 </option>
               ))}
             </select>
-            <button className="iconButton" onClick={addTrip} title="Create trip" type="button">
+            <button className="iconButton" onClick={addTrip} title={t(language, "createTrip")} type="button">
               <Plus size={18} />
             </button>
             <button
               className="iconButton"
               onClick={() => setSection("members")}
-              title="Edit trip name"
+              title={t(language, "editTripName")}
               type="button"
             >
               <Pencil size={16} />

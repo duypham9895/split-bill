@@ -1,5 +1,5 @@
 import { Check, Pencil, Plus, ReceiptText, Trash2, X, Utensils, Car, Hotel, ShoppingBag, Ticket } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { Expense, Language, SplitMethod, Trip } from "../../domain/types";
 import { formatMoney } from "../../domain/money";
 import { calculateExpenseShares } from "../../domain/split";
@@ -173,11 +173,14 @@ export function defaultParticipant(): ParticipantDraft {
   };
 }
 
-export function methodLabel(method: SplitMethod) {
-  if (method === "percentage") {
-    return "Percent";
-  }
-  return method[0].toUpperCase() + method.slice(1);
+export function methodLabel(method: SplitMethod, language: Language = "en") {
+  const labels: Record<SplitMethod, string> = {
+    equal: t(language, "equal"),
+    exact: t(language, "exact"),
+    percentage: t(language, "percentage"),
+    shares: t(language, "shares"),
+  };
+  return labels[method];
 }
 
 export function getMemberName(trip: Trip, memberId: string) {
@@ -236,6 +239,7 @@ export function ExpensesSection({
   const activeMembers = trip.members.filter((m) => m.active);
   const allSelected = activeMembers.length > 0 && activeMembers.every((m) => draft.participants[m.id]?.selected);
   const selectedCount = activeMembers.filter((m) => draft.participants[m.id]?.selected).length;
+  const [expenseSearch, setExpenseSearch] = useState("");
 
   function toggleAllParticipants(select: boolean) {
     const updated = { ...draft.participants };
@@ -248,8 +252,8 @@ export function ExpensesSection({
   return (
     <div>
       <PanelHeader
-        title={isEditing ? "Edit expense" : t(language, "expensesSplits")}
-        subtitle="Record who paid, who joined, and exactly how the bill is split."
+        title={isEditing ? t(language, "editExpense") : t(language, "expensesSplits")}
+        subtitle={t(language, "expensesSubtitle")}
       />
 
       <div className="formStack">
@@ -257,29 +261,29 @@ export function ExpensesSection({
         <div className="formCard">
           <div className="formCardHeader">
             <ReceiptText size={18} />
-            <span>What was the expense?</span>
+            <span>{t(language, "whatWasExpense")}</span>
           </div>
           <div className="formCardBody">
             <div className="inputGrid">
               <label>
-                Title
+                {t(language, "titleLabel")}
                 <input
                   value={draft.title}
                   onChange={(event) => setDraft({ ...draft, title: event.target.value })}
-                  placeholder="e.g. Seafood dinner, Airport taxi"
+                  placeholder={t(language, "titlePlaceholder")}
                 />
               </label>
               <label>
-                Category
+                {t(language, "categoryLabel")}
                 <input
                   value={draft.category}
                   onChange={(event) => setDraft({ ...draft, category: event.target.value })}
-                  placeholder="Food, Transport, Hotel..."
+                  placeholder={t(language, "categoryPlaceholder")}
                 />
               </label>
             </div>
             <label>
-              Amount (VND)
+              {t(language, "amountLabel")}
               <div className="amountInputWrap">
                 <input
                   className="amountInput"
@@ -299,7 +303,7 @@ export function ExpensesSection({
               </div>
             </label>
             <label>
-              Date
+              {t(language, "dateLabel")}
               <input
                 type="date"
                 value={draft.date}
@@ -313,7 +317,7 @@ export function ExpensesSection({
         <div className="formCard">
           <div className="formCardHeader">
             <span>💰</span>
-            <span>Who paid?</span>
+            <span>{t(language, "whoPaid")}</span>
           </div>
           <div className="formCardBody">
             <div className="payerRows">
@@ -347,7 +351,7 @@ export function ExpensesSection({
                         ),
                       })
                     }
-                    placeholder="Amount"
+                    placeholder={t(language, "amountPlaceholder")}
                   />
                   <button
                     className="iconButton danger"
@@ -359,7 +363,7 @@ export function ExpensesSection({
                       })
                     }
                     type="button"
-                    aria-label="Remove payer"
+                    aria-label={t(language, "removePayer")}
                   >
                     <Trash2 size={16} />
                   </button>
@@ -384,7 +388,7 @@ export function ExpensesSection({
               type="button"
             >
               <Plus size={16} />
-              Add payer
+              {t(language, "addPayer")}
             </button>
           </div>
         </div>
@@ -393,8 +397,8 @@ export function ExpensesSection({
         <div className="formCard">
           <div className="formCardHeader">
             <span>👥</span>
-            <span>Who shared this?</span>
-            <span className="formCardBadge">{selectedCount} selected</span>
+            <span>{t(language, "whoShared")}</span>
+            <span className="formCardBadge">{selectedCount} {t(language, "selected")}</span>
           </div>
           <div className="formCardBody">
             <div className="participantToggleRow">
@@ -403,7 +407,7 @@ export function ExpensesSection({
                 onClick={() => toggleAllParticipants(!allSelected)}
                 type="button"
               >
-                {allSelected ? "Clear all" : "Select all"}
+                {allSelected ? t(language, "clearAll") : t(language, "selectAll")}
               </button>
             </div>
             <div className="participantGrid">
@@ -439,7 +443,7 @@ export function ExpensesSection({
                   onClick={() => setDraft({ ...draft, splitMethod: method })}
                   type="button"
                 >
-                  {methodLabel(method)}
+                  {methodLabel(method, language)}
                 </button>
               ))}
             </div>
@@ -451,13 +455,13 @@ export function ExpensesSection({
           <div className="formCard">
             <div className="formCardHeader">
               <span>📊</span>
-              <span>Split details — {methodLabel(draft.splitMethod)}</span>
+              <span>{t(language, "splitDetails")} — {methodLabel(draft.splitMethod, language)}</span>
             </div>
             <div className="formCardBody">
               <div className="splitTable">
                 <div className="splitHeader">
-                  <span>Participant</span>
-                  <span>{methodLabel(draft.splitMethod)}</span>
+                  <span>{t(language, "participant")}</span>
+                  <span>{methodLabel(draft.splitMethod, language)}</span>
                 </div>
                 {trip.members
                   .filter((member) => draft.participants[member.id]?.selected)
@@ -494,11 +498,11 @@ export function ExpensesSection({
 
         {/* Note */}
         <label>
-          Note (optional)
+          {t(language, "noteOptional")}
           <textarea
             value={draft.note}
             onChange={(event) => setDraft({ ...draft, note: event.target.value })}
-            placeholder="Any additional details..."
+            placeholder={t(language, "notePlaceholder")}
           />
         </label>
 
@@ -514,12 +518,12 @@ export function ExpensesSection({
           <div className="buttonRow">
             <button className="primaryButton" onClick={onSave} type="button">
               {isEditing ? <Check size={18} /> : <ReceiptText size={18} />}
-              {isEditing ? "Save changes" : t(language, "addExpense")}
+              {isEditing ? t(language, "saveChanges") : t(language, "saveExpense")}
             </button>
             {isEditing && (
               <button className="ghostButton" onClick={onCancelEdit} type="button">
                 <X size={18} />
-                Cancel
+                {t(language, "cancel")}
               </button>
             )}
           </div>
@@ -531,51 +535,73 @@ export function ExpensesSection({
         {trip.expenses.length === 0 ? (
           <div className="emptyState">
             <ReceiptText size={32} />
-            <strong>No expenses yet</strong>
-            <p>Add your first expense to start splitting.</p>
+            <strong>{t(language, "noExpensesYet")}</strong>
+            <p>{t(language, "noExpensesDesc")}</p>
           </div>
         ) : (
-          trip.expenses.map((expense) => {
-            const CatIcon = categoryIcon(expense.category ?? "");
-            return (
-              <div className="expenseItem" key={expense.id}>
-                <div className="expenseItemIcon">
-                  <CatIcon size={20} />
-                </div>
-                <div className="expenseItemContent">
-                  <strong>{expense.title}</strong>
-                  <small>
-                    {expense.payers.map((payer) => getMemberName(trip, payer.memberId)).join(", ")} paid ·{" "}
-                    {expense.participants.length} people · {methodLabel(expense.splitMethod)}
-                  </small>
-                </div>
-                <div className="expenseItemMeta">
-                  <span className="expenseItemAmount">{formatMoney(expense.amountMinor, language)}</span>
-                  <span className="expenseItemDate">{expense.date}</span>
-                </div>
-                <div className="rowActions">
-                  <button
-                    aria-label={`Edit ${expense.title}`}
-                    className="iconButton"
-                    onClick={() => onEditExpense(expense)}
-                    title={`Edit ${expense.title}`}
-                    type="button"
-                  >
-                    <Pencil size={16} />
-                  </button>
-                  <button
-                    aria-label={`Delete ${expense.title}`}
-                    className="iconButton danger"
-                    onClick={() => onDeleteExpense(expense.id)}
-                    title={`Delete ${expense.title}`}
-                    type="button"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </div>
-            );
-          })
+          <>
+            {trip.expenses.length > 3 && (
+              <input
+                className="expenseSearch"
+                placeholder={language === "vi" ? "Tìm khoản chi..." : "Search expenses..."}
+                value={expenseSearch}
+                onChange={(event) => setExpenseSearch(event.target.value)}
+              />
+            )}
+            {trip.expenses
+              .filter((expense) => {
+                if (!expenseSearch.trim()) return true;
+                const query = expenseSearch.toLowerCase();
+                const payerNames = expense.payers.map((payer) => getMemberName(trip, payer.memberId).toLowerCase()).join(" ");
+                return (
+                  expense.title.toLowerCase().includes(query) ||
+                  (expense.category ?? "").toLowerCase().includes(query) ||
+                  payerNames.includes(query)
+                );
+              })
+              .map((expense) => {
+                const CatIcon = categoryIcon(expense.category ?? "");
+                return (
+                  <div className="expenseItem" key={expense.id}>
+                    <div className="expenseItemIcon">
+                      <CatIcon size={20} />
+                    </div>
+                    <div className="expenseItemContent">
+                      <strong>{expense.title}</strong>
+                      <small>
+                        {expense.payers.map((payer) => getMemberName(trip, payer.memberId)).join(", ")} ·{" "}
+                        {expense.participants.length} {t(language, "selected")} · {methodLabel(expense.splitMethod, language)}
+                      </small>
+                    </div>
+                    <div className="expenseItemMeta">
+                      <span className="expenseItemAmount">{formatMoney(expense.amountMinor, language)}</span>
+                      <span className="expenseItemDate">{expense.date}</span>
+                    </div>
+                    <div className="rowActions">
+                      <button
+                        aria-label={`Edit ${expense.title}`}
+                        className="iconButton"
+                        onClick={() => onEditExpense(expense)}
+                        title={`Edit ${expense.title}`}
+                        type="button"
+                      >
+                        <Pencil size={16} />
+                      </button>
+                      <button
+                        aria-label={`Delete ${expense.title}`}
+                        className="iconButton danger"
+                        onClick={() => onDeleteExpense(expense.id)}
+                        title={`Delete ${expense.title}`}
+                        type="button"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            }
+          </>
         )}
       </div>
     </div>

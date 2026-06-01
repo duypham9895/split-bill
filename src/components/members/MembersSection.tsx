@@ -62,54 +62,54 @@ export function MembersSection({
   return (
     <div>
       <PanelHeader
-        title={isEditing ? "Edit member" : t(language, "tripsMembers")}
-        subtitle="Create trips, members, and payment profiles."
+        title={isEditing ? t(language, "editMember") : t(language, "tripsMembers")}
+        subtitle={t(language, "membersSubtitle")}
       />
       <div className="twoColumn">
         <div className="formStack">
           <label>
-            Trip name
+            {t(language, "tripName")}
             <input
               value={trip.name}
               onChange={(event) => updateTrip((current) => ({ ...current, name: event.target.value }))}
             />
           </label>
           <label>
-            Member name
+            {t(language, "memberName")}
             <input
               value={form.name}
               onChange={(event) => setForm({ ...form, name: event.target.value })}
-              placeholder="Duy"
+              placeholder={t(language, "memberNamePlaceholder")}
             />
           </label>
           <div className="inputGrid">
             <label>
-              Bank
+              {t(language, "bank")}
               <input
                 value={form.bankName}
                 onChange={(event) => setForm({ ...form, bankName: event.target.value })}
-                placeholder="Vietcombank"
+                placeholder={t(language, "bankPlaceholder")}
               />
             </label>
             <label>
-              Bank code
+              {t(language, "bankCode")}
               <input
                 value={form.bankCode}
                 onChange={(event) => setForm({ ...form, bankCode: event.target.value })}
-                placeholder="970436"
+                placeholder={t(language, "bankCodePlaceholder")}
               />
             </label>
           </div>
           <div className="inputGrid">
             <label>
-              Account number
+              {t(language, "accountNumber")}
               <input
                 value={form.accountNumber}
                 onChange={(event) => setForm({ ...form, accountNumber: event.target.value })}
               />
             </label>
             <label>
-              Account holder
+              {t(language, "accountHolder")}
               <input
                 value={form.accountHolder}
                 onChange={(event) => setForm({ ...form, accountHolder: event.target.value })}
@@ -117,15 +117,15 @@ export function MembersSection({
             </label>
           </div>
           <label>
-            Transfer note template
+            {t(language, "transferNoteTemplate")}
             <input
               value={form.transferNoteTemplate}
               onChange={(event) => setForm({ ...form, transferNoteTemplate: event.target.value })}
-              placeholder="Da Nang trip"
+              placeholder={t(language, "transferNotePlaceholder")}
             />
           </label>
           <label>
-            Payment QR image
+            {t(language, "paymentQrImage")}
             <input
               accept="image/*"
               type="file"
@@ -134,14 +134,14 @@ export function MembersSection({
           </label>
           {form.qrImageDataUrl && (
             <div className="qrPreview">
-              <img alt="Uploaded payment QR preview" src={form.qrImageDataUrl} />
+              <img alt={t(language, "uploadedQrPreview")} src={form.qrImageDataUrl} />
               <button
                 className="ghostButton"
                 onClick={() => setForm({ ...form, qrImageDataUrl: "" })}
                 type="button"
               >
                 <X size={18} />
-                Remove QR
+                {t(language, "removeQr")}
               </button>
             </div>
           )}
@@ -149,12 +149,12 @@ export function MembersSection({
           <div className="buttonRow">
             <button className="primaryButton" onClick={onSaveMember} type="button">
               {isEditing ? <Check size={18} /> : <Plus size={18} />}
-              {isEditing ? "Save member" : t(language, "addMember")}
+              {isEditing ? t(language, "saveMember") : t(language, "addMember")}
             </button>
             {isEditing && (
               <button className="ghostButton" onClick={onCancelEdit} type="button">
                 <X size={18} />
-                Cancel
+                {t(language, "cancel")}
               </button>
             )}
           </div>
@@ -168,9 +168,9 @@ export function MembersSection({
                 <strong>{member.name}</strong>
                 <small>
                   {member.payment?.bankName
-                    ? `${member.payment.bankName} · ${member.payment.accountNumber ?? "no account"}`
-                    : "No payment info yet"}
-                  {member.payment?.qrImageDataUrl ? " · QR uploaded" : ""}
+                    ? `${member.payment.bankName} · ${member.payment.accountNumber ?? t(language, "noAccount")}`
+                    : t(language, "noPaymentInfo")}
+                  {member.payment?.qrImageDataUrl ? ` · ${t(language, "qrUploaded")}` : ""}
                 </small>
               </div>
               <div className="rowActions">
@@ -195,7 +195,7 @@ export function MembersSection({
                   }
                   type="button"
                 >
-                  {member.active ? "Active" : "Archived"}
+                  {member.active ? t(language, "active") : t(language, "archived")}
                 </button>
               </div>
             </div>
