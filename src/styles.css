@@ -1,0 +1,1373 @@
+/* ============================================
+   Design System Tokens
+   ============================================ */
+:root {
+  /* Colors */
+  --color-primary: #087f7b;
+  --color-primary-light: #e9f4f4;
+  --color-primary-bg: #d7f0ee;
+  --color-action: #2563eb;
+  --color-action-hover: #1d4ed8;
+  --color-danger: #ef5d54;
+  --color-danger-light: #fff4f2;
+  --color-danger-border: #f5b8b3;
+  --color-danger-text: #b8352d;
+  --color-success: #20a064;
+  --color-success-light: #eaf8f4;
+  --color-success-border: #9dd8c9;
+  --color-success-text: #0d635f;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fffbeb;
+  --color-warning-border: #fcd34d;
+
+  /* Neutrals */
+  --color-bg: #f6f8fb;
+  --color-surface: #ffffff;
+  --color-border: #dfe5ee;
+  --color-border-light: #edf1f6;
+  --color-border-input: #ccd5e1;
+  --color-text: #162033;
+  --color-text-secondary: #18233a;
+  --color-text-muted: #66758c;
+  --color-text-label: #31435d;
+  --color-table-header-bg: #f8fafc;
+  --color-segment-bg: #f1f5f9;
+
+  /* Spacing (4px base grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Typography */
+  --font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 15px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Component tokens */
+  --input-height: 44px;
+  --btn-height: 44px;
+  --avatar-sm: 36px;
+  --avatar-md: 40px;
+  --avatar-lg: 56px;
+}
+
+/* ============================================
+   Reset & Base
+   ============================================ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  font-synthesis: none;
+  margin: 0;
+  min-width: 320px;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ============================================
+   Layout Grid
+   ============================================ */
+.app {
+  display: grid;
+  grid-template-columns: 292px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-6) var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.workspace {
+  min-width: 0;
+}
+
+/* ============================================
+   Brand
+   ============================================ */
+.brand {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+  padding: 0 var(--space-2);
+}
+
+.brand span,
+.localBox small,
+.navItem small,
+.memberRow small,
+.paymentProfile small,
+.bankBox small {
+  color: var(--color-text-muted);
+  display: block;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.brandMark {
+  align-items: center;
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+  color: var(--color-surface);
+  display: grid;
+  height: 40px;
+  place-items: center;
+  width: 40px;
+}
+
+/* ============================================
+   Navigation
+   ============================================ */
+.sideNav {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.navItem {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-3);
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease;
+  width: 100%;
+}
+
+.navItem:hover {
+  background: var(--color-primary-light);
+  color: var(--color-text-secondary);
+}
+
+.navItem.active {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.navItem svg {
+  flex: 0 0 auto;
+}
+
+/* ============================================
+   Local-first Box
+   ============================================ */
+.localBox {
+  align-items: flex-start;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding: var(--space-4);
+}
+
+.localBox svg {
+  color: var(--color-success);
+  margin-top: 2px;
+}
+
+/* ============================================
+   Top Bar
+   ============================================ */
+.topbar {
+  align-items: center;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  min-height: 68px;
+  padding: var(--space-4) var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.tripPicker,
+.topActions,
+.buttonRow,
+.rowActions {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+}
+
+.buttonRow {
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   Form Inputs
+   ============================================ */
+.tripPicker select,
+.formStack input,
+.formStack select,
+.formStack textarea,
+.splitRow input,
+.payerRow input,
+.payerRow select {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  min-height: var(--input-height);
+  padding: 10px var(--space-3);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
+}
+
+.formStack input:focus,
+.formStack select:focus,
+.formStack textarea:focus,
+.splitRow input:focus,
+.payerRow input:focus,
+.payerRow select:focus {
+  border-color: var(--color-action);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  outline: none;
+}
+
+.formStack textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+/* ============================================
+   QR Preview
+   ============================================ */
+.qrPreview {
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.qrPreview img,
+.paymentProfileQr {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  height: 72px;
+  object-fit: contain;
+  width: 72px;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+.iconButton,
+.lang {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  display: inline-flex;
+  height: var(--btn-height);
+  justify-content: center;
+  min-width: var(--btn-height);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.iconButton:hover {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.lang.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.iconButton.danger {
+  color: var(--color-danger);
+}
+
+.iconButton.danger:hover {
+  background: var(--color-danger-light);
+  border-color: var(--color-danger-border);
+}
+
+.primaryButton,
+.ghostButton,
+.fileButton {
+  align-items: center;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  gap: var(--space-2);
+  justify-content: center;
+  min-height: var(--btn-height);
+  padding: 10px var(--space-4);
+  font-weight: 700;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.primaryButton {
+  background: var(--color-action);
+  border: 1px solid var(--color-action);
+  color: var(--color-surface);
+}
+
+.primaryButton:hover {
+  background: var(--color-action-hover);
+  border-color: var(--color-action-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+.ghostButton,
+.fileButton {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-input);
+  color: var(--color-text-secondary);
+}
+
+.ghostButton:hover,
+.fileButton:hover {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+}
+
+.fileButton input {
+  display: none;
+}
+
+/* ============================================
+   Content Grid
+   ============================================ */
+.contentGrid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 1fr) 384px;
+  padding: var(--space-5);
+}
+
+.primaryPanel,
+.railPanel,
+.listPanel,
+.shareSummary,
+.transferList {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.primaryPanel {
+  min-height: calc(100vh - 108px);
+  padding: var(--space-6);
+}
+
+.railPanel,
+.listPanel,
+.shareSummary,
+.transferList {
+  padding: var(--space-5);
+}
+
+.summaryRail {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+}
+
+/* ============================================
+   Panel Header
+   ============================================ */
+.panelHeader {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  justify-content: space-between;
+  margin: calc(-1 * var(--space-6)) calc(-1 * var(--space-6)) var(--space-5);
+  padding: var(--space-5) var(--space-6);
+}
+
+.panelHeader h1 {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.panelHeader p {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  margin: var(--space-2) 0 0;
+}
+
+/* ============================================
+   Forms
+   ============================================ */
+.twoColumn,
+.inputGrid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.formStack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+label,
+.sectionLabel {
+  color: var(--color-text-label);
+  display: grid;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  gap: var(--space-2);
+}
+
+/* ============================================
+   Form Cards (grouped form sections)
+   ============================================ */
+.formCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.formCardHeader {
+  align-items: center;
+  background: var(--color-table-header-bg);
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  gap: var(--space-2);
+  font-size: var(--text-md);
+  font-weight: 700;
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text-secondary);
+}
+
+.formCardBadge {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  margin-left: auto;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.formCardBody {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+/* ============================================
+   Amount Input
+   ============================================ */
+.amountInputWrap {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.amountInput {
+  font-size: var(--text-xl) !important;
+  font-weight: 700;
+  min-height: 56px !important;
+  padding: var(--space-3) var(--space-4) !important;
+}
+
+.amountPreview {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  text-align: right;
+}
+
+/* ============================================
+   Participant Toggle Row
+   ============================================ */
+.participantToggleRow {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.participantToggleRow .ghostButton {
+  min-height: 32px;
+  font-size: var(--text-sm);
+  padding: var(--space-1) var(--space-3);
+}
+
+/* ============================================
+   Sticky Action Bar
+   ============================================ */
+.stickyActionBar {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+/* ============================================
+   Expense List Items (redesigned)
+   ============================================ */
+.expenseItem {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  padding: var(--space-3);
+  transition: box-shadow 0.15s ease;
+  align-items: center;
+}
+
+.expenseItem:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.expenseItemIcon {
+  align-items: center;
+  background: var(--color-primary-light);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.expenseItemContent {
+  min-width: 0;
+}
+
+.expenseItemContent strong {
+  display: block;
+  font-size: var(--text-base);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.expenseItemContent small {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.expenseItemMeta {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.expenseItemAmount {
+  display: block;
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--color-text-secondary);
+}
+
+.expenseItemDate {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+/* ============================================
+   Member & Payment Rows
+   ============================================ */
+.memberRow,
+.paymentProfile,
+.balanceRow,
+.transferRow {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-light);
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: var(--space-3) 0;
+}
+
+.memberRow:last-child,
+.paymentProfile:last-child,
+.balanceRow:last-child,
+.transferRow:last-child {
+  border-bottom: 0;
+}
+
+/* ============================================
+   Avatar
+   ============================================ */
+.avatar {
+  align-items: center;
+  background: var(--color-primary-bg);
+  border-radius: 50%;
+  color: var(--color-primary);
+  display: inline-flex;
+  font-size: var(--text-xs);
+  font-weight: 800;
+  height: var(--avatar-md);
+  justify-content: center;
+  width: var(--avatar-md);
+}
+
+/* ============================================
+   Payer Rows
+   ============================================ */
+.payerRows {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.payerRow {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr 1fr auto;
+}
+
+/* ============================================
+   Participant Grid
+   ============================================ */
+.participantGrid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.participantCheck {
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.participantCheck:has(input:checked) {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.participantCheck input {
+  accent-color: var(--color-primary);
+  width: auto;
+}
+
+/* ============================================
+   Segmented Control
+   ============================================ */
+.segmented,
+.settlementControls {
+  background: var(--color-segment-bg);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+}
+
+.settlementControls {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: var(--space-5) 0;
+}
+
+.segmented button,
+.settlementControls button {
+  background: transparent;
+  border: 0;
+  color: var(--color-text-label);
+  font-weight: 700;
+  min-height: var(--btn-height);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.segmented button:hover,
+.settlementControls button:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.segmented .active,
+.settlementControls .active {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.segmented .active:hover,
+.settlementControls .active:hover {
+  background: var(--color-primary);
+}
+
+/* ============================================
+   Split Table
+   ============================================ */
+.splitTable,
+.tableWrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.splitHeader,
+.splitRow {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr 180px;
+  padding: var(--space-3) var(--space-3);
+}
+
+.splitHeader {
+  background: var(--color-table-header-bg);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.splitRow {
+  align-items: center;
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* ============================================
+   Formula Box, Error Box, Empty State
+   ============================================ */
+.formulaBox,
+.errorBox,
+.emptyState {
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.formulaBox {
+  background: var(--color-success-light);
+  border: 1px solid var(--color-success-border);
+  color: var(--color-success-text);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.formulaBox.warning,
+.errorBox {
+  background: var(--color-danger-light);
+  border: 1px solid var(--color-danger-border);
+  color: var(--color-danger-text);
+}
+
+.emptyState {
+  background: var(--color-bg);
+  border: 1px dashed var(--color-border);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-8) var(--space-6);
+}
+
+.emptyState strong {
+  display: block;
+  color: var(--color-text-secondary);
+  font-size: var(--text-md);
+  margin-bottom: var(--space-2);
+}
+
+.emptyState p {
+  margin: 0 0 var(--space-4);
+}
+
+/* ============================================
+   Expense List
+   ============================================ */
+.expenseList {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+/* ============================================
+   Table
+   ============================================ */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--color-border-light);
+  padding: var(--space-3);
+  text-align: left;
+}
+
+th {
+  background: var(--color-table-header-bg);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.positive {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.negative {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+/* ============================================
+   Balance Cards
+   ============================================ */
+.balanceCards {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.balanceCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  transition: box-shadow 0.15s ease;
+}
+
+.balanceCard:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.balanceCard--receive {
+  border-left: 3px solid var(--color-primary);
+}
+
+.balanceCard--pay {
+  border-left: 3px solid var(--color-danger);
+}
+
+.balanceCard--settled {
+  border-left: 3px solid var(--color-success);
+}
+
+.balanceCardHeader {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+}
+
+.balanceCardHeader strong {
+  display: block;
+  font-size: var(--text-md);
+}
+
+.balanceCardStatus {
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.balanceCardStatus--receive {
+  color: var(--color-primary);
+}
+
+.balanceCardStatus--pay {
+  color: var(--color-danger);
+}
+
+.balanceCardStatus--settled {
+  color: var(--color-success);
+}
+
+.balanceCardAmount {
+  font-size: var(--text-xl);
+  font-weight: 700;
+}
+
+.balanceCard--receive .balanceCardAmount {
+  color: var(--color-primary);
+}
+
+.balanceCard--pay .balanceCardAmount {
+  color: var(--color-danger);
+}
+
+.balanceCard--settled .balanceCardAmount {
+  color: var(--color-success);
+}
+
+.balanceCardDetail {
+  color: var(--color-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--text-xs);
+  gap: var(--space-2) var(--space-4);
+}
+
+.balanceTableToggle {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-5);
+  overflow: hidden;
+}
+
+.balanceTableToggle summary {
+  background: var(--color-table-header-bg);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: var(--space-3) var(--space-4);
+}
+
+.balanceTableToggle summary:hover {
+  color: var(--color-text-secondary);
+}
+
+.balanceTableToggle[open] summary {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ============================================
+   Settlement Section
+   ============================================ */
+.settlementSection {
+  margin-bottom: var(--space-4);
+}
+
+.settlementSection h2 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin: 0 0 var(--space-3);
+}
+
+.settlementControls {
+  background: var(--color-segment-bg);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+}
+
+.settlementControls button {
+  background: transparent;
+  border: 0;
+  color: var(--color-text-label);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: var(--btn-height);
+  padding: var(--space-3);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.settlementControls button span {
+  font-weight: 700;
+}
+
+.settlementControls button small {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.settlementControls button:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.settlementControls .active {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.settlementControls .active small {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   Settlement List
+   ============================================ */
+.settlementList {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.settlementRow {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  padding: var(--space-3) var(--space-4);
+}
+
+.settlementList.compact .settlementRow {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+/* ============================================
+   Transfer Timeline
+   ============================================ */
+.transferTimeline {
+  display: grid;
+  gap: 0;
+  padding-left: var(--space-4);
+}
+
+.transferTimelineItem {
+  display: flex;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  position: relative;
+}
+
+.transferTimelineItem:not(:last-child)::before {
+  background: var(--color-border);
+  bottom: 0;
+  content: "";
+  left: 7px;
+  position: absolute;
+  top: 20px;
+  width: 2px;
+}
+
+.transferTimelineDot {
+  align-items: center;
+  background: var(--color-success);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  flex-shrink: 0;
+  height: 16px;
+  justify-content: center;
+  width: 16px;
+}
+
+.transferTimelineContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.transferTimelineHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.transferTimelineHeader span {
+  align-items: center;
+  display: flex;
+  gap: var(--space-1);
+}
+
+.transferTimelineContent small {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+/* ============================================
+   Bank Box & Payment Card
+   ============================================ */
+.bankBox {
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.paymentCard {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.paymentCard img {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  height: 160px;
+  object-fit: contain;
+  width: 160px;
+}
+
+/* ============================================
+   Action Grid & QA Grid
+   ============================================ */
+.actionGrid,
+.qaGrid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.actionGrid--primary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: var(--space-3);
+}
+
+.actionGrid--secondary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: var(--space-4);
+}
+
+.qaItem {
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+/* ============================================
+   Privacy Notice
+   ============================================ */
+.privacyNotice {
+  background: var(--color-warning-light);
+  border: 1px solid var(--color-warning-border);
+  border-radius: var(--radius-md);
+  color: #92400e;
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+}
+
+.privacyNotice strong {
+  display: block;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-1);
+}
+
+.privacyNotice p {
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+/* ============================================
+   Share Summary & Payment Profiles
+   ============================================ */
+.shareSummary {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.paymentProfileQrPlaceholder {
+  align-items: center;
+  background: var(--color-bg);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  display: flex;
+  height: 72px;
+  justify-content: center;
+  width: 72px;
+}
+
+/* ============================================
+   Bottom Navigation (Mobile)
+   ============================================ */
+.bottomNav {
+  display: none;
+}
+
+/* ============================================
+   Responsive: Tablet (< 1120px)
+   ============================================ */
+@media (max-width: 1120px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-bottom: 1px solid var(--color-border);
+    border-right: 0;
+  }
+
+  .sideNav {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .navItem {
+    align-items: flex-start;
+    padding: var(--space-3);
+  }
+
+  .navItem small {
+    display: none;
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   Responsive: Mobile (< 760px)
+   ============================================ */
+@media (max-width: 760px) {
+  .sidebar {
+    display: none;
+  }
+
+  .bottomNav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+    z-index: 100;
+    padding: var(--space-2) var(--space-2) env(safe-area-inset-bottom, var(--space-2));
+  }
+
+  .bottomNav button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: transparent;
+    border: 0;
+    color: var(--color-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: var(--space-2) 0;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s ease;
+  }
+
+  .bottomNav button.active {
+    color: var(--color-primary);
+  }
+
+  .bottomNav button svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .contentGrid {
+    padding: var(--space-3);
+    padding-bottom: 80px;
+  }
+
+  .primaryPanel {
+    padding: var(--space-4);
+    min-height: auto;
+  }
+
+  .panelHeader {
+    margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-4)) var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .panelHeader h1 {
+    font-size: var(--text-lg);
+  }
+
+  .participantGrid,
+  .twoColumn,
+  .inputGrid,
+  .actionGrid,
+  .qaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .participantGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .payerRow,
+  .settlementRow {
+    grid-template-columns: 1fr;
+  }
+
+  .expenseItem {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .expenseItemMeta {
+    grid-column: 2 / -1;
+    text-align: left;
+    display: flex;
+    gap: var(--space-2);
+    align-items: baseline;
+  }
+
+  .expenseItemIcon {
+    height: 36px;
+    width: 36px;
+  }
+
+  .segmented {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .summaryRail {
+    display: none;
+  }
+}
+
+/* ============================================
+   Print
+   ============================================ */
+@media print {
+  .sidebar,
+  .topbar,
+  .bottomNav,
+  .primaryPanel > div:not(:has(.shareSummary)),
+  .summaryRail button {
+    display: none;
+  }
+
+  .app,
+  .contentGrid {
+    display: block;
+  }
+}

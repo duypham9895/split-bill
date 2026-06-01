@@ -1,0 +1,645 @@
+{
+  "baseURL": "http://127.0.0.1:5173/",
+  "createdAt": "2026-06-01T08:27:48.511Z",
+  "screenshots": [
+    {
+      "file": "01-expenses-default--desktop.png",
+      "state": "01-expenses-default",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Expenses screen: default add expense form, participants, formula preview, existing expenses, summary rail.",
+      "url": "/"
+    },
+    {
+      "file": "01-expenses-default--mobile.png",
+      "state": "01-expenses-default",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Expenses screen: default add expense form, participants, formula preview, existing expenses, summary rail.",
+      "url": "/"
+    },
+    {
+      "file": "02-expenses-exact-split--desktop.png",
+      "state": "02-expenses-exact-split",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Expense form with Exact split table visible.",
+      "url": "/"
+    },
+    {
+      "file": "02-expenses-exact-split--mobile.png",
+      "state": "02-expenses-exact-split",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Expense form with Exact split table visible.",
+      "url": "/"
+    },
+    {
+      "file": "03-expenses-percent-split--desktop.png",
+      "state": "03-expenses-percent-split",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Expense form with Percent split table visible.",
+      "url": "/"
+    },
+    {
+      "file": "03-expenses-percent-split--mobile.png",
+      "state": "03-expenses-percent-split",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Expense form with Percent split table visible.",
+      "url": "/"
+    },
+    {
+      "file": "04-expenses-shares-split--desktop.png",
+      "state": "04-expenses-shares-split",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Expense form with Shares split table visible.",
+      "url": "/"
+    },
+    {
+      "file": "04-expenses-shares-split--mobile.png",
+      "state": "04-expenses-shares-split",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Expense form with Shares split table visible.",
+      "url": "/"
+    },
+    {
+      "file": "05-expenses-multiple-payers--desktop.png",
+      "state": "05-expenses-multiple-payers",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Expense form after adding second payer row.",
+      "url": "/"
+    },
+    {
+      "file": "05-expenses-multiple-payers--mobile.png",
+      "state": "05-expenses-multiple-payers",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Expense form after adding second payer row.",
+      "url": "/"
+    },
+    {
+      "file": "06-expenses-edit-existing--desktop.png",
+      "state": "06-expenses-edit-existing",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Expense edit mode for existing Seafood dinner item.",
+      "url": "/"
+    },
+    {
+      "file": "06-expenses-edit-existing--mobile.png",
+      "state": "06-expenses-edit-existing",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Expense edit mode for existing Seafood dinner item.",
+      "url": "/"
+    },
+    {
+      "file": "07-expenses-validation-error--desktop.png",
+      "state": "07-expenses-validation-error",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Expense validation error when saving empty title.",
+      "url": "/"
+    },
+    {
+      "file": "07-expenses-validation-error--mobile.png",
+      "state": "07-expenses-validation-error",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Expense validation error when saving empty title.",
+      "url": "/"
+    },
+    {
+      "file": "08-members-default--desktop.png",
+      "state": "08-members-default",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Trips & Members screen: trip name, member/payment form, member list.",
+      "url": "/"
+    },
+    {
+      "file": "08-members-default--mobile.png",
+      "state": "08-members-default",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Trips & Members screen: trip name, member/payment form, member list.",
+      "url": "/"
+    },
+    {
+      "file": "09-members-edit-member--desktop.png",
+      "state": "09-members-edit-member",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Member edit mode for Duy payment profile.",
+      "url": "/"
+    },
+    {
+      "file": "09-members-edit-member--mobile.png",
+      "state": "09-members-edit-member",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Member edit mode for Duy payment profile.",
+      "url": "/"
+    },
+    {
+      "file": "10-members-qr-upload-preview--desktop.png",
+      "state": "10-members-qr-upload-preview",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Member edit mode with uploaded QR preview visible.",
+      "url": "/"
+    },
+    {
+      "file": "10-members-qr-upload-preview--mobile.png",
+      "state": "10-members-qr-upload-preview",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Member edit mode with uploaded QR preview visible.",
+      "url": "/"
+    },
+    {
+      "file": "11-members-archived-state--desktop.png",
+      "state": "11-members-archived-state",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Member list with one member archived.",
+      "url": "/"
+    },
+    {
+      "file": "11-members-archived-state--mobile.png",
+      "state": "11-members-archived-state",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Member list with one member archived.",
+      "url": "/"
+    },
+    {
+      "file": "12-members-validation-error--desktop.png",
+      "state": "12-members-validation-error",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Member form validation error when adding blank member.",
+      "url": "/"
+    },
+    {
+      "file": "12-members-validation-error--mobile.png",
+      "state": "12-members-validation-error",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Member form validation error when adding blank member.",
+      "url": "/"
+    },
+    {
+      "file": "13-balances-simplified--desktop.png",
+      "state": "13-balances-simplified",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Balances & Settlement screen with simplified settlement mode.",
+      "url": "/"
+    },
+    {
+      "file": "13-balances-simplified--mobile.png",
+      "state": "13-balances-simplified",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Balances & Settlement screen with simplified settlement mode.",
+      "url": "/"
+    },
+    {
+      "file": "14-balances-direct-payback--desktop.png",
+      "state": "14-balances-direct-payback",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Balances & Settlement screen with direct payback mode selected.",
+      "url": "/"
+    },
+    {
+      "file": "14-balances-direct-payback--mobile.png",
+      "state": "14-balances-direct-payback",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Balances & Settlement screen with direct payback mode selected.",
+      "url": "/"
+    },
+    {
+      "file": "15-balances-mark-paid-transfer--desktop.png",
+      "state": "15-balances-mark-paid-transfer",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Balances screen after marking first settlement payment as paid, showing Transfers list.",
+      "url": "/"
+    },
+    {
+      "file": "15-balances-mark-paid-transfer--mobile.png",
+      "state": "15-balances-mark-paid-transfer",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Balances screen after marking first settlement payment as paid, showing Transfers list.",
+      "url": "/"
+    },
+    {
+      "file": "16-sharing-default--desktop.png",
+      "state": "16-sharing-default",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Sharing & Payment screen: export/import/print/share actions and payment profile list.",
+      "url": "/"
+    },
+    {
+      "file": "16-sharing-default--mobile.png",
+      "state": "16-sharing-default",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Sharing & Payment screen: export/import/print/share actions and payment profile list.",
+      "url": "/"
+    },
+    {
+      "file": "17-sharing-link-copied--desktop.png",
+      "state": "17-sharing-link-copied",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Sharing screen after Copy share link action, showing privacy warning message.",
+      "url": "/"
+    },
+    {
+      "file": "17-sharing-link-copied--mobile.png",
+      "state": "17-sharing-link-copied",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Sharing screen after Copy share link action, showing privacy warning message.",
+      "url": "/"
+    },
+    {
+      "file": "18-sharing-import-json--desktop.png",
+      "state": "18-sharing-import-json",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Sharing screen after importing a JSON trip file.",
+      "url": "/"
+    },
+    {
+      "file": "18-sharing-import-json--mobile.png",
+      "state": "18-sharing-import-json",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Sharing screen after importing a JSON trip file.",
+      "url": "/"
+    },
+    {
+      "file": "19-sharing-member-qr-visible--desktop.png",
+      "state": "19-sharing-member-qr-visible",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Sharing screen after uploading and saving Duy QR image, showing QR in payment profile.",
+      "url": "/"
+    },
+    {
+      "file": "19-sharing-member-qr-visible--mobile.png",
+      "state": "19-sharing-member-qr-visible",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Sharing screen after uploading and saving Duy QR image, showing QR in payment profile.",
+      "url": "/"
+    },
+    {
+      "file": "20-sharing-print-media--desktop.png",
+      "state": "20-sharing-print-media",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Print stylesheet view of Sharing summary.",
+      "url": "/"
+    },
+    {
+      "file": "20-sharing-print-media--mobile.png",
+      "state": "20-sharing-print-media",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Print stylesheet view of Sharing summary.",
+      "url": "/"
+    },
+    {
+      "file": "21-qa-default--desktop.png",
+      "state": "21-qa-default",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "QA & Release screen with release checklist and bug-report draft field.",
+      "url": "/"
+    },
+    {
+      "file": "21-qa-default--mobile.png",
+      "state": "21-qa-default",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "QA & Release screen with release checklist and bug-report draft field.",
+      "url": "/"
+    },
+    {
+      "file": "22-qa-bug-draft-filled--desktop.png",
+      "state": "22-qa-bug-draft-filled",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "QA & Release screen with example bug report text entered.",
+      "url": "/"
+    },
+    {
+      "file": "22-qa-bug-draft-filled--mobile.png",
+      "state": "22-qa-bug-draft-filled",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "QA & Release screen with example bug report text entered.",
+      "url": "/"
+    },
+    {
+      "file": "23-new-trip-empty-expenses--desktop.png",
+      "state": "23-new-trip-empty-expenses",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "New trip flow after Create trip: empty expenses/transfers with copied sample members.",
+      "url": "/"
+    },
+    {
+      "file": "23-new-trip-empty-expenses--mobile.png",
+      "state": "23-new-trip-empty-expenses",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "New trip flow after Create trip: empty expenses/transfers with copied sample members.",
+      "url": "/"
+    },
+    {
+      "file": "24-shared-link-loaded--desktop.png",
+      "state": "24-shared-link-loaded",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Shared trip URL loaded from encoded trip payload.",
+      "url": "/?trip=eyJ2ZXJzaW9uIjoxLCJleHBvcnRlZEF0IjoiMjAyNi0wNi0wMVQwMDowMDowMC4wMDBaIiwidHJpcCI6eyJpZCI6InNoYXJlZC10cmlwLXJlZGVzaWduIiwibmFtZSI6IlNoYXJlZCBMaW5rIFRyaXAiLCJjdXJyZW5jeSI6IlZORCIsImxhbmd1YWdlIjoiZW4iLCJtZW1iZXJzIjpbeyJpZCI6ImR1eSIsIm5hbWUiOiJEdXkiLCJhY3RpdmUiOnRydWUsInBheW1lbnQiOnsiYmFua05hbWUiOiJWaWV0Y29tYmFuayIsImFjY291bnROdW1iZXIiOiIxMDIzNDU2Nzg5MTAiLCJhY2NvdW50SG9sZGVyIjoiRFVZIE5HVVlFTiJ9fSx7ImlkIjoibWluaCIsIm5hbWUiOiJNaW5oIiwiYWN0aXZlIjp0cnVlfV0sImV4cGVuc2VzIjpbXSwidHJhbnNmZXJzIjpbXX19"
+    },
+    {
+      "file": "24-shared-link-loaded--mobile.png",
+      "state": "24-shared-link-loaded",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Shared trip URL loaded from encoded trip payload.",
+      "url": "/?trip=eyJ2ZXJzaW9uIjoxLCJleHBvcnRlZEF0IjoiMjAyNi0wNi0wMVQwMDowMDowMC4wMDBaIiwidHJpcCI6eyJpZCI6InNoYXJlZC10cmlwLXJlZGVzaWduIiwibmFtZSI6IlNoYXJlZCBMaW5rIFRyaXAiLCJjdXJyZW5jeSI6IlZORCIsImxhbmd1YWdlIjoiZW4iLCJtZW1iZXJzIjpbeyJpZCI6ImR1eSIsIm5hbWUiOiJEdXkiLCJhY3RpdmUiOnRydWUsInBheW1lbnQiOnsiYmFua05hbWUiOiJWaWV0Y29tYmFuayIsImFjY291bnROdW1iZXIiOiIxMDIzNDU2Nzg5MTAiLCJhY2NvdW50SG9sZGVyIjoiRFVZIE5HVVlFTiJ9fSx7ImlkIjoibWluaCIsIm5hbWUiOiJNaW5oIiwiYWN0aXZlIjp0cnVlfV0sImV4cGVuc2VzIjpbXSwidHJhbnNmZXJzIjpbXX19"
+    },
+    {
+      "file": "25-vietnamese-members--desktop.png",
+      "state": "25-vietnamese-members",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Vietnamese copy: Trips & Members section.",
+      "url": "/"
+    },
+    {
+      "file": "25-vietnamese-members--mobile.png",
+      "state": "25-vietnamese-members",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Vietnamese copy: Trips & Members section.",
+      "url": "/"
+    },
+    {
+      "file": "26-vietnamese-expenses--desktop.png",
+      "state": "26-vietnamese-expenses",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Vietnamese copy: Expenses & Splits section.",
+      "url": "/"
+    },
+    {
+      "file": "26-vietnamese-expenses--mobile.png",
+      "state": "26-vietnamese-expenses",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Vietnamese copy: Expenses & Splits section.",
+      "url": "/"
+    },
+    {
+      "file": "27-vietnamese-balances--desktop.png",
+      "state": "27-vietnamese-balances",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Vietnamese copy: Balances & Settlement section.",
+      "url": "/"
+    },
+    {
+      "file": "27-vietnamese-balances--mobile.png",
+      "state": "27-vietnamese-balances",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Vietnamese copy: Balances & Settlement section.",
+      "url": "/"
+    },
+    {
+      "file": "28-vietnamese-sharing--desktop.png",
+      "state": "28-vietnamese-sharing",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Vietnamese copy: Sharing & Payment section.",
+      "url": "/"
+    },
+    {
+      "file": "28-vietnamese-sharing--mobile.png",
+      "state": "28-vietnamese-sharing",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Vietnamese copy: Sharing & Payment section.",
+      "url": "/"
+    },
+    {
+      "file": "29-vietnamese-qa--desktop.png",
+      "state": "29-vietnamese-qa",
+      "viewport": "desktop",
+      "viewportSize": {
+        "width": 1440,
+        "height": 1100
+      },
+      "description": "Vietnamese copy: QA & Release section.",
+      "url": "/"
+    },
+    {
+      "file": "29-vietnamese-qa--mobile.png",
+      "state": "29-vietnamese-qa",
+      "viewport": "mobile",
+      "viewportSize": {
+        "width": 390,
+        "height": 844
+      },
+      "description": "Vietnamese copy: QA & Release section.",
+      "url": "/"
+    }
+  ],
+  "consoleIssues": []
+}
