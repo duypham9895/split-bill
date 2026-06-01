@@ -16,17 +16,26 @@ export function PaymentCard({
 }) {
   const receiver = trip.members.find((member) => member.id === payment.toMemberId);
   const [qr, setQr] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!receiver) {
       return;
     }
+    setLoading(true);
     let cancelled = false;
-    void generatePaymentQr(receiver, payment).then((dataUrl) => {
-      if (!cancelled) {
-        setQr(dataUrl);
-      }
-    });
+    void generatePaymentQr(receiver, payment)
+      .then((dataUrl) => {
+        if (!cancelled) {
+          setQr(dataUrl);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      });
     return () => {
       cancelled = true;
     };
@@ -47,7 +56,11 @@ export function PaymentCard({
           <small>{receiver.payment?.accountHolder ?? receiver.name}</small>
         </span>
       </div>
-      {qr && <img alt={`${t(language, "paymentTo")} ${receiver.name}`} src={receiver.payment?.qrImageDataUrl || qr} />}
+      {loading ? (
+        <div className="skeleton" style={{ width: 72, height: 72 }} />
+      ) : qr ? (
+        <img alt={`${t(language, "paymentTo")} ${receiver.name}`} src={receiver.payment?.qrImageDataUrl || qr} />
+      ) : null}
       <small>{formatMoney(payment.amountMinor, language)} · {t(language, "transferManually")}</small>
     </div>
   );

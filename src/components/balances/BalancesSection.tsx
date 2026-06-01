@@ -32,9 +32,34 @@ export function BalancesSection({
 }) {
   const hasTransfers = trip.transfers.length > 0;
 
+  // Stat card calculations
+  const totalSpent = trip.expenses.reduce((sum, e) => sum + e.amountMinor, 0);
+  const totalOwed = balances.filter((b) => b.balance > 0).reduce((sum, b) => sum + b.balance, 0);
+  const totalOwing = Math.abs(balances.filter((b) => b.balance < 0).reduce((sum, b) => sum + b.balance, 0));
+
   return (
     <div>
       <PanelHeader title={t(language, "balancesSettlement")} subtitle={t(language, "balancesSubtitle")} />
+
+      {/* Summary Stat Cards */}
+      <div className="statCardsRow">
+        <div className="statCard">
+          <div className="statCardValue">{formatMoney(totalSpent, language)}</div>
+          <div className="statCardLabel">Total Spent</div>
+        </div>
+        <div className="statCard">
+          <div className="statCardValue" style={{ color: "var(--color-danger)" }}>
+            {formatMoney(totalOwing, language)}
+          </div>
+          <div className="statCardLabel">To Pay</div>
+        </div>
+        <div className="statCard">
+          <div className="statCardValue" style={{ color: "var(--color-success)" }}>
+            {formatMoney(totalOwed, language)}
+          </div>
+          <div className="statCardLabel">To Receive</div>
+        </div>
+      </div>
 
       {/* Balance Cards */}
       <div className="balanceCards">
@@ -55,13 +80,31 @@ export function BalancesSection({
                 </div>
               </div>
               <div className="balanceCardAmount">
-                {balance.balance >= 0 ? "+" : ""}{formatMoney(balance.balance, language)}
+                <span className={`balanceBadge ${balance.balance > 0 ? "positive" : balance.balance < 0 ? "negative" : "settled"}`}>
+                  {balance.balance > 0 ? "+" : ""}{formatMoney(balance.balance, language)}
+                </span>
               </div>
               <div className="balanceCardDetail">
-                <span>{t(language, "paid")}: {formatMoney(balance.totalPaid, language)}</span>
-                <span>{t(language, "owed")}: {formatMoney(balance.totalOwed, language)}</span>
-                {balance.transferPaid > 0 && <span>{t(language, "transferPaid")}: {formatMoney(balance.transferPaid, language)}</span>}
-                {balance.transferReceived > 0 && <span>{t(language, "transferReceived")}: {formatMoney(balance.transferReceived, language)}</span>}
+                <div className="detailRow">
+                  <span>{t(language, "paid")}</span>
+                  <span>{formatMoney(balance.totalPaid, language)}</span>
+                </div>
+                <div className="detailRow">
+                  <span>{t(language, "owed")}</span>
+                  <span>{formatMoney(balance.totalOwed, language)}</span>
+                </div>
+                {balance.transferPaid > 0 && (
+                  <div className="detailRow">
+                    <span>{t(language, "transferPaid")}</span>
+                    <span>{formatMoney(balance.transferPaid, language)}</span>
+                  </div>
+                )}
+                {balance.transferReceived > 0 && (
+                  <div className="detailRow">
+                    <span>{t(language, "transferReceived")}</span>
+                    <span>{formatMoney(balance.transferReceived, language)}</span>
+                  </div>
+                )}
               </div>
             </div>
           );

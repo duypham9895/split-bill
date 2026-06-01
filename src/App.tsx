@@ -1,11 +1,13 @@
 import {
   Check,
   Languages,
+  Moon,
   Pencil,
   Plus,
   ReceiptText,
   Scale,
   Send,
+  Sun,
   Users,
 } from "lucide-react";
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
@@ -156,7 +158,14 @@ function App() {
     () => store.trips.find((trip) => trip.id === store.activeTripId) ?? store.trips[0],
     [store],
   );
-  const [section, setSection] = useState<Section>("expenses");
+  const [section, setSection] = useState<Section>(() => {
+    const store = createInitialStore();
+    const trip = store.trips.find((t) => t.id === store.activeTripId);
+    if (!trip || trip.members.filter((m) => m.active).length === 0) {
+      return "members";
+    }
+    return "expenses";
+  });
   const [settlementMode, setSettlementMode] = useState<SettlementMode>("simplified");
   const [memberForm, setMemberForm] = useState<MemberForm>(emptyMemberForm);
   const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
@@ -165,6 +174,19 @@ function App() {
   const [formError, setFormError] = useState("");
   const [shareMessage, setShareMessage] = useState("");
   const [bugText, setBugText] = useState("");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const stored = localStorage.getItem("split-bill:theme");
+    if (stored === "light" || stored === "dark") return stored;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  });
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [importPreview, setImportPreview] = useState<Trip | null>(null);
+  const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("split-bill:theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     saveTripStore(store);
@@ -192,6 +214,11 @@ function App() {
         trip.id === currentStore.activeTripId ? updater(trip) : trip,
       ),
     }));
+  }
+
+  function showToast(message: string, undo?: () => void) {
+    setToast({ message, undo });
+    setTimeout(() => setToast(null), 5000);
   }
 
   function setLanguage(languageValue: Language) {
@@ -325,9 +352,8 @@ function App() {
   function deleteExpense(expenseId: string) {
     updateActiveTrip((trip) => ({
       ...trip,
-      expenses: trip.expenses.filter((expense) => expense.id !== expenseId),
+      expenses: trip.expenses.filter((e) => e.id !== expenseId),
     }));
-
     if (editingExpenseId === expenseId) {
       cancelEditExpense();
     }
@@ -362,11 +388,43 @@ function App() {
     downloadText(`${activeTrip.name}-settlement.csv`, bundle.settlementCsv, "text/csv");
   }
 
-  async function copyShareLink() {
+  function getShareUrl() {
     const payload = encodeURIComponent(btoa(unescape(encodeURIComponent(exportTripJson(activeTrip)))));
-    const url = `${window.location.origin}${window.location.pathname}?trip=${payload}`;
+    return `${window.location.origin}${window.location.pathname}?trip=${payload}`;
+  }
+
+  async function copyShareLink() {
+    const url = getShareUrl();
+    if (url.length > 1800) {
+      showToast("Trip data is large. Share link may not work in all browsers.");
+    }
     await navigator.clipboard.writeText(url);
     setShareMessage(t(language, "shareCopied"));
+  }
+
+  async function nativeShare() {
+    const url = getShareUrl();
+    const shareText = `${activeTrip.name} — ${t(language, "appName")}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: activeTrip.name, text: shareText, url });
+      } catch {
+        // User cancelled — ignore
+      }
+    } else {
+      await copyShareLink();
+    }
+  }
+
+  function shareToZalo() {
+    const url = getShareUrl();
+    const text = `${activeTrip.name} — ${t(language, "appName")}`;
+    window.open(`https://zalo.me/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, "_blank", "width=600,height=400");
+  }
+
+  function shareToMessenger() {
+    const url = getShareUrl();
+    window.open(`https://www.facebook.com/dialog/share?display=popup&href=${encodeURIComponent(url)}`, "_blank", "width=600,height=400");
   }
 
   function importJson(event: ChangeEvent<HTMLInputElement>) {
@@ -379,19 +437,25 @@ function App() {
     reader.onload = () => {
       try {
         const importedTrip = importTripJson(String(reader.result));
-        setStore((currentStore) => ({
-          activeTripId: importedTrip.id,
-          trips: [
-            ...currentStore.trips.filter((trip) => trip.id !== importedTrip.id),
-            importedTrip,
-          ],
-        }));
-        setShareMessage(t(language, "tripImported"));
+        setImportPreview(importedTrip);
       } catch (error) {
         setShareMessage(error instanceof Error ? error.message : t(language, "importFailed"));
       }
     };
     reader.readAsText(file);
+  }
+
+  function confirmImport() {
+    if (!importPreview) return;
+    setStore((currentStore) => ({
+      activeTripId: importPreview.id,
+      trips: [
+        ...currentStore.trips.filter((trip) => trip.id !== importPreview.id),
+        importPreview,
+      ],
+    }));
+    setShareMessage(t(language, "tripImported"));
+    setImportPreview(null);
   }
 
   return (
@@ -414,6 +478,7 @@ function App() {
               <button
                 className={section === item.id ? "navItem active" : "navItem"}
                 key={item.id}
+                aria-current={section === item.id ? "page" : undefined}
                 onClick={() => setSection(item.id)}
                 type="button"
               >
@@ -483,6 +548,14 @@ function App() {
               VN
             </button>
             <Languages size={20} />
+            <button
+              className="iconButton"
+              onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
+              title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+              type="button"
+            >
+              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
           </div>
         </header>
 
@@ -490,6 +563,7 @@ function App() {
           <section className="primaryPanel">
             {section === "members" && (
               <MembersSection
+                balances={calculation.balances}
                 editingMemberId={editingMemberId}
                 error={formError}
                 form={memberForm}
@@ -509,7 +583,7 @@ function App() {
                 error={formError}
                 language={language}
                 onCancelEdit={cancelEditExpense}
-                onDeleteExpense={deleteExpense}
+                onDeleteExpense={setDeleteConfirm}
                 onEditExpense={startEditExpense}
                 setDraft={setExpenseDraft}
                 trip={activeTrip}
@@ -535,6 +609,9 @@ function App() {
                 onCopyShareLink={() => void copyShareLink()}
                 onDownloadCsv={downloadCsv}
                 onDownloadJson={downloadJson}
+                onNativeShare={() => void nativeShare()}
+                onShareToZalo={shareToZalo}
+                onShareToMessenger={shareToMessenger}
                 trip={activeTrip}
               />
             )}
@@ -566,6 +643,7 @@ function App() {
             <button
               className={section === item.id ? "active" : ""}
               key={item.id}
+              aria-current={section === item.id ? "page" : undefined}
               onClick={() => setSection(item.id)}
               type="button"
             >
@@ -575,6 +653,53 @@ function App() {
           );
         })}
       </nav>
+
+      {deleteConfirm && (
+        <div className="confirmOverlay" onClick={() => setDeleteConfirm(null)}>
+          <div className="confirmDialog" onClick={(e) => e.stopPropagation()}>
+            <h3>Delete Expense</h3>
+            <p>Are you sure you want to delete this expense? This action cannot be undone.</p>
+            <div className="confirmActions">
+              <button className="ghostButton" onClick={() => setDeleteConfirm(null)}>Cancel</button>
+              <button
+                className="primaryButton"
+                style={{ background: "var(--color-danger)", borderColor: "var(--color-danger)" }}
+                onClick={() => {
+                  deleteExpense(deleteConfirm);
+                  setDeleteConfirm(null);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {importPreview && (
+        <div className="confirmOverlay" onClick={() => setImportPreview(null)}>
+          <div className="confirmDialog" onClick={(e) => e.stopPropagation()}>
+            <h3>Import Trip</h3>
+            <p>
+              Import &ldquo;{importPreview.name}&rdquo; with {importPreview.members.length} members and{" "}
+              {importPreview.expenses.length} expenses? This will replace your current trip data.
+            </p>
+            <div className="confirmActions">
+              <button className="ghostButton" onClick={() => setImportPreview(null)}>Cancel</button>
+              <button className="primaryButton" onClick={confirmImport}>Import</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {toast && (
+        <div className="toast">
+          <span>{toast.message}</span>
+          {toast.undo && (
+            <button onClick={() => { toast.undo!(); setToast(null); }}>Undo</button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

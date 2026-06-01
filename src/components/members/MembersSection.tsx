@@ -1,6 +1,7 @@
-import { ChangeEvent } from "react";
-import { Plus, Pencil, X, Check } from "lucide-react";
-import { Language, Member, Trip } from "../../domain/types";
+import { ChangeEvent, useState } from "react";
+import { Plus, Pencil, X, Check, UserPlus, CreditCard } from "lucide-react";
+import { Language, Member, MemberBalance, Trip } from "../../domain/types";
+import { formatMoney } from "../../domain/money";
 import { t } from "../../i18n/translations";
 import { Avatar } from "../shared/Avatar";
 import { PanelHeader } from "../shared/PanelHeader";
@@ -35,6 +36,7 @@ export function uploadMemberQr(
 }
 
 export function MembersSection({
+  balances,
   editingMemberId,
   error,
   form,
@@ -46,6 +48,7 @@ export function MembersSection({
   trip,
   updateTrip,
 }: {
+  balances?: MemberBalance[];
   editingMemberId: string | null;
   error: string;
   form: MemberForm;
@@ -57,6 +60,7 @@ export function MembersSection({
   trip: Trip;
   updateTrip: (updater: (trip: Trip) => Trip) => void;
 }) {
+  const [showForm, setShowForm] = useState(false);
   const isEditing = editingMemberId !== null;
 
   return (
@@ -67,14 +71,19 @@ export function MembersSection({
       />
       <div className="twoColumn">
         <div className="formStack">
-          <label>
-            {t(language, "tripName")}
-            <input
-              value={trip.name}
-              onChange={(event) => updateTrip((current) => ({ ...current, name: event.target.value }))}
-            />
-          </label>
-          <label>
+          {!showForm && !isEditing ? (
+            <button className="ghostButton" onClick={() => setShowForm(true)} type="button">
+              <UserPlus size={16} />
+              {t(language, "addMember")}
+            </button>
+          ) : (
+            <div className="formCard">
+              <div className="formCardHeader">
+                <CreditCard size={18} />
+                {isEditing ? t(language, "editMember") : t(language, "addMember")}
+              </div>
+              <div className="formCardBody">
+                <label>
             {t(language, "memberName")}
             <input
               value={form.name}
@@ -145,61 +154,91 @@ export function MembersSection({
               </button>
             </div>
           )}
-          {error && <div className="errorBox">{error}</div>}
-          <div className="buttonRow">
-            <button className="primaryButton" onClick={onSaveMember} type="button">
-              {isEditing ? <Check size={18} /> : <Plus size={18} />}
-              {isEditing ? t(language, "saveMember") : t(language, "addMember")}
-            </button>
-            {isEditing && (
-              <button className="ghostButton" onClick={onCancelEdit} type="button">
-                <X size={18} />
-                {t(language, "cancel")}
-              </button>
-            )}
-          </div>
+                {error && <div className="errorBox">{error}</div>}
+                <div className="buttonRow">
+                  <button className="primaryButton" onClick={onSaveMember} type="button">
+                    {isEditing ? <Check size={18} /> : <Plus size={18} />}
+                    {isEditing ? t(language, "saveMember") : t(language, "addMember")}
+                  </button>
+                  <button
+                    className="ghostButton"
+                    onClick={() => {
+                      if (isEditing) {
+                        onCancelEdit();
+                      } else {
+                        setShowForm(false);
+                      }
+                    }}
+                    type="button"
+                  >
+                    <X size={18} />
+                    {t(language, "cancel")}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="listPanel">
-          {trip.members.map((member) => (
-            <div className="memberRow" key={member.id}>
-              <Avatar member={member} />
-              <div>
-                <strong>{member.name}</strong>
-                <small>
-                  {member.payment?.bankName
-                    ? `${member.payment.bankName} · ${member.payment.accountNumber ?? t(language, "noAccount")}`
-                    : t(language, "noPaymentInfo")}
-                  {member.payment?.qrImageDataUrl ? ` · ${t(language, "qrUploaded")}` : ""}
-                </small>
+          {trip.members.map((member) => {
+            const calculatedMember = balances?.find((b) => b.memberId === member.id);
+            return (
+              <div className="memberCard" key={member.id}>
+                <div className="memberRow">
+                  <Avatar member={member} />
+                  <div>
+                    <strong>{member.name}</strong>
+                    <small>
+                      {member.payment?.bankName
+                        ? `${member.payment.bankName} · ${member.payment.accountNumber ?? t(language, "noAccount")}`
+                        : t(language, "noPaymentInfo")}
+                      {member.payment?.qrImageDataUrl ? ` · ${t(language, "qrUploaded")}` : ""}
+                    </small>
+                  </div>
+                  <div className="rowActions">
+                    {calculatedMember && (
+                      <span
+                        className={`balanceBadge ${
+                          calculatedMember.balance > 0
+                            ? "positive"
+                            : calculatedMember.balance < 0
+                              ? "negative"
+                              : "settled"
+                        }`}
+                      >
+                        {calculatedMember.balance > 0 ? "+" : ""}
+                        {formatMoney(calculatedMember.balance, language)}
+                      </span>
+                    )}
+                    <button
+                      aria-label={`Edit ${member.name}`}
+                      className="iconButton"
+                      onClick={() => onEditMember(member)}
+                      title={`Edit ${member.name}`}
+                      type="button"
+                    >
+                      <Pencil size={16} />
+                    </button>
+                    <button
+                      className="ghostButton"
+                      onClick={() =>
+                        updateTrip((current) => ({
+                          ...current,
+                          members: current.members.map((item) =>
+                            item.id === member.id ? { ...item, active: !item.active } : item,
+                          ),
+                        }))
+                      }
+                      type="button"
+                    >
+                      {member.active ? t(language, "active") : t(language, "archived")}
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="rowActions">
-                <button
-                  aria-label={`Edit ${member.name}`}
-                  className="iconButton"
-                  onClick={() => onEditMember(member)}
-                  title={`Edit ${member.name}`}
-                  type="button"
-                >
-                  <Pencil size={16} />
-                </button>
-                <button
-                  className="ghostButton"
-                  onClick={() =>
-                    updateTrip((current) => ({
-                      ...current,
-                      members: current.members.map((item) =>
-                        item.id === member.id ? { ...item, active: !item.active } : item,
-                      ),
-                    }))
-                  }
-                  type="button"
-                >
-                  {member.active ? t(language, "active") : t(language, "archived")}
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

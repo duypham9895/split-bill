@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import { formatMoney } from "../../domain/money";
 import { t } from "../../i18n/translations";
 import type { Language, SettlementPayment, Trip } from "../../domain/types";
@@ -25,19 +26,26 @@ export function SettlementList({
 
   return (
     <div className={compact ? "settlementList compact" : "settlementList"}>
-      {payments.map((payment, index) => (
-        <div className="settlementRow" key={`${payment.fromMemberId}-${payment.toMemberId}-${index}`}>
-          <span>
-            {getMemberName(trip, payment.fromMemberId)} → {getMemberName(trip, payment.toMemberId)}
-          </span>
-          <strong>{formatMoney(payment.amountMinor, language)}</strong>
-          {!compact && (
-            <button className="ghostButton" onClick={() => onMarkPaid(payment)} type="button">
-              {t(language, "markPaid")}
-            </button>
-          )}
-        </div>
-      ))}
+      {payments.map((payment, index) => {
+        const fromName = getMemberName(trip, payment.fromMemberId);
+        const toName = getMemberName(trip, payment.toMemberId);
+        return (
+          <div className="settlementItem" key={`${payment.fromMemberId}-${payment.toMemberId}-${index}`}>
+            <div className="settlementFlow">
+              <span className="settlementFrom">{fromName}</span>
+              <span className="settlementArrow">&rarr;</span>
+              <span className="settlementAmount">{formatMoney(payment.amountMinor, language)}</span>
+              <span className="settlementArrow">&rarr;</span>
+              <span className="settlementTo">{toName}</span>
+            </div>
+            {!compact && (
+              <button className="ghostButton" onClick={() => onMarkPaid(payment)} type="button">
+                <Check size={14} /> {t(language, "markPaid")}
+              </button>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

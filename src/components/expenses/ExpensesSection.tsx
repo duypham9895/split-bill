@@ -1,4 +1,4 @@
-import { Check, Pencil, Plus, ReceiptText, Trash2, X, Utensils, Car, Hotel, ShoppingBag, Ticket } from "lucide-react";
+import { AlertCircle, Banknote, Car, Check, Hotel, MoreHorizontal, Pencil, PieChart, Plus, ReceiptText, ShoppingBag, Ticket, Trash2, Users, UtensilsCrossed, Wine, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { Expense, Language, SplitMethod, Trip } from "../../domain/types";
 import { formatMoney } from "../../domain/money";
@@ -6,6 +6,16 @@ import { calculateExpenseShares } from "../../domain/split";
 import { t } from "../../i18n/translations";
 import { Avatar } from "../shared/Avatar";
 import { PanelHeader } from "../shared/PanelHeader";
+
+const EXPENSE_CATEGORIES = [
+  { value: "food", label: "Food & Dining", icon: UtensilsCrossed },
+  { value: "transport", label: "Transport", icon: Car },
+  { value: "hotel", label: "Hotel & Stay", icon: Hotel },
+  { value: "activity", label: "Activities", icon: Ticket },
+  { value: "shopping", label: "Shopping", icon: ShoppingBag },
+  { value: "drinks", label: "Drinks", icon: Wine },
+  { value: "other", label: "Other", icon: MoreHorizontal },
+];
 
 export type PayerDraft = {
   rowId: string;
@@ -32,7 +42,7 @@ export type ExpenseDraft = {
 };
 
 export function createExpenseDraft(trip: Trip): ExpenseDraft {
-  const amount = "300000";
+  const amount = "";
   const members = trip.members.filter((member) => member.active);
   const equalPercent = members.length > 0 ? String(Math.floor(100 / members.length)) : "0";
   const participants = Object.fromEntries(
@@ -50,7 +60,7 @@ export function createExpenseDraft(trip: Trip): ExpenseDraft {
   return {
     title: "",
     amount,
-    category: "Food",
+    category: "",
     date: today(),
     note: "",
     splitMethod: "equal",
@@ -202,13 +212,33 @@ function today() {
 }
 
 function categoryIcon(category: string) {
-  const lower = category.toLowerCase();
-  if (lower.includes("food") || lower.includes("dinner") || lower.includes("lunch") || lower.includes("breakfast") || lower.includes("restaurant") || lower.includes("cafe")) return Utensils;
-  if (lower.includes("transport") || lower.includes("taxi") || lower.includes("car") || lower.includes("grab") || lower.includes("bus") || lower.includes("flight")) return Car;
-  if (lower.includes("hotel") || lower.includes("room") || lower.includes("accommodation") || lower.includes("hostel")) return Hotel;
-  if (lower.includes("shopping") || lower.includes("gift") || lower.includes("souvenir")) return ShoppingBag;
-  if (lower.includes("activity") || lower.includes("ticket") || lower.includes("tour") || lower.includes("entertainment")) return Ticket;
-  return ReceiptText;
+  const cat = EXPENSE_CATEGORIES.find((c) => c.value === category);
+  return cat ? cat.icon : ReceiptText;
+}
+
+function groupExpensesByDate(expenses: Expense[]): Map<string, Expense[]> {
+  const groups = new Map<string, Expense[]>();
+  for (const expense of expenses) {
+    const date = expense.date || "No date";
+    if (!groups.has(date)) groups.set(date, []);
+    groups.get(date)!.push(expense);
+  }
+  return groups;
+}
+
+function formatDateHeader(date: string): string {
+  if (date === "No date") return date;
+  try {
+    const d = new Date(date + "T00:00:00");
+    return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  } catch {
+    return date;
+  }
+}
+
+function parseAmountInput(value: string): number {
+  const digits = value.replace(/[^\d]/g, "");
+  return digits ? Number(digits) : 0;
 }
 
 export function ExpensesSection({
@@ -275,11 +305,15 @@ export function ExpensesSection({
               </label>
               <label>
                 {t(language, "categoryLabel")}
-                <input
+                <select
                   value={draft.category}
-                  onChange={(event) => setDraft({ ...draft, category: event.target.value })}
-                  placeholder={t(language, "categoryPlaceholder")}
-                />
+                  onChange={(e) => setDraft({ ...draft, category: e.target.value })}
+                >
+                  <option value="">Select category...</option>
+                  {EXPENSE_CATEGORIES.map((cat) => (
+                    <option key={cat.value} value={cat.value}>{cat.label}</option>
+                  ))}
+                </select>
               </label>
             </div>
             <label>
@@ -316,7 +350,7 @@ export function ExpensesSection({
         {/* Card 2: Who paid? */}
         <div className="formCard">
           <div className="formCardHeader">
-            <span>💰</span>
+            <Banknote size={18} />
             <span>{t(language, "whoPaid")}</span>
           </div>
           <div className="formCardBody">
@@ -370,6 +404,17 @@ export function ExpensesSection({
                 </div>
               ))}
             </div>
+            {draft.payers.length > 0 && (
+              <div className={`validationRow ${
+                draft.payers.reduce((sum, p) => sum + (parseAmountInput(p.amount) || 0), 0) === parseAmountInput(draft.amount)
+                  ? "valid" : "invalid"
+              }`}>
+                {draft.payers.reduce((sum, p) => sum + (parseAmountInput(p.amount) || 0), 0) === parseAmountInput(draft.amount)
+                  ? <><Check size={14} /> Payer total matches expense amount</>
+                  : <><AlertCircle size={14} /> Payer total does not match expense amount</>
+                }
+              </div>
+            )}
             <button
               className="ghostButton"
               onClick={() =>
@@ -396,7 +441,7 @@ export function ExpensesSection({
         {/* Card 3: Who shared this? */}
         <div className="formCard">
           <div className="formCardHeader">
-            <span>👥</span>
+            <Users size={18} />
             <span>{t(language, "whoShared")}</span>
             <span className="formCardBadge">{selectedCount} {t(language, "selected")}</span>
           </div>
@@ -435,15 +480,15 @@ export function ExpensesSection({
               })}
             </div>
             <div className="sectionLabel" style={{ marginTop: "var(--space-4)" }}>{t(language, "splitMethod")}</div>
-            <div className="segmented">
-              {(["equal", "exact", "percentage", "shares"] as SplitMethod[]).map((method) => (
+            <div className="splitMethodGroup">
+              {(["equal", "shares", "exact", "percentage"] as const).map((method) => (
                 <button
-                  className={draft.splitMethod === method ? "active" : ""}
                   key={method}
-                  onClick={() => setDraft({ ...draft, splitMethod: method })}
                   type="button"
+                  className={`splitMethodPill ${draft.splitMethod === method ? "active" : ""}`}
+                  onClick={() => setDraft({ ...draft, splitMethod: method })}
                 >
-                  {methodLabel(method, language)}
+                  {method === "equal" ? "Equal" : method === "shares" ? "Shares" : method === "exact" ? "Exact" : "Percent"}
                 </button>
               ))}
             </div>
@@ -454,7 +499,7 @@ export function ExpensesSection({
         {draft.splitMethod !== "equal" && (
           <div className="formCard">
             <div className="formCardHeader">
-              <span>📊</span>
+              <PieChart size={18} />
               <span>{t(language, "splitDetails")} — {methodLabel(draft.splitMethod, language)}</span>
             </div>
             <div className="formCardBody">
@@ -548,8 +593,8 @@ export function ExpensesSection({
                 onChange={(event) => setExpenseSearch(event.target.value)}
               />
             )}
-            {trip.expenses
-              .filter((expense) => {
+            {[...groupExpensesByDate(
+              trip.expenses.filter((expense) => {
                 if (!expenseSearch.trim()) return true;
                 const query = expenseSearch.toLowerCase();
                 const payerNames = expense.payers.map((payer) => getMemberName(trip, payer.memberId).toLowerCase()).join(" ");
@@ -559,48 +604,52 @@ export function ExpensesSection({
                   payerNames.includes(query)
                 );
               })
-              .map((expense) => {
-                const CatIcon = categoryIcon(expense.category ?? "");
-                return (
-                  <div className="expenseItem" key={expense.id}>
-                    <div className="expenseItemIcon">
-                      <CatIcon size={20} />
+            ).entries()].map(([date, items]) => (
+              <div key={date}>
+                <div className="expenseDateGroup">{formatDateHeader(date)}</div>
+                {items.map((expense) => {
+                  const CatIcon = categoryIcon(expense.category ?? "");
+                  return (
+                    <div className="expenseItem" key={expense.id}>
+                      <div className={`categoryIconCircle ${expense.category || "other"}`}>
+                        <CatIcon size={18} />
+                      </div>
+                      <div className="expenseItemContent">
+                        <strong>{expense.title}</strong>
+                        <small>
+                          {expense.payers.map((payer) => getMemberName(trip, payer.memberId)).join(", ")} ·{" "}
+                          {expense.participants.length} {t(language, "selected")} · {methodLabel(expense.splitMethod, language)}
+                        </small>
+                      </div>
+                      <div className="expenseItemMeta">
+                        <span className="expenseItemAmount">{formatMoney(expense.amountMinor, language)}</span>
+                        <span className="expenseItemDate">{expense.date}</span>
+                      </div>
+                      <div className="rowActions">
+                        <button
+                          aria-label={`Edit ${expense.title}`}
+                          className="iconButton"
+                          onClick={() => onEditExpense(expense)}
+                          title={`Edit ${expense.title}`}
+                          type="button"
+                        >
+                          <Pencil size={16} />
+                        </button>
+                        <button
+                          aria-label={`Delete ${expense.title}`}
+                          className="iconButton danger"
+                          onClick={() => onDeleteExpense(expense.id)}
+                          title={`Delete ${expense.title}`}
+                          type="button"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </div>
-                    <div className="expenseItemContent">
-                      <strong>{expense.title}</strong>
-                      <small>
-                        {expense.payers.map((payer) => getMemberName(trip, payer.memberId)).join(", ")} ·{" "}
-                        {expense.participants.length} {t(language, "selected")} · {methodLabel(expense.splitMethod, language)}
-                      </small>
-                    </div>
-                    <div className="expenseItemMeta">
-                      <span className="expenseItemAmount">{formatMoney(expense.amountMinor, language)}</span>
-                      <span className="expenseItemDate">{expense.date}</span>
-                    </div>
-                    <div className="rowActions">
-                      <button
-                        aria-label={`Edit ${expense.title}`}
-                        className="iconButton"
-                        onClick={() => onEditExpense(expense)}
-                        title={`Edit ${expense.title}`}
-                        type="button"
-                      >
-                        <Pencil size={16} />
-                      </button>
-                      <button
-                        aria-label={`Delete ${expense.title}`}
-                        className="iconButton danger"
-                        onClick={() => onDeleteExpense(expense.id)}
-                        title={`Delete ${expense.title}`}
-                        type="button"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })
-            }
+                  );
+                })}
+              </div>
+            ))}
           </>
         )}
       </div>

@@ -83,10 +83,12 @@ export function calculateTrip(trip: Trip): {
 function createSimplifiedSettlement(balances: MemberBalance[]): SettlementPayment[] {
   const debtors = balances
     .filter((balance) => balance.balance < 0)
-    .map((balance) => ({ memberId: balance.memberId, remaining: Math.abs(balance.balance) }));
+    .map((balance) => ({ memberId: balance.memberId, remaining: Math.abs(balance.balance) }))
+    .sort((a, b) => b.remaining - a.remaining);
   const creditors = balances
     .filter((balance) => balance.balance > 0)
-    .map((balance) => ({ memberId: balance.memberId, remaining: balance.balance }));
+    .map((balance) => ({ memberId: balance.memberId, remaining: balance.balance }))
+    .sort((a, b) => b.remaining - a.remaining);
   const payments: SettlementPayment[] = [];
 
   let debtorIndex = 0;
