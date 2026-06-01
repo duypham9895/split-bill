@@ -1,0 +1,148 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - heading "Chia sẻ cookie" [level=4] [ref=e6]
+      - paragraph [ref=e7]:
+        - text: Trang web này sử dụng cookie để cung cấp cho bạn trải nghiệm duyệt web tốt hơn. Tìm hiểu thêm về cách
+        - link "chúng tôi sử dụng cookie và cách bạn có thể thay đổi cài đặt của mình" [ref=e8] [cursor=pointer]:
+          - /url: https://zalo.vn/dieukhoan
+        - text: .
+      - generic [ref=e9]:
+        - button "Từ chối" [ref=e10] [cursor=pointer]
+        - button "Đồng ý" [ref=e11] [cursor=pointer]
+    - generic [ref=e14]:
+      - navigation [ref=e17]:
+        - generic [ref=e18]:
+          - link [ref=e20] [cursor=pointer]:
+            - /url: /
+          - list [ref=e24]:
+            - listitem [ref=e25]:
+              - link "Tài liệu" [ref=e27] [cursor=pointer]:
+                - /url: "#"
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: API
+                    - list:
+                      - listitem:
+                        - link "Zalo Official Account":
+                          - /url: /docs/official-account/bat-dau/kham-pha
+                      - listitem:
+                        - link "ZBS Template Message":
+                          - /url: /docs/zbs-template-message/bat-dau/gioi-thieu-zbs-template-message
+                      - listitem:
+                        - link "Zalo Social":
+                          - /url: /docs/social-api/tai-lieu/thong-tin-ten-anh-dai-dien
+                  - generic:
+                    - generic: SDK
+                    - list:
+                      - listitem:
+                        - link "iOS SDK":
+                          - /url: /docs/sdk/ios-sdk/tong-quan
+                      - listitem:
+                        - link "Android SDK":
+                          - /url: /docs/sdk/android-sdk/tong-quan
+                  - generic:
+                    - generic: Social Plugin
+                    - list:
+                      - listitem:
+                        - link "Nút Quan tâm":
+                          - /url: /docs/social/follow
+                      - listitem:
+                        - link "Widget Quan tâm":
+                          - /url: /docs/social/widget-follow
+                      - listitem:
+                        - link "Widget cấp tương tác":
+                          - /url: /docs/social/zalo-interactive-widget
+                      - listitem:
+                        - link "Widget Chat":
+                          - /url: /docs/social/zalo-chat-widget
+                - link "Xem tất cả":
+                  - /url: /docs
+            - listitem [ref=e28]:
+              - link "Hỗ trợ" [ref=e29] [cursor=pointer]:
+                - /url: /community
+                - generic [ref=e30]: Hỗ trợ
+            - listitem [ref=e31]:
+              - generic [ref=e33] [cursor=pointer]: Công cụ
+              - list:
+                - listitem:
+                  - link "API Explorer":
+                    - /url: /tools/explorer
+                - listitem:
+                  - link "Token debugger":
+                    - /url: /tools/token-debugger
+                - listitem:
+                  - link "Gỡ lỗi chia sẻ":
+                    - /url: /tools/debug-sharing
+                - listitem:
+                  - link "DPoP Debugger":
+                    - /url: /tools/dpop-debugger
+            - listitem [ref=e34]:
+              - link "FAQs" [ref=e35] [cursor=pointer]:
+                - /url: /faq
+                - generic [ref=e36]: FAQs
+            - listitem [ref=e37]:
+              - link "Lịch sử cập nhật" [ref=e38] [cursor=pointer]:
+                - /url: /changelog
+                - generic [ref=e39]: Lịch sử cập nhật
+          - generic [ref=e40]:
+            - button "Đăng nhập" [ref=e50] [cursor=pointer]
+            - listitem [ref=e51]:
+              - generic [ref=e54] [cursor=pointer]: VN
+      - generic [ref=e59]:
+        - generic [ref=e61]:
+          - heading "Social Plugins" [level=5] [ref=e62]:
+            - link "Social Plugins" [ref=e63] [cursor=pointer]:
+              - /url: /docs/social/share
+          - list [ref=e64]:
+            - listitem [ref=e65]:
+              - link "Tài liệu" [ref=e66] [cursor=pointer]:
+                - /url: /docs/social/share
+              - list [ref=e67]:
+                - listitem [ref=e68]:
+                  - link "Nút Quan tâm" [ref=e69] [cursor=pointer]:
+                    - /url: /docs/social/follow
+                - listitem [ref=e70]:
+                  - link "Widget Quan tâm" [ref=e71] [cursor=pointer]:
+                    - /url: /docs/social/widget-follow
+                - listitem [ref=e72]:
+                  - link "Widget cấp tương tác Mới" [ref=e73] [cursor=pointer]:
+                    - /url: /docs/social/zalo-interactive-widget
+                    - text: Widget cấp tương tác
+                    - generic [ref=e74]: Mới
+                - listitem [ref=e75]:
+                  - link "Widget Chat" [ref=e76] [cursor=pointer]:
+                    - /url: /docs/social/zalo-chat-widget
+        - generic [ref=e78]:
+          - heading "Nút Quan tâm" [level=2] [ref=e79]
+          - paragraph [ref=e80]: Nút Quan tâm cho phép người dùng đăng ký nhận các cập nhật công khai của Official Account.
+          - heading "Tạo nút Quan tâm" [level=4] [ref=e81]
+          - generic [ref=e83]:
+            - generic [ref=e84]: 
+            - generic [ref=e85]:
+              - text: Vui lòng
+              - button "đăng nhập" [ref=e86] [cursor=pointer]
+              - text: để sử dụng tính năng này.
+          - heading "Cài đặt" [level=4] [ref=e87]
+          - paragraph [ref=e88]: "Chi tiết cấu hình cho nút Quan tâm:"
+          - table [ref=e89]:
+            - rowgroup [ref=e90]:
+              - row "Attribute Required Description" [ref=e91]:
+                - columnheader "Attribute" [ref=e92]:
+                  - strong [ref=e93]: Attribute
+                - columnheader "Required" [ref=e94]:
+                  - strong [ref=e95]: Required
+                - columnheader "Description" [ref=e96]:
+                  - strong [ref=e97]: Description
+              - row "data-oaid required Zalo Official Account ID" [ref=e98]:
+                - cell "data-oaid" [ref=e99]
+                - cell "required" [ref=e100]
+                - cell "Zalo Official Account ID" [ref=e101]
+              - row "data-callback optional Tên hàm callback được khai báo global. Hàm sẽ được gọi khi follow thành công." [ref=e102]:
+                - cell "data-callback" [ref=e103]
+                - cell "optional" [ref=e104]
+                - cell "Tên hàm callback được khai báo global. Hàm sẽ được gọi khi follow thành công." [ref=e105]
+          - paragraph [ref=e106]: "*** Chú ý: Dùng hàm ZaloSocialSDK.reload() để init lại widget trong trường hợp bạn cần sử dụng các config động."
+      - generic [ref=e112]: ©2023 Zalo for Developers
+  - img [ref=e115]

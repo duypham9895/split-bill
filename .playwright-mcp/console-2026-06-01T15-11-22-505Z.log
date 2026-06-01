@@ -1,0 +1,15 @@
+[     292ms] [LOG] Zalo Social Plugin is loaded successfully @ https://sp.zalo.me/plugins/sdk.js:1
+[     292ms] [LOG] socialPluginsShare:  [] @ https://sp.zalo.me/plugins/sdk.js:1
+[     383ms] [WARNING] [Cloudflare Turnstile] Compatibility layer enabled. @ https://stc-developers.zdn.vn/static/home/main.js:1
+[     691ms] [LOG] item {type: category, label: Tài liệu, collapsed: false, items: Array(1), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     691ms] [LOG] activePath /docs/v2/social-api/tai-lieu/thong-tin-ten-anh-dai-dien @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     692ms] [LOG] item {type: category, label: Tham khảo, collapsed: false, items: Array(8), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     692ms] [LOG] activePath /docs/v2/social-api/tai-lieu/thong-tin-ten-anh-dai-dien @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     695ms] [LOG] item {type: category, label: Tài liệu, collapsed: false, items: Array(1), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     695ms] [LOG] activePath /docs/v2/social-api/tai-lieu/thong-tin-ten-anh-dai-dien @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     695ms] [LOG] item {type: category, label: Tham khảo, collapsed: false, items: Array(8), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     695ms] [LOG] activePath /docs/v2/social-api/tai-lieu/thong-tin-ten-anh-dai-dien @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[    1065ms] [LOG] item {type: category, label: Tài liệu, collapsed: false, items: Array(1), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[    1065ms] [LOG] activePath /docs/v2/social-api/tai-lieu/thong-tin-ten-anh-dai-dien @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[    1066ms] [LOG] item {type: category, label: Tham khảo, collapsed: false, items: Array(8), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[    1066ms] [LOG] activePath /docs/v2/social-api/tai-lieu/thong-tin-ten-anh-dai-dien @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1

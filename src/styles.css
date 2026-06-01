@@ -1709,6 +1709,7 @@ th {
   }
 
   .contentGrid {
+    grid-template-columns: 1fr;
     padding: var(--space-3);
     padding-bottom: 80px;
   }

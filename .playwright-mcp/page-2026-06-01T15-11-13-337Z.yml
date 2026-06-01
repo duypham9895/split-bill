@@ -1,0 +1,174 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - heading "Chia sẻ cookie" [level=4] [ref=e6]
+      - paragraph [ref=e7]:
+        - text: Trang web này sử dụng cookie để cung cấp cho bạn trải nghiệm duyệt web tốt hơn. Tìm hiểu thêm về cách
+        - link "chúng tôi sử dụng cookie và cách bạn có thể thay đổi cài đặt của mình" [ref=e8] [cursor=pointer]:
+          - /url: https://zalo.vn/dieukhoan
+        - text: .
+      - generic [ref=e9]:
+        - button "Từ chối" [ref=e10] [cursor=pointer]
+        - button "Đồng ý" [ref=e11] [cursor=pointer]
+    - generic [ref=e14]:
+      - navigation [ref=e17]:
+        - generic [ref=e18]:
+          - link [ref=e20] [cursor=pointer]:
+            - /url: /
+          - list [ref=e24]:
+            - listitem [ref=e25]:
+              - link "Tài liệu" [ref=e27] [cursor=pointer]:
+                - /url: "#"
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: API
+                    - list:
+                      - listitem:
+                        - link "Zalo Official Account":
+                          - /url: /docs/official-account/bat-dau/kham-pha
+                      - listitem:
+                        - link "ZBS Template Message":
+                          - /url: /docs/zbs-template-message/bat-dau/gioi-thieu-zbs-template-message
+                      - listitem:
+                        - link "Zalo Social":
+                          - /url: /docs/social-api/tai-lieu/thong-tin-ten-anh-dai-dien
+                  - generic:
+                    - generic: SDK
+                    - list:
+                      - listitem:
+                        - link "iOS SDK":
+                          - /url: /docs/sdk/ios-sdk/tong-quan
+                      - listitem:
+                        - link "Android SDK":
+                          - /url: /docs/sdk/android-sdk/tong-quan
+                  - generic:
+                    - generic: Social Plugin
+                    - list:
+                      - listitem:
+                        - link "Nút Quan tâm":
+                          - /url: /docs/social/follow
+                      - listitem:
+                        - link "Widget Quan tâm":
+                          - /url: /docs/social/widget-follow
+                      - listitem:
+                        - link "Widget cấp tương tác":
+                          - /url: /docs/social/zalo-interactive-widget
+                      - listitem:
+                        - link "Widget Chat":
+                          - /url: /docs/social/zalo-chat-widget
+                - link "Xem tất cả":
+                  - /url: /docs
+            - listitem [ref=e28]:
+              - link "Hỗ trợ" [ref=e29] [cursor=pointer]:
+                - /url: /community
+                - generic [ref=e30]: Hỗ trợ
+            - listitem [ref=e31]:
+              - generic [ref=e33] [cursor=pointer]: Công cụ
+              - list:
+                - listitem:
+                  - link "API Explorer":
+                    - /url: /tools/explorer
+                - listitem:
+                  - link "Token debugger":
+                    - /url: /tools/token-debugger
+                - listitem:
+                  - link "Gỡ lỗi chia sẻ":
+                    - /url: /tools/debug-sharing
+                - listitem:
+                  - link "DPoP Debugger":
+                    - /url: /tools/dpop-debugger
+            - listitem [ref=e34]:
+              - link "FAQs" [ref=e35] [cursor=pointer]:
+                - /url: /faq
+                - generic [ref=e36]: FAQs
+            - listitem [ref=e37]:
+              - link "Lịch sử cập nhật" [ref=e38] [cursor=pointer]:
+                - /url: /changelog
+                - generic [ref=e39]: Lịch sử cập nhật
+          - generic [ref=e40]:
+            - button "Đăng nhập" [ref=e50] [cursor=pointer]
+            - listitem [ref=e51]:
+              - generic [ref=e54] [cursor=pointer]: VN
+      - generic [ref=e56]:
+        - heading "Documentations" [level=2] [ref=e59]
+        - generic [ref=e62]:
+          - generic [ref=e64]:
+            - paragraph [ref=e65]: API
+            - list [ref=e66]:
+              - listitem [ref=e67]:
+                - link "Official Account API Mới" [ref=e68] [cursor=pointer]:
+                  - /url: /docs/api/official-account-api-230
+                  - generic [ref=e69]: Official Account API
+                  - generic [ref=e70]: Mới
+              - listitem [ref=e71]:
+                - link "Zalo Notification Service API" [ref=e72] [cursor=pointer]:
+                  - /url: /docs/api/zalo-notification-service-api-185
+                  - generic [ref=e73]: Zalo Notification Service API
+              - listitem [ref=e74]:
+                - link "Article API" [ref=e75] [cursor=pointer]:
+                  - /url: /docs/api/article-api-151
+                  - generic [ref=e76]: Article API
+              - listitem [ref=e77]:
+                - link "Social API" [ref=e78] [cursor=pointer]:
+                  - /url: /docs/api/social-api-4
+                  - generic [ref=e79]: Social API
+              - listitem [ref=e80]:
+                - link "Shop API" [ref=e81] [cursor=pointer]:
+                  - /url: /docs/api/shop-api-190
+                  - generic [ref=e82]: Shop API
+          - generic [ref=e84]:
+            - paragraph [ref=e85]: SDK
+            - list [ref=e86]:
+              - listitem [ref=e87]:
+                - link "iOS SDK" [ref=e88] [cursor=pointer]:
+                  - /url: /docs/sdk/ios-sdk-196
+                  - generic [ref=e89]: iOS SDK
+              - listitem [ref=e90]:
+                - link "Android SDK" [ref=e91] [cursor=pointer]:
+                  - /url: /docs/sdk/android-sdk-203
+                  - generic [ref=e92]: Android SDK
+              - listitem [ref=e93]:
+                - link "Java SDK" [ref=e94] [cursor=pointer]:
+                  - /url: /docs/sdk/java-sdk-69
+                  - generic [ref=e95]: Java SDK
+              - listitem [ref=e96]:
+                - link "PHP SDK" [ref=e97] [cursor=pointer]:
+                  - /url: /docs/sdk/php-sdk-64
+                  - generic [ref=e98]: PHP SDK
+              - listitem [ref=e99]:
+                - link "DotNet SDK" [ref=e100] [cursor=pointer]:
+                  - /url: /docs/sdk/dotnet-sdk-82
+                  - generic [ref=e101]: DotNet SDK
+          - generic [ref=e103]:
+            - paragraph [ref=e104]: Social Plugins
+            - list [ref=e105]:
+              - listitem [ref=e106]:
+                - link "Nút Chia sẻ" [ref=e107] [cursor=pointer]:
+                  - /url: /docs/social/share
+                  - text: Nút Chia sẻ
+                - text: Nút Chia sẻ cho phép mọi người thêm thông điệp được cá nhân hoá vào các liên kết trước khi chia sẻ trên dòng thời gian, theo nhóm hoặc cho bạn bè qua Zalo Chat
+              - listitem [ref=e108]:
+                - link "Nút Quan tâm" [ref=e109] [cursor=pointer]:
+                  - /url: /docs/social/follow
+                  - text: Nút Quan tâm
+                - text: Nút Quan tâm cho phép mọi người đăng ký nhận các cập nhật công khai của Official Account.
+              - listitem [ref=e110]:
+                - link "Widget Quan tâm" [ref=e111] [cursor=pointer]:
+                  - /url: /docs/social/widget-follow
+                  - text: Widget Quan tâm
+                - text: Widget Quan tâm cho phép mọi người dễ dàng nhúng và quảng cáo bất kỳ Official Account nào trên trang web của họ. Khách truy cập của bạn có thể quan tâm và trò chuyện trực tiếp với Official Account.
+              - listitem [ref=e112]:
+                - link "Widget Chat Mới" [ref=e113] [cursor=pointer]:
+                  - /url: /docs/social/zalo-chat-widget
+                  - text: Widget Chat
+                  - generic [ref=e114]: Mới
+                - text: Widget Chat cho phép mọi người dễ dàng cá nhân hóa và nhúng cửa sổ chat với Official Account trên trang web của họ. Khách truy cập của bạn có thể trò chuyện trực tiếp với Official Account.
+              - listitem [ref=e115]:
+                - link "Widget Bình luận Mới" [ref=e116] [cursor=pointer]:
+                  - /url: /docs/social/zalo-comment-widget
+                  - text: Widget Bình luận
+                  - generic [ref=e117]: Mới
+                - text: Widget Bình luận cho phép mọi người có thể bình luận bài viết của trang web bạn bằng tài khoản Zalo.
+      - generic [ref=e123]: ©2023 Zalo for Developers
+  - img [ref=e126]

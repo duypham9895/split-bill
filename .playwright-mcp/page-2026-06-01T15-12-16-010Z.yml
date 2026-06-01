@@ -1,0 +1,97 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e5]:
+      - heading "Chia sẻ cookie" [level=4] [ref=e6]
+      - paragraph [ref=e7]:
+        - text: Trang web này sử dụng cookie để cung cấp cho bạn trải nghiệm duyệt web tốt hơn. Tìm hiểu thêm về cách
+        - link "chúng tôi sử dụng cookie và cách bạn có thể thay đổi cài đặt của mình" [ref=e8] [cursor=pointer]:
+          - /url: https://zalo.vn/dieukhoan
+        - text: .
+      - generic [ref=e9]:
+        - button "Từ chối" [ref=e10] [cursor=pointer]
+        - button "Đồng ý" [ref=e11] [cursor=pointer]
+    - generic [ref=e14]:
+      - navigation [ref=e17]:
+        - generic [ref=e18]:
+          - link [ref=e20] [cursor=pointer]:
+            - /url: /
+          - list [ref=e24]:
+            - listitem [ref=e25]:
+              - link "Tài liệu" [ref=e27] [cursor=pointer]:
+                - /url: "#"
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: API
+                    - list:
+                      - listitem:
+                        - link "Zalo Official Account":
+                          - /url: /docs/official-account/bat-dau/kham-pha
+                      - listitem:
+                        - link "ZBS Template Message":
+                          - /url: /docs/zbs-template-message/bat-dau/gioi-thieu-zbs-template-message
+                      - listitem:
+                        - link "Zalo Social":
+                          - /url: /docs/social-api/tai-lieu/thong-tin-ten-anh-dai-dien
+                  - generic:
+                    - generic: SDK
+                    - list:
+                      - listitem:
+                        - link "iOS SDK":
+                          - /url: /docs/sdk/ios-sdk/tong-quan
+                      - listitem:
+                        - link "Android SDK":
+                          - /url: /docs/sdk/android-sdk/tong-quan
+                  - generic:
+                    - generic: Social Plugin
+                    - list:
+                      - listitem:
+                        - link "Nút Quan tâm":
+                          - /url: /docs/social/follow
+                      - listitem:
+                        - link "Widget Quan tâm":
+                          - /url: /docs/social/widget-follow
+                      - listitem:
+                        - link "Widget cấp tương tác":
+                          - /url: /docs/social/zalo-interactive-widget
+                      - listitem:
+                        - link "Widget Chat":
+                          - /url: /docs/social/zalo-chat-widget
+                - link "Xem tất cả":
+                  - /url: /docs
+            - listitem [ref=e28]:
+              - link "Hỗ trợ" [ref=e29] [cursor=pointer]:
+                - /url: /community
+                - generic [ref=e30]: Hỗ trợ
+            - listitem [ref=e31]:
+              - generic [ref=e33] [cursor=pointer]: Công cụ
+              - list:
+                - listitem:
+                  - link "API Explorer":
+                    - /url: /tools/explorer
+                - listitem:
+                  - link "Token debugger":
+                    - /url: /tools/token-debugger
+                - listitem:
+                  - link "Gỡ lỗi chia sẻ":
+                    - /url: /tools/debug-sharing
+                - listitem:
+                  - link "DPoP Debugger":
+                    - /url: /tools/dpop-debugger
+            - listitem [ref=e34]:
+              - link "FAQs" [ref=e35] [cursor=pointer]:
+                - /url: /faq
+                - generic [ref=e36]: FAQs
+            - listitem [ref=e37]:
+              - link "Lịch sử cập nhật" [ref=e38] [cursor=pointer]:
+                - /url: /changelog
+                - generic [ref=e39]: Lịch sử cập nhật
+          - generic [ref=e40]:
+            - button "Đăng nhập" [ref=e50] [cursor=pointer]
+            - listitem [ref=e51]:
+              - generic [ref=e54] [cursor=pointer]: VN
+      - generic [ref=e60]:
+        - text: Vui lòng đăng nhập để sử dụng tính năng này.
+        - button "Đăng nhập" [ref=e61] [cursor=pointer]
+      - generic [ref=e67]: ©2023 Zalo for Developers
+  - img [ref=e70]

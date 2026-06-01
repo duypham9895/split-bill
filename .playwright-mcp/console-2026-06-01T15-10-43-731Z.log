@@ -1,0 +1,3 @@
+[     635ms] [LOG] Zalo Social Plugin is loaded successfully @ https://sp.zalo.me/plugins/sdk.js:1
+[     636ms] [LOG] socialPluginsShare:  [] @ https://sp.zalo.me/plugins/sdk.js:1
+[    1003ms] [WARNING] [Cloudflare Turnstile] Compatibility layer enabled. @ https://stc-developers.zdn.vn/static/home/main.js:1

@@ -1,0 +1,15 @@
+[     346ms] [LOG] Zalo Social Plugin is loaded successfully @ https://sp.zalo.me/plugins/sdk.js:1
+[     346ms] [LOG] socialPluginsShare:  [] @ https://sp.zalo.me/plugins/sdk.js:1
+[     396ms] [WARNING] [Cloudflare Turnstile] Compatibility layer enabled. @ https://stc-developers.zdn.vn/static/home/main.js:1
+[     545ms] [LOG] item {type: category, label: Tài liệu, collapsed: false, items: Array(1), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     545ms] [LOG] activePath /docs/v2/social-api/tham-khao/huong-dan-tao-lien-ket-de-chia-se @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     546ms] [LOG] item {type: category, label: Tham khảo, collapsed: false, items: Array(8), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     546ms] [LOG] activePath /docs/v2/social-api/tham-khao/huong-dan-tao-lien-ket-de-chia-se @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     548ms] [LOG] item {type: category, label: Tài liệu, collapsed: false, items: Array(1), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     548ms] [LOG] activePath /docs/v2/social-api/tham-khao/huong-dan-tao-lien-ket-de-chia-se @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     548ms] [LOG] item {type: category, label: Tham khảo, collapsed: false, items: Array(8), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     548ms] [LOG] activePath /docs/v2/social-api/tham-khao/huong-dan-tao-lien-ket-de-chia-se @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     865ms] [LOG] item {type: category, label: Tài liệu, collapsed: false, items: Array(1), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     865ms] [LOG] activePath /docs/v2/social-api/tham-khao/huong-dan-tao-lien-ket-de-chia-se @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     865ms] [LOG] item {type: category, label: Tham khảo, collapsed: false, items: Array(8), collapsible: true} @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1
+[     865ms] [LOG] activePath /docs/v2/social-api/tham-khao/huong-dan-tao-lien-ket-de-chia-se @ https://stc-developers.zdn.vn/docs/assets/js/1be78505.29314185.js:1

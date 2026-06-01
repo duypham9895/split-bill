@@ -1,0 +1,4 @@
+[     918ms] [LOG] Zalo Social Plugin is loaded successfully @ https://stc-developers.zdn.vn/static/cms/main-v2.2.2.js:484
+[     918ms] [LOG] socialPluginsShare:  [] @ https://stc-developers.zdn.vn/static/cms/main-v2.2.2.js:484
+[     924ms] [WARNING] [Cloudflare Turnstile] Compatibility layer enabled. @ https://stc-developers.zdn.vn/static/cms/main-v2.2.2.js:484
+[    1895ms] [LOG] updateLanguage JSHandle@node @ https://stc-developers.zdn.vn/static/cms/main-v2.2.2.js:484
