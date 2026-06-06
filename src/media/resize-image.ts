@@ -14,5 +14,6 @@ export async function resizeToDataUrl(file: File, maxPx = 1000, quality = 0.7): 
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas not supported");
   ctx.drawImage(bitmap, 0, 0, w, h);
+  bitmap.close();
   return canvas.toDataURL("image/jpeg", quality);
 }
