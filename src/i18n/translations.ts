@@ -16,8 +16,6 @@ const en = {
   balancesSettlementHint: "Balances & transfers",
   sharingPayment: "Share",
   sharingPaymentHint: "Export & share",
-  qaRelease: "QA & Release",
-  qaReleaseHint: "Test like real users",
   trip: "Trip",
   expenses: "Expenses",
   settle: "Settle",
@@ -162,11 +160,6 @@ const en = {
   expenseAmountRequired: "Enter an amount greater than 0.",
   payerTotalMismatch: "Payer contributions must equal the expense total.",
 
-  // QA
-  qaReleaseSubtitle: "QA validates the real user path and engineering turns bugs into regression tests.",
-  qaRule: "QA bug -> failing test -> fix -> regression test -> QA retest -> close",
-  qaBugReportDraft: "QA bug report draft",
-  qaBugPlaceholder: "Steps to reproduce, expected result, actual result...",
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -185,8 +178,6 @@ const vi: Record<keyof typeof en, string> = {
   balancesSettlementHint: "Số dư & chuyển tiền",
   sharingPayment: "Chia sẻ",
   sharingPaymentHint: "Xuất & chia sẻ",
-  qaRelease: "QA & Phát hành",
-  qaReleaseHint: "Kiểm thử như người dùng thật",
   trip: "Chuyến đi",
   expenses: "Chi phí",
   settle: "Quyết toán",
@@ -331,29 +322,7 @@ const vi: Record<keyof typeof en, string> = {
   expenseAmountRequired: "Nhập số tiền lớn hơn 0.",
   payerTotalMismatch: "Tổng tiền người trả phải bằng tổng khoản chi.",
 
-  // QA
-  qaReleaseSubtitle: "QA kiểm thử như người dùng thật và kỹ sư biến bug thành test hồi quy.",
-  qaRule: "Bug QA -> test fail -> sửa -> regression test -> QA retest -> đóng bug",
-  qaBugReportDraft: "Mẫu báo cáo bug QA",
-  qaBugPlaceholder: "Các bước tái hiện, kết quả mong đợi, kết quả thực tế...",
 };
-
-// QA checklist items (arrays, not simple strings)
-const qaChecklistEn = [
-  "Host creates a trip and settlement",
-  "Member reviews shared summary",
-  "VN and EN copy fits mobile",
-  "All split methods match formulas",
-  "QA bug has failing test before fix",
-];
-
-const qaChecklistVi = [
-  "Chủ chuyến đi tạo chuyến đi và quyết toán",
-  "Thành viên xem tổng kết chia sẻ",
-  "Bản VN và EN hiển thị tốt trên mobile",
-  "Tất cả cách chia khớp công thức",
-  "Bug QA có test fail trước khi sửa",
-];
 
 export type TranslationKey = keyof typeof en;
 
@@ -367,8 +336,4 @@ export function t(language: Language, key: TranslationKey, vars?: Record<string,
     }
   }
   return text;
-}
-
-export function getQaChecklist(language: Language) {
-  return language === "vi" ? qaChecklistVi : qaChecklistEn;
 }

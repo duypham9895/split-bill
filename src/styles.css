@@ -1232,10 +1232,9 @@ th {
 }
 
 /* ============================================
-   Action Grid & QA Grid
+   Action Grid
    ============================================ */
-.actionGrid,
-.qaGrid {
+.actionGrid {
   display: grid;
   gap: var(--space-3);
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1256,14 +1255,6 @@ th {
   margin-bottom: var(--space-3);
 }
 
-.qaItem {
-  align-items: center;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  display: flex;
-  gap: var(--space-3);
-  padding: var(--space-3);
-}
 
 /* ============================================
    Privacy Notice
@@ -1731,8 +1722,7 @@ th {
   .participantGrid,
   .twoColumn,
   .inputGrid,
-  .actionGrid,
-  .qaGrid {
+  .actionGrid {
     grid-template-columns: 1fr;
   }
 

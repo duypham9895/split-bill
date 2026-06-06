@@ -35,9 +35,8 @@ import {
 } from "./components/expenses/ExpensesSection";
 import { BalancesSection, type SettlementMode } from "./components/balances/BalancesSection";
 import { SharingSection } from "./components/sharing/SharingSection";
-import { QaSection } from "./components/sharing/QaSection";
 
-type Section = "members" | "expenses" | "balances" | "sharing" | "qa";
+type Section = "members" | "expenses" | "balances" | "sharing";
 
 const navSections: Array<{
   id: Section;
@@ -173,7 +172,6 @@ function App() {
   const [editingExpenseId, setEditingExpenseId] = useState<string | null>(null);
   const [formError, setFormError] = useState("");
   const [shareMessage, setShareMessage] = useState("");
-  const [bugText, setBugText] = useState("");
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     const stored = localStorage.getItem("split-bill:theme");
     if (stored === "light" || stored === "dark") return stored;
@@ -615,13 +613,7 @@ function App() {
                 trip={activeTrip}
               />
             )}
-            {section === "qa" && (
-              <QaSection
-                bugText={bugText}
-                language={language}
-                setBugText={setBugText}
-              />
-            )}
+
           </section>
 
           <aside className="summaryRail">
