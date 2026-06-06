@@ -2,38 +2,38 @@
    Design System Tokens
    ============================================ */
 :root {
-  /* Colors — OKLCH-derived from existing hex values */
-  --color-primary: #087f7b;
-  --color-primary-hover: #066966;
-  --color-primary-light: #e9f4f4;
-  --color-primary-bg: #d7f0ee;
-  --color-action: #2563eb;
-  --color-action-hover: #1d4ed8;
-  --color-action-light: #eff6ff;
-  --color-danger: #ef5d54;
-  --color-danger-light: #fff4f2;
-  --color-danger-border: #f5b8b3;
-  --color-danger-text: #b8352d;
-  --color-success: #1a8a56;
-  --color-success-light: #eaf8f4;
-  --color-success-border: #9dd8c9;
-  --color-success-text: #0d635f;
-  --color-warning: #f59e0b;
-  --color-warning-light: #fffbeb;
-  --color-warning-border: #fcd34d;
+  /* Colors — Ink & Amber Receipt palette */
+  --color-primary: #b06a1e;
+  --color-primary-hover: #8f5314;
+  --color-primary-light: #fbf0dd;
+  --color-primary-bg: #f5e8d4;
+  --color-action: #1c1a16;
+  --color-action-hover: #000000;
+  --color-action-light: #f4ecdd;
+  --color-danger: #b3401f;
+  --color-danger-light: #f6e6df;
+  --color-danger-border: #e6c2b4;
+  --color-danger-text: #b3401f;
+  --color-success: #3f6b3a;
+  --color-success-light: #eef3ec;
+  --color-success-border: #c4d6bf;
+  --color-success-text: #2f5a2c;
+  --color-warning: #b06a1e;
+  --color-warning-light: #fbf0dd;
+  --color-warning-border: #e3c99a;
 
-  /* Neutrals */
-  --color-bg: #f6f8fb;
-  --color-surface: #ffffff;
-  --color-border: #dfe5ee;
-  --color-border-light: #edf1f6;
-  --color-border-input: #ccd5e1;
-  --color-text: #162033;
-  --color-text-secondary: #18233a;
-  --color-text-muted: #5a6b82;          /* ↑ from #66758c for 4.6:1 contrast */
-  --color-text-label: #31435d;
-  --color-table-header-bg: #f8fafc;
-  --color-segment-bg: #f1f5f9;
+  /* Neutrals — warm paper tones */
+  --color-bg: #fbf8f1;
+  --color-surface: #fffdf8;
+  --color-border: #e7ddc9;
+  --color-border-light: #f0e9da;
+  --color-border-input: #ddd2bb;
+  --color-text: #1c1a16;
+  --color-text-secondary: #2a2620;
+  --color-text-muted: #8a7f68;
+  --color-text-label: #6b6450;
+  --color-table-header-bg: #f6f1e7;
+  --color-segment-bg: #f4ecdd;
 
   /* Spacing — 4px base grid, extended */
   --space-1: 4px;
@@ -49,6 +49,7 @@
 
   /* Typography — fluid with clamp() */
   --font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SF Mono", ui-monospace, Menlo, monospace;
   --text-xs: clamp(0.7rem, 1.2vw, 0.75rem);
   --text-sm: clamp(0.75rem, 1.4vw, 0.8125rem);
   --text-base: clamp(0.8125rem, 1.6vw, 0.875rem);
