@@ -48,13 +48,13 @@ export function BalancesSection({
           <div className="statCardLabel">Total Spent</div>
         </div>
         <div className="statCard">
-          <div className="statCardValue" style={{ color: "var(--color-danger)" }}>
+          <div className="statCardValue statValue--danger">
             {formatMoney(totalOwing, language)}
           </div>
           <div className="statCardLabel">To Pay</div>
         </div>
         <div className="statCard">
-          <div className="statCardValue" style={{ color: "var(--color-success)" }}>
+          <div className="statCardValue statValue--success">
             {formatMoney(totalOwed, language)}
           </div>
           <div className="statCardLabel">To Receive</div>

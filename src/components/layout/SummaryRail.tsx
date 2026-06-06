@@ -39,8 +39,7 @@ export function SummaryRail({
         <SettlementList language={language} onMarkPaid={onMarkPaid} payments={settlement.slice(0, 3)} trip={trip} compact />
         {settlement.length > 3 && onViewAll && (
           <button
-            className="ghostButton"
-            style={{ fontSize: "var(--text-sm)", marginTop: "var(--space-2)" }}
+            className="ghostButton ghostButton--sm"
             onClick={onViewAll}
             type="button"
           >

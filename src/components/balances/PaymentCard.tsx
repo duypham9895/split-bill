@@ -57,7 +57,7 @@ export function PaymentCard({
         </span>
       </div>
       {loading ? (
-        <div className="skeleton" style={{ width: 72, height: 72 }} />
+        <div className="skeleton qrThumb" />
       ) : qr ? (
         <img alt={`${t(language, "paymentTo")} ${receiver.name}`} src={receiver.payment?.qrImageDataUrl || qr} />
       ) : null}
