@@ -157,3 +157,41 @@ test("shared trip links load the encoded trip payload", async ({ page }) => {
   await clickNav(page, "Trip");
   await expect(page.locator(".listPanel strong", { hasText: "Duy" })).toBeVisible();
 });
+
+test("view=share link opens the read-only friend view with a who-are-you picker", async ({ page }) => {
+  const payload = encodeTripSharePayload({
+    id: "share-view-trip",
+    name: "Beach Weekend",
+    currency: "VND",
+    language: "en",
+    members: [
+      { id: "duy", name: "Duy", active: true },
+      { id: "an", name: "An", active: true },
+    ],
+    expenses: [
+      {
+        id: "e1",
+        title: "Dinner",
+        amountMinor: 200000,
+        splitMethod: "equal",
+        date: "2026-06-01",
+        payers: [{ memberId: "duy", amountMinor: 200000 }],
+        participants: [{ memberId: "duy" }, { memberId: "an" }],
+        createdAt: "2026-06-01T00:00:00.000Z",
+        updatedAt: "2026-06-01T00:00:00.000Z",
+      },
+    ],
+    transfers: [],
+  });
+
+  await page.goto(`/?trip=${payload}&view=share`);
+
+  // The editor chrome must NOT render in share view.
+  await expect(page.locator(".sidebar")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Who are you?" })).toBeVisible();
+
+  // An owes their half of the dinner.
+  await page.getByRole("button", { name: "An" }).click();
+  await expect(page.getByText("You owe")).toBeVisible();
+  await expect(page.getByText("100,000 VND").first()).toBeVisible();
+});

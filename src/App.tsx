@@ -34,6 +34,7 @@ import {
 } from "./components/expenses/ExpensesSection";
 import { BalancesSection, type SettlementMode } from "./components/balances/BalancesSection";
 import { SharingSection } from "./components/sharing/SharingSection";
+import { ShareView } from "./components/sharing/ShareView";
 
 type Section = "members" | "expenses" | "balances" | "sharing";
 
@@ -93,6 +94,10 @@ function createInitialStore(): TripStore {
   };
 }
 
+function isShareViewMode(): boolean {
+  return new URLSearchParams(window.location.search).get("view") === "share";
+}
+
 function loadTripFromShareUrl(): Trip | null {
   const payload = new URLSearchParams(window.location.search).get("trip");
 
@@ -146,6 +151,21 @@ function downloadText(filename: string, text: string, type: string) {
 }
 
 function App() {
+  // Guest mode: a shared link with `view=share` opens the read-only friend view
+  // instead of the full editor. Determined purely by the URL at page load, so the
+  // branch is stable for the component's whole lifetime (hook order is preserved
+  // because the early-return path runs no hooks on every render).
+  if (isShareViewMode()) {
+    const sharedTrip = loadTripFromShareUrl();
+    if (sharedTrip) {
+      return <ShareView trip={sharedTrip} />;
+    }
+  }
+
+  return <Editor />;
+}
+
+function Editor() {
   const [store, setStore] = useState<TripStore>(createInitialStore);
   const activeTrip = useMemo(
     () => store.trips.find((trip) => trip.id === store.activeTripId) ?? store.trips[0],
@@ -391,7 +411,7 @@ function App() {
 
   function getShareUrl() {
     const payload = encodeURIComponent(btoa(unescape(encodeURIComponent(exportTripJson(activeTrip)))));
-    return `${window.location.origin}${window.location.pathname}?trip=${payload}`;
+    return `${window.location.origin}${window.location.pathname}?trip=${payload}&view=share`;
   }
 
   async function copyShareLink() {

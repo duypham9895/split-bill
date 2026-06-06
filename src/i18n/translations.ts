@@ -193,6 +193,16 @@ const en = {
   addReceipt: "Add receipt photo",
   removeReceipt: "Remove",
 
+  // Share view (friend-facing read-only)
+  whoAreYou: "Who are you?",
+  youOwe: "You owe",
+  youreOwed: "You'll receive",
+  allSettledUp: "You're all settled up",
+  scanToPay: "Scan with any banking app to pay",
+  howCalculated: "How this was calculated",
+  notYou: "Not you? Change",
+  readOnlySummary: "Read-only summary · no app needed",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -387,6 +397,16 @@ const vi: Record<keyof typeof en, string> = {
   // Receipt photos
   addReceipt: "Thêm ảnh hoá đơn",
   removeReceipt: "Xoá",
+
+  // Share view (friend-facing read-only)
+  whoAreYou: "Bạn là ai?",
+  youOwe: "Bạn nợ",
+  youreOwed: "Bạn sẽ nhận",
+  allSettledUp: "Bạn đã thanh toán xong",
+  scanToPay: "Quét bằng app ngân hàng để trả",
+  howCalculated: "Cách tính",
+  notYou: "Không phải bạn? Đổi",
+  readOnlySummary: "Bản tóm tắt chỉ đọc · không cần cài app",
 
 };
 

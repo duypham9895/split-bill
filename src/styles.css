@@ -1984,3 +1984,256 @@ th {
   border: 1px solid var(--color-border);
   flex-shrink: 0;
 }
+
+/* ============================================
+   Share View (friend-facing read-only)
+   ============================================ */
+.shareView {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  justify-content: center;
+  padding: var(--space-5);
+}
+
+.shareViewCard {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.shareViewBrand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text);
+}
+
+.shareViewBrand strong {
+  font-size: var(--text-lg);
+}
+
+.shareViewCard h1 {
+  font-size: var(--text-2xl);
+  margin: 0;
+}
+
+.shareViewPicker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.shareViewMemberButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  cursor: pointer;
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.shareViewMemberButton:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.shareViewHello {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.shareViewHello strong {
+  display: block;
+  font-size: var(--text-md);
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  text-decoration: underline;
+}
+
+.shareViewStatus {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.shareViewStatus small {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.shareViewStatus strong {
+  font-size: var(--text-2xl);
+}
+
+.shareViewStatus--owe {
+  background: var(--color-danger-light);
+  border-color: var(--color-danger-border);
+}
+
+.shareViewStatus--owe strong {
+  color: var(--color-danger-text);
+}
+
+.shareViewStatus--owed {
+  background: var(--color-success-light);
+  border-color: var(--color-success-border);
+}
+
+.shareViewStatus--owed strong {
+  color: var(--color-success-text);
+}
+
+.shareViewStatus--settled {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-success-light);
+  border-color: var(--color-success-border);
+  color: var(--color-success-text);
+}
+
+.shareViewPayment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.shareViewPaymentHead {
+  width: 100%;
+  text-align: center;
+}
+
+.shareViewPaymentHead strong {
+  display: block;
+  font-size: var(--text-md);
+}
+
+.shareViewPaymentHead small {
+  display: block;
+  font-size: var(--text-lg);
+  color: var(--color-primary);
+}
+
+.shareViewQr {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+
+.shareViewScanHint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.shareViewPayment .bankBox {
+  width: 100%;
+}
+
+.shareViewIncoming {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.shareViewIncomingRow {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.shareViewBreakdown {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: var(--space-3) var(--space-4);
+}
+
+.shareViewBreakdown summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.shareViewBreakdownBody {
+  margin-top: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.shareViewBreakdownTotals {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.shareViewBreakdownTotals small {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.shareViewExpenseList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.shareViewExpenseList li {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--space-2);
+}
+
+.shareViewFooter {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin: var(--space-2) 0 0;
+}
+
+@media (max-width: 480px) {
+  .shareViewPicker {
+    grid-template-columns: 1fr;
+  }
+}
