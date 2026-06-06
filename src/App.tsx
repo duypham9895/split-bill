@@ -417,7 +417,7 @@ function Editor() {
   async function copyShareLink() {
     const url = getShareUrl();
     if (url.length > 1800) {
-      showToast("Trip data is large. Share link may not work in all browsers.");
+      showToast(t(language, "shareLinkLarge"));
     }
     await navigator.clipboard.writeText(url);
     setShareMessage(t(language, "shareCopied"));

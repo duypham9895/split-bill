@@ -1,5 +1,5 @@
 import { Banknote, Car, Check, Hotel, ImagePlus, MoreHorizontal, Pencil, PieChart, ReceiptText, ShoppingBag, SplitSquareHorizontal, Ticket, Trash2, Users, UtensilsCrossed, Wine, X } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type ElementType } from "react";
 import type { Expense, Language, SplitMethod, Trip } from "../../domain/types";
 import { formatMoney } from "../../domain/money";
 import { calculateExpenseShares } from "../../domain/split";
@@ -12,14 +12,16 @@ import { SplitMethodPicker } from "./SplitMethodPicker";
 import { ParticipantSelector } from "./ParticipantSelector";
 import { PayerInputs, type PayerRow } from "./PayerInputs";
 
-const EXPENSE_CATEGORIES = [
-  { value: "food", label: "Food & Dining", icon: UtensilsCrossed },
-  { value: "transport", label: "Transport", icon: Car },
-  { value: "hotel", label: "Hotel & Stay", icon: Hotel },
-  { value: "activity", label: "Activities", icon: Ticket },
-  { value: "shopping", label: "Shopping", icon: ShoppingBag },
-  { value: "drinks", label: "Drinks", icon: Wine },
-  { value: "other", label: "Other", icon: MoreHorizontal },
+import type { TranslationKey } from "../../i18n/translations";
+
+const EXPENSE_CATEGORIES: { value: string; labelKey: TranslationKey; icon: ElementType }[] = [
+  { value: "food", labelKey: "catFood", icon: UtensilsCrossed },
+  { value: "transport", labelKey: "catTransport", icon: Car },
+  { value: "hotel", labelKey: "catHotel", icon: Hotel },
+  { value: "activity", labelKey: "catActivity", icon: Ticket },
+  { value: "shopping", labelKey: "catShopping", icon: ShoppingBag },
+  { value: "drinks", labelKey: "catDrinks", icon: Wine },
+  { value: "other", labelKey: "catOther", icon: MoreHorizontal },
 ];
 
 export type PayerDraft = {
@@ -437,7 +439,7 @@ export function ExpensesSection({
                 >
                   <option value="">{t(language, "selectCategory")}</option>
                   {EXPENSE_CATEGORIES.map((cat) => (
-                    <option key={cat.value} value={cat.value}>{cat.label}</option>
+                    <option key={cat.value} value={cat.value}>{t(language, cat.labelKey)}</option>
                   ))}
                 </select>
               </label>
@@ -598,7 +600,7 @@ export function ExpensesSection({
           {draft.receiptImageDataUrl ? (
             <div className="receiptPreview">
               <img
-                alt="Receipt"
+                alt={t(language, "receiptAlt")}
                 className="receiptThumb"
                 src={draft.receiptImageDataUrl}
               />
@@ -661,7 +663,7 @@ export function ExpensesSection({
             {trip.expenses.length > 3 && (
               <input
                 className="expenseSearch"
-                placeholder={language === "vi" ? "Tìm khoản chi..." : "Search expenses..."}
+                placeholder={t(language, "searchExpenses")}
                 value={expenseSearch}
                 onChange={(event) => setExpenseSearch(event.target.value)}
               />

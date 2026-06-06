@@ -206,6 +206,24 @@ const en = {
   // Quick-add templates
   quickAdd: "Quick add",
 
+  // Expense categories
+  catFood: "Food & dining",
+  catTransport: "Transport",
+  catHotel: "Lodging",
+  catActivity: "Activities",
+  catShopping: "Shopping",
+  catDrinks: "Drinks",
+  catOther: "Other",
+
+  // Search
+  searchExpenses: "Search expenses",
+
+  // Share link toast
+  shareLinkLarge: "Trip data is large. Share link may not work in all browsers.",
+
+  // Receipt alt text
+  receiptAlt: "Receipt photo",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -413,6 +431,24 @@ const vi: Record<keyof typeof en, string> = {
 
   // Quick-add templates
   quickAdd: "Thêm nhanh",
+
+  // Expense categories
+  catFood: "Ăn uống",
+  catTransport: "Di chuyển",
+  catHotel: "Lưu trú",
+  catActivity: "Hoạt động",
+  catShopping: "Mua sắm",
+  catDrinks: "Đồ uống",
+  catOther: "Khác",
+
+  // Search
+  searchExpenses: "Tìm khoản chi",
+
+  // Share link toast
+  shareLinkLarge: "Dữ liệu chuyến đi lớn. Liên kết chia sẻ có thể không hoạt động trên mọi trình duyệt.",
+
+  // Receipt alt text
+  receiptAlt: "Ảnh hoá đơn",
 
 };
 
