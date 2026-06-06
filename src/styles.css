@@ -540,6 +540,12 @@ button {
   align-items: start;
 }
 
+/* Members layout: the form column is mostly a single button when collapsed,
+   so give the member list the wider track to keep bank details on one line. */
+.twoColumn {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+}
+
 .formStack {
   display: grid;
   gap: var(--space-4);
@@ -1121,6 +1127,13 @@ th {
   flex-wrap: wrap;
   font-size: var(--text-xs);
   gap: var(--space-2) var(--space-4);
+}
+
+/* Label/value pair inside a balance card. Without an explicit gap the two
+   spans collapse together ("Paid600,000 VND"). */
+.detailRow {
+  display: flex;
+  gap: var(--space-1);
 }
 
 .balanceTableToggle {
@@ -1833,6 +1846,13 @@ th {
    Responsive: Mobile (< 760px)
    ============================================ */
 @media (max-width: 760px) {
+  /* Sidebar is hidden on mobile — collapse the grid to a single full-width
+     track. Without this, the 72px sidebar column from the <=1120px breakpoint
+     survives and crushes all content into a narrow left strip. */
+  .app {
+    grid-template-columns: 1fr;
+  }
+
   .sidebar {
     display: none;
   }

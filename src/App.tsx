@@ -642,7 +642,6 @@ function Editor() {
           <section className="primaryPanel">
             {section === "members" && (
               <MembersSection
-                balances={calculation.balances}
                 editingMemberId={editingMemberId}
                 error={formError}
                 form={memberForm}

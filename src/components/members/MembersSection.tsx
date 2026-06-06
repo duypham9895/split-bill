@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Plus, Pencil, X, Check, UserPlus, CreditCard } from "lucide-react";
-import { Language, Member, MemberBalance, Trip } from "../../domain/types";
-import { formatMoney } from "../../domain/money";
+import { Language, Member, Trip } from "../../domain/types";
 import { t } from "../../i18n/translations";
 import { Avatar } from "../shared/Avatar";
 import { PanelHeader } from "../shared/PanelHeader";
@@ -36,7 +35,6 @@ export function uploadMemberQr(
 }
 
 export function MembersSection({
-  balances,
   editingMemberId,
   error,
   form,
@@ -48,7 +46,6 @@ export function MembersSection({
   trip,
   updateTrip,
 }: {
-  balances?: MemberBalance[];
   editingMemberId: string | null;
   error: string;
   form: MemberForm;
@@ -216,7 +213,6 @@ export function MembersSection({
 
         <div className="listPanel">
           {trip.members.map((member) => {
-            const calculatedMember = balances?.find((b) => b.memberId === member.id);
             return (
               <div className="memberCard" key={member.id}>
                 <div className="memberRow">
@@ -231,20 +227,6 @@ export function MembersSection({
                     </small>
                   </div>
                   <div className="rowActions">
-                    {calculatedMember && (
-                      <span
-                        className={`balanceBadge ${
-                          calculatedMember.balance > 0
-                            ? "positive"
-                            : calculatedMember.balance < 0
-                              ? "negative"
-                              : "settled"
-                        }`}
-                      >
-                        {calculatedMember.balance > 0 ? "+" : ""}
-                        {formatMoney(calculatedMember.balance, language)}
-                      </span>
-                    )}
                     <button
                       aria-label={`Edit ${member.name}`}
                       className="iconButton"
