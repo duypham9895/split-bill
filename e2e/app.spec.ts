@@ -27,21 +27,6 @@ async function scrollTo(page: import("@playwright/test").Page, selector: string)
   await page.waitForTimeout(300);
 }
 
-/**
- * Assert element is attached to the DOM.
- * Uses toBeVisible on desktop (strict) and toBeAttached on mobile (viewport-independent).
- * This verifies the DOM state is correct regardless of mobile scroll/overflow issues.
- */
-async function expectInDom(locator: ReturnType<typeof expect["getState"]> extends never ? never : import("@playwright/test").Locator) {
-  // Try visible first (desktop), fall back to attached (mobile)
-  const isVisible = await locator.isVisible({ timeout: 500 }).catch(() => false);
-  if (isVisible) {
-    await expect(locator).toBeVisible();
-  } else {
-    await expect(locator).toBeAttached();
-  }
-}
-
 test("host can review expenses, balances, settlement, and sharing sections", async ({ page }) => {
   await page.goto("/");
 

@@ -1,9 +1,8 @@
 import { Banknote } from "lucide-react";
-import { useEffect, useState } from "react";
 import { formatMoney } from "../../domain/money";
 import { t } from "../../i18n/translations";
 import type { Language, SettlementPayment, Trip } from "../../domain/types";
-import { generatePaymentQr } from "../../payment/qr";
+import { useGeneratedQr } from "../../payment/use-generated-qr";
 
 export function PaymentCard({
   language,
@@ -15,31 +14,7 @@ export function PaymentCard({
   trip: Trip;
 }) {
   const receiver = trip.members.find((member) => member.id === payment.toMemberId);
-  const [qr, setQr] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!receiver) {
-      return;
-    }
-    setLoading(true);
-    let cancelled = false;
-    void generatePaymentQr(receiver, payment)
-      .then((dataUrl) => {
-        if (!cancelled) {
-          setQr(dataUrl);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [payment, receiver]);
+  const { qr, loading } = useGeneratedQr(receiver, payment);
 
   if (!receiver) {
     return null;
@@ -59,7 +34,7 @@ export function PaymentCard({
       {loading ? (
         <div className="skeleton qrThumb" />
       ) : qr ? (
-        <img alt={`${t(language, "paymentTo")} ${receiver.name}`} src={receiver.payment?.qrImageDataUrl || qr} />
+        <img alt={`${t(language, "paymentTo")} ${receiver.name}`} src={qr} />
       ) : null}
       <small>{formatMoney(payment.amountMinor, language)} · {t(language, "transferManually")}</small>
     </div>

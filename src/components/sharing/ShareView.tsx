@@ -1,10 +1,10 @@
 import { Banknote, Check, ReceiptText } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { calculateTrip } from "../../domain/calculations";
 import { formatMoney } from "../../domain/money";
 import type { Language, SettlementPayment, Trip } from "../../domain/types";
 import { t } from "../../i18n/translations";
-import { generatePaymentQr } from "../../payment/qr";
+import { useGeneratedQr } from "../../payment/use-generated-qr";
 import { Avatar } from "../shared/Avatar";
 
 function storageKey(tripId: string) {
@@ -193,31 +193,7 @@ function SharePaymentCard({
   trip: Trip;
 }) {
   const receiver = trip.members.find((member) => member.id === payment.toMemberId);
-  const [qr, setQr] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!receiver) {
-      return;
-    }
-    setLoading(true);
-    let cancelled = false;
-    void generatePaymentQr(receiver, payment)
-      .then((dataUrl) => {
-        if (!cancelled) {
-          setQr(dataUrl);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [payment, receiver]);
+  const { qr, loading } = useGeneratedQr(receiver, payment);
 
   if (!receiver) {
     return null;
@@ -237,7 +213,7 @@ function SharePaymentCard({
         <img
           className="shareViewQr"
           alt={`${t(language, "scanToPay")} ${receiver.name}`}
-          src={receiver.payment?.qrImageDataUrl || qr}
+          src={qr}
         />
       )}
       <p className="shareViewScanHint">{t(language, "scanToPay")}</p>
