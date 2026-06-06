@@ -1,12 +1,14 @@
-import { AlertCircle, Banknote, Car, Check, Hotel, MoreHorizontal, Pencil, PieChart, Plus, ReceiptText, ShoppingBag, Ticket, Trash2, Users, UtensilsCrossed, Wine, X } from "lucide-react";
+import { Banknote, Car, Check, Hotel, MoreHorizontal, Pencil, PieChart, ReceiptText, ShoppingBag, SplitSquareHorizontal, Ticket, Trash2, Users, UtensilsCrossed, Wine, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { Expense, Language, SplitMethod, Trip } from "../../domain/types";
 import { formatMoney } from "../../domain/money";
 import { calculateExpenseShares } from "../../domain/split";
 import { cleanOptional } from "../../domain/strings";
 import { t } from "../../i18n/translations";
-import { Avatar } from "../shared/Avatar";
 import { PanelHeader } from "../shared/PanelHeader";
+import { SplitMethodPicker } from "./SplitMethodPicker";
+import { ParticipantSelector } from "./ParticipantSelector";
+import { PayerInputs, type PayerRow } from "./PayerInputs";
 
 const EXPENSE_CATEGORIES = [
   { value: "food", label: "Food & Dining", icon: UtensilsCrossed },
@@ -39,6 +41,8 @@ export type ExpenseDraft = {
   note: string;
   splitMethod: SplitMethod;
   payers: PayerDraft[];
+  /** When false, the form shows a single "Paid by" picker and the lone payer amount tracks the total. */
+  payersExpanded: boolean;
   participants: Record<string, ParticipantDraft>;
 };
 
@@ -72,6 +76,7 @@ export function createExpenseDraft(trip: Trip): ExpenseDraft {
         amount,
       },
     ],
+    payersExpanded: false,
     participants,
   };
 }
@@ -104,6 +109,7 @@ export function createExpenseDraftFromExpense(expense: Expense, trip: Trip): Exp
       memberId: payer.memberId,
       amount: String(payer.amountMinor),
     })),
+    payersExpanded: expense.payers.length > 1,
     participants,
   };
 }
@@ -258,16 +264,73 @@ export function ExpensesSection({
   const preview = useMemo(() => buildPreview(draft, trip, language), [draft, trip, language]);
   const isEditing = editingExpenseId !== null;
   const activeMembers = trip.members.filter((m) => m.active);
-  const allSelected = activeMembers.length > 0 && activeMembers.every((m) => draft.participants[m.id]?.selected);
   const selectedCount = activeMembers.filter((m) => draft.participants[m.id]?.selected).length;
   const [expenseSearch, setExpenseSearch] = useState("");
 
-  function toggleAllParticipants(select: boolean) {
+  const amountMinor = parseAmount(draft.amount);
+  // The form is valid (and Save enabled) only when the live preview computes cleanly:
+  // buildPreview runs buildExpenseFromDraft (title + amount + payer-sum checks) then
+  // calculateExpenseShares (split validity). preview.ok reflects all of them at once.
+  const canSave = preview.ok;
+
+  // Bridge: ParticipantSelector works on a string[] of selected member ids.
+  const selectedParticipantIds = activeMembers
+    .filter((m) => draft.participants[m.id]?.selected)
+    .map((m) => m.id);
+
+  function setSelectedParticipants(ids: string[]) {
+    const idSet = new Set(ids);
     const updated = { ...draft.participants };
     for (const member of activeMembers) {
-      updated[member.id] = { ...defaultParticipant(), ...updated[member.id], selected: select };
+      const current = updated[member.id] ?? defaultParticipant();
+      updated[member.id] = { ...current, selected: idSet.has(member.id) };
     }
     setDraft({ ...draft, participants: updated });
+  }
+
+  // Bridge: PayerInputs works on PayerRow[] which is structurally identical to PayerDraft.
+  function setPayerRows(rows: PayerRow[]) {
+    setDraft({ ...draft, payers: rows });
+  }
+
+  // Collapse to a single payer whose amount tracks the full expense total.
+  function collapsePayers() {
+    const first = draft.payers[0];
+    setDraft({
+      ...draft,
+      payersExpanded: false,
+      payers: [
+        {
+          rowId: first?.rowId ?? "payer-1",
+          memberId: first?.memberId ?? activeMembers[0]?.id ?? "",
+          amount: draft.amount,
+        },
+      ],
+    });
+  }
+
+  // Expand to the multi-payer editor, seeding the first row with the full amount.
+  function expandPayers() {
+    const first = draft.payers[0];
+    setDraft({
+      ...draft,
+      payersExpanded: true,
+      payers: [
+        {
+          rowId: first?.rowId ?? "payer-1",
+          memberId: first?.memberId ?? activeMembers[0]?.id ?? "",
+          amount: draft.amount,
+        },
+      ],
+    });
+  }
+
+  function setSinglePayerMember(memberId: string) {
+    const first = draft.payers[0];
+    setDraft({
+      ...draft,
+      payers: [{ rowId: first?.rowId ?? "payer-1", memberId, amount: draft.amount }],
+    });
   }
 
   return (
@@ -278,22 +341,44 @@ export function ExpensesSection({
       />
 
       <div className="formStack">
-        {/* Card 1: What was the expense? */}
+        {/* Card 1: Amount → What → Category + Date */}
         <div className="formCard">
           <div className="formCardHeader">
             <ReceiptText size={18} />
             <span>{t(language, "whatWasExpense")}</span>
           </div>
           <div className="formCardBody">
-            <div className="inputGrid">
-              <label>
-                {t(language, "titleLabel")}
+            <label>
+              {t(language, "amountLabel")}
+              <div className="amountInputWrap">
                 <input
-                  value={draft.title}
-                  onChange={(event) => setDraft({ ...draft, title: event.target.value })}
-                  placeholder={t(language, "titlePlaceholder")}
+                  className="amountInput"
+                  inputMode="numeric"
+                  value={draft.amount}
+                  onChange={(event) => {
+                    const amount = event.target.value;
+                    // When collapsed (single payer), keep that payer's amount in lockstep with the total.
+                    const payers = draft.payersExpanded
+                      ? draft.payers
+                      : draft.payers.map((row, index) =>
+                          index === 0 ? { ...row, amount } : row,
+                        );
+                    setDraft({ ...draft, amount, payers });
+                  }}
+                  placeholder="0"
                 />
-              </label>
+                <span className="amountPreview">{formatMoney(amountMinor, language)}</span>
+              </div>
+            </label>
+            <label>
+              {t(language, "titleLabel")}
+              <input
+                value={draft.title}
+                onChange={(event) => setDraft({ ...draft, title: event.target.value })}
+                placeholder={t(language, "titlePlaceholder")}
+              />
+            </label>
+            <div className="inputGrid">
               <label>
                 {t(language, "categoryLabel")}
                 <select
@@ -306,187 +391,96 @@ export function ExpensesSection({
                   ))}
                 </select>
               </label>
-            </div>
-            <label>
-              {t(language, "amountLabel")}
-              <div className="amountInputWrap">
+              <label>
+                {t(language, "dateLabel")}
                 <input
-                  className="amountInput"
-                  inputMode="numeric"
-                  value={draft.amount}
-                  onChange={(event) => {
-                    const amount = event.target.value;
-                    const payers =
-                      draft.payers.length === 1 && draft.payers[0].amount === draft.amount
-                        ? [{ ...draft.payers[0], amount }]
-                        : draft.payers;
-                    setDraft({ ...draft, amount, payers });
-                  }}
-                  placeholder="0"
+                  type="date"
+                  value={draft.date}
+                  onChange={(event) => setDraft({ ...draft, date: event.target.value })}
                 />
-                <span className="amountPreview">{formatMoney(parseAmount(draft.amount), language)}</span>
-              </div>
-            </label>
-            <label>
-              {t(language, "dateLabel")}
-              <input
-                type="date"
-                value={draft.date}
-                onChange={(event) => setDraft({ ...draft, date: event.target.value })}
-              />
-            </label>
+              </label>
+            </div>
           </div>
         </div>
 
-        {/* Card 2: Who paid? */}
+        {/* Card 2: Who paid? — single-payer default, expandable to multi-payer */}
         <div className="formCard">
           <div className="formCardHeader">
             <Banknote size={18} />
             <span>{t(language, "whoPaid")}</span>
           </div>
           <div className="formCardBody">
-            <div className="payerRows">
-              {draft.payers.map((payer) => (
-                <div className="payerRow" key={payer.rowId}>
+            {draft.payersExpanded ? (
+              <>
+                <PayerInputs
+                  members={activeMembers}
+                  payers={draft.payers}
+                  totalMinor={amountMinor}
+                  language={language}
+                  onChange={setPayerRows}
+                />
+                <button className="ghostButton" type="button" onClick={collapsePayers}>
+                  {t(language, "singlePayer")}
+                </button>
+              </>
+            ) : (
+              <>
+                <label>
+                  {t(language, "paidBy")}
                   <select
-                    value={payer.memberId}
-                    onChange={(event) =>
-                      setDraft({
-                        ...draft,
-                        payers: draft.payers.map((row) =>
-                          row.rowId === payer.rowId ? { ...row, memberId: event.target.value } : row,
-                        ),
-                      })
-                    }
+                    aria-label={t(language, "paidBy")}
+                    value={draft.payers[0]?.memberId ?? ""}
+                    onChange={(event) => setSinglePayerMember(event.target.value)}
                   >
-                    {trip.members.map((member) => (
+                    {activeMembers.map((member) => (
                       <option key={member.id} value={member.id}>
                         {member.name}
                       </option>
                     ))}
                   </select>
-                  <input
-                    inputMode="numeric"
-                    value={payer.amount}
-                    onChange={(event) =>
-                      setDraft({
-                        ...draft,
-                        payers: draft.payers.map((row) =>
-                          row.rowId === payer.rowId ? { ...row, amount: event.target.value } : row,
-                        ),
-                      })
-                    }
-                    placeholder={t(language, "amountPlaceholder")}
-                  />
-                  <button
-                    className="iconButton danger"
-                    disabled={draft.payers.length === 1}
-                    onClick={() =>
-                      setDraft({
-                        ...draft,
-                        payers: draft.payers.filter((row) => row.rowId !== payer.rowId),
-                      })
-                    }
-                    type="button"
-                    aria-label={t(language, "removePayer")}
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ))}
-            </div>
-            {draft.payers.length > 0 && (
-              <div className={`validationRow ${
-                draft.payers.reduce((sum, p) => sum + (parseAmount(p.amount) || 0), 0) === parseAmount(draft.amount)
-                  ? "valid" : "invalid"
-              }`}>
-                {draft.payers.reduce((sum, p) => sum + (parseAmount(p.amount) || 0), 0) === parseAmount(draft.amount)
-                  ? <><Check size={14} /> Payer total matches expense amount</>
-                  : <><AlertCircle size={14} /> Payer total does not match expense amount</>
-                }
-              </div>
+                </label>
+                <button className="ghostButton" type="button" onClick={expandPayers}>
+                  <SplitSquareHorizontal size={16} />
+                  {t(language, "splitPayers")}
+                </button>
+              </>
             )}
-            <button
-              className="ghostButton"
-              onClick={() =>
-                setDraft({
-                  ...draft,
-                  payers: [
-                    ...draft.payers,
-                    {
-                      rowId: `payer-${Date.now()}`,
-                      memberId: trip.members[0]?.id ?? "",
-                      amount: "0",
-                    },
-                  ],
-                })
-              }
-              type="button"
-            >
-              <Plus size={16} />
-              {t(language, "addPayer")}
-            </button>
           </div>
         </div>
 
-        {/* Card 3: Who shared this? */}
+        {/* Card 3: Split how? */}
+        <div className="formCard">
+          <div className="formCardHeader">
+            <PieChart size={18} />
+            <span>{t(language, "splitHow")}</span>
+          </div>
+          <div className="formCardBody">
+            <SplitMethodPicker
+              method={draft.splitMethod}
+              language={language}
+              onChange={(method) => setDraft({ ...draft, splitMethod: method })}
+            />
+          </div>
+        </div>
+
+        {/* Card 4: Between who? */}
         <div className="formCard">
           <div className="formCardHeader">
             <Users size={18} />
-            <span>{t(language, "whoShared")}</span>
+            <span>{t(language, "betweenWho")}</span>
             <span className="formCardBadge">{selectedCount} {t(language, "selected")}</span>
           </div>
           <div className="formCardBody">
-            <div className="participantToggleRow">
-              <button
-                className="ghostButton"
-                onClick={() => toggleAllParticipants(!allSelected)}
-                type="button"
-              >
-                {allSelected ? t(language, "clearAll") : t(language, "selectAll")}
-              </button>
-            </div>
-            <div className="participantGrid">
-              {trip.members.map((member) => {
-                const participant = draft.participants[member.id] ?? defaultParticipant();
-                return (
-                  <label className="participantCheck" key={member.id}>
-                    <input
-                      checked={participant.selected}
-                      type="checkbox"
-                      onChange={(event) =>
-                        setDraft({
-                          ...draft,
-                          participants: {
-                            ...draft.participants,
-                            [member.id]: { ...participant, selected: event.target.checked },
-                          },
-                        })
-                      }
-                    />
-                    <Avatar member={member} />
-                    {member.name}
-                  </label>
-                );
-              })}
-            </div>
-            <div className="sectionLabel" style={{ marginTop: "var(--space-4)" }}>{t(language, "splitMethod")}</div>
-            <div className="splitMethodGroup">
-              {(["equal", "shares", "exact", "percentage"] as const).map((method) => (
-                <button
-                  key={method}
-                  type="button"
-                  className={`splitMethodPill ${draft.splitMethod === method ? "active" : ""}`}
-                  onClick={() => setDraft({ ...draft, splitMethod: method })}
-                >
-                  {method === "equal" ? "Equal" : method === "shares" ? "Shares" : method === "exact" ? "Exact" : "Percent"}
-                </button>
-              ))}
-            </div>
+            <ParticipantSelector
+              members={activeMembers}
+              selected={selectedParticipantIds}
+              language={language}
+              onChange={setSelectedParticipants}
+            />
           </div>
         </div>
 
-        {/* Card 4: Split details (only for non-equal) */}
+        {/* Card 5: Split details (only for non-equal) */}
         {draft.splitMethod !== "equal" && (
           <div className="formCard">
             <div className="formCardHeader">
@@ -552,7 +546,7 @@ export function ExpensesSection({
           {error && <div className="errorBox">{error}</div>}
 
           <div className="buttonRow">
-            <button className="primaryButton" onClick={onSave} type="button">
+            <button className="primaryButton" onClick={onSave} type="button" disabled={!canSave}>
               {isEditing ? <Check size={18} /> : <ReceiptText size={18} />}
               {isEditing ? t(language, "saveChanges") : t(language, "saveExpense")}
             </button>

@@ -176,6 +176,14 @@ const en = {
   // Member form progressive disclosure
   addPaymentDetails: "Add payment details",
 
+  // Expense form (single-payer default + split how)
+  paidBy: "Paid by",
+  splitPayers: "Split payers",
+  singlePayer: "Single payer",
+  splitHow: "Split how?",
+  betweenWho: "Between who?",
+  fixSplit: "Adjust the split so it adds up.",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -353,6 +361,14 @@ const vi: Record<keyof typeof en, string> = {
 
   // Member form progressive disclosure
   addPaymentDetails: "Thêm thông tin thanh toán",
+
+  // Expense form (single-payer default + split how)
+  paidBy: "Người trả",
+  splitPayers: "Chia nhiều người trả",
+  singlePayer: "Một người trả",
+  splitHow: "Chia thế nào?",
+  betweenWho: "Chia cho ai?",
+  fixSplit: "Điều chỉnh cách chia cho khớp tổng.",
 
 };
 
