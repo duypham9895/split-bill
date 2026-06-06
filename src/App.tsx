@@ -169,6 +169,7 @@ function App() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [importPreview, setImportPreview] = useState<Trip | null>(null);
   const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   useEffect(() => {
     saveTripStore(store);
@@ -217,6 +218,24 @@ function App() {
       activeTripId: nextTrip.id,
       trips: [...currentStore.trips, nextTrip],
     }));
+    setSection("members");
+  }
+
+  function startFresh() {
+    const newTrip = {
+      id: crypto.randomUUID(),
+      name: t(language, "newTripName"),
+      currency: "VND" as const,
+      language,
+      members: [],
+      expenses: [],
+      transfers: [],
+    };
+    setStore((currentStore) => ({
+      activeTripId: newTrip.id,
+      trips: [...currentStore.trips, newTrip],
+    }));
+    setBannerDismissed(false);
     setSection("members");
   }
 
@@ -532,6 +551,20 @@ function App() {
             <Languages size={20} />
           </div>
         </header>
+
+        {activeTrip.isSample && !bannerDismissed && (
+          <div className="sampleBanner">
+            <span>{t(language, "sampleBanner")}</span>
+            <div className="sampleBannerActions">
+              <button className="primaryButton sampleBannerStart" onClick={startFresh} type="button">
+                {t(language, "startFresh")}
+              </button>
+              <button className="iconButton sampleBannerDismiss" onClick={() => setBannerDismissed(true)} type="button" aria-label="Dismiss">
+                ✕
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="contentGrid">
           <section className="primaryPanel">

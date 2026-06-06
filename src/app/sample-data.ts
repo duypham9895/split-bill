@@ -8,6 +8,7 @@ export function createSampleTrip(): Trip {
     name: "Da Nang 3N2D",
     currency: "VND",
     language: "en",
+    isSample: true,
     members: [
       {
         id: "duy",

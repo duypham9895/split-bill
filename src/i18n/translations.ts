@@ -184,6 +184,11 @@ const en = {
   betweenWho: "Between who?",
   fixSplit: "Adjust the split so it adds up.",
 
+  // Sample trip banner
+  sampleBanner: "This is a sample trip to explore. Start your own when you're ready.",
+  startFresh: "Start fresh",
+  newTripName: "My trip",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -369,6 +374,11 @@ const vi: Record<keyof typeof en, string> = {
   splitHow: "Chia thế nào?",
   betweenWho: "Chia cho ai?",
   fixSplit: "Điều chỉnh cách chia cho khớp tổng.",
+
+  // Sample trip banner
+  sampleBanner: "Đây là chuyến đi mẫu để bạn khám phá. Tạo chuyến đi của riêng bạn khi sẵn sàng.",
+  startFresh: "Bắt đầu mới",
+  newTripName: "Chuyến đi của tôi",
 
 };
 

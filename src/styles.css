@@ -281,6 +281,37 @@ button {
   gap: var(--space-3);
 }
 
+/* Sample trip banner */
+.sampleBanner {
+  align-items: center;
+  background: var(--color-primary-light);
+  border-bottom: 1px solid var(--color-warning-border);
+  color: var(--color-text);
+  display: flex;
+  font-size: var(--text-sm);
+  gap: var(--space-3);
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-6);
+}
+
+.sampleBannerActions {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--space-2);
+}
+
+.sampleBannerStart {
+  font-size: var(--text-sm);
+  height: 34px;
+  padding: 0 var(--space-3);
+}
+
+.sampleBannerDismiss {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
 .buttonRow {
   flex-wrap: wrap;
 }
@@ -1043,6 +1074,7 @@ th {
 
 .balanceCard--settled {
   border-left: 3px solid var(--color-success);
+  opacity: 0.6;
 }
 
 .balanceCardHeader {
