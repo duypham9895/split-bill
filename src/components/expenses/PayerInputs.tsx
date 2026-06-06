@@ -82,7 +82,7 @@ export function PayerInputs({ members, payers, totalMinor, language, onChange }:
             {payers.length > 1 && (
               <button
                 type="button"
-                className="btnIcon danger"
+                className="iconButton danger"
                 aria-label={t(language, "removePayer")}
                 onClick={() => handleRemove(row.rowId)}
               >
@@ -97,16 +97,15 @@ export function PayerInputs({ members, payers, totalMinor, language, onChange }:
         data-testid="payer-total"
         className={`payerTotal ${ok ? "ok" : "no"}`}
       >
-        <span className="payerTotalLabel">
-          {ok ? "✓" : "✗"}{" "}
-          {language === "vi" ? "Đã thu" : "Covered"}
+        <span>
+          {ok ? "✓" : "✗"} {t(language, "covered")}
         </span>
         <span className="payerTotalNumbers">
           {formatMoney(covered, language)} / {formatMoney(totalMinor, language)}
         </span>
       </div>
 
-      <button type="button" className="btnSecondary" onClick={handleAdd}>
+      <button type="button" className="ghostButton" onClick={handleAdd}>
         + {t(language, "addPayer")}
       </button>
     </div>
