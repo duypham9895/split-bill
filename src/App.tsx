@@ -1,13 +1,11 @@
 import {
   Check,
   Languages,
-  Moon,
   Pencil,
   Plus,
   ReceiptText,
   Scale,
   Send,
-  Sun,
   Users,
 } from "lucide-react";
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
@@ -172,19 +170,9 @@ function App() {
   const [editingExpenseId, setEditingExpenseId] = useState<string | null>(null);
   const [formError, setFormError] = useState("");
   const [shareMessage, setShareMessage] = useState("");
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    const stored = localStorage.getItem("split-bill:theme");
-    if (stored === "light" || stored === "dark") return stored;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  });
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [importPreview, setImportPreview] = useState<Trip | null>(null);
   const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("split-bill:theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     saveTripStore(store);
@@ -546,14 +534,6 @@ function App() {
               VN
             </button>
             <Languages size={20} />
-            <button
-              className="iconButton"
-              onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
-              title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-              type="button"
-            >
-              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
-            </button>
           </div>
         </header>
 
