@@ -224,6 +224,36 @@ const en = {
   // Receipt alt text
   receiptAlt: "Receipt photo",
 
+  // Settle stat cards
+  totalSpent: "Total spent",
+  toPay: "To pay",
+  toReceive: "To receive",
+
+  // Transfer undo / delete
+  undo: "Undo",
+  markedPaidToast: "Recorded as paid.",
+  deleteTransfer: "Delete transfer",
+  transferDeleted: "Transfer removed.",
+
+  // Broken share link
+  shareLinkBrokenTitle: "This share link can't be opened",
+  shareLinkBrokenDesc: "The link may be incomplete or out of date. Ask the trip host to send a fresh link.",
+  openApp: "Open the app",
+
+  // Copy bank details
+  copyBankDetails: "Copy bank details",
+  copied: "Copied",
+  bankDetailsCopied: "Bank details copied.",
+
+  // Share clipboard
+  linkCopied: "Link copied!",
+  linkCopyFailed: "Couldn't copy the link. Copy it manually.",
+  shareEllipsis: "Share…",
+
+  // Settlement hint
+  settlementHint: "Each row is one transfer to make. Tap “Mark paid” once the money has been sent.",
+  owesConnector: "owes",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -449,6 +479,36 @@ const vi: Record<keyof typeof en, string> = {
 
   // Receipt alt text
   receiptAlt: "Ảnh hoá đơn",
+
+  // Settle stat cards
+  totalSpent: "Tổng chi",
+  toPay: "Cần trả",
+  toReceive: "Sẽ nhận",
+
+  // Transfer undo / delete
+  undo: "Hoàn tác",
+  markedPaidToast: "Đã ghi nhận thanh toán.",
+  deleteTransfer: "Xóa giao dịch",
+  transferDeleted: "Đã xóa giao dịch.",
+
+  // Broken share link
+  shareLinkBrokenTitle: "Không mở được liên kết chia sẻ",
+  shareLinkBrokenDesc: "Liên kết có thể bị thiếu hoặc đã cũ. Hãy nhờ trưởng nhóm gửi lại liên kết mới.",
+  openApp: "Mở ứng dụng",
+
+  // Copy bank details
+  copyBankDetails: "Copy thông tin chuyển khoản",
+  copied: "Đã copy",
+  bankDetailsCopied: "Đã copy thông tin chuyển khoản.",
+
+  // Share clipboard
+  linkCopied: "Đã sao chép liên kết!",
+  linkCopyFailed: "Không thể sao chép. Hãy copy thủ công.",
+  shareEllipsis: "Chia sẻ…",
+
+  // Settlement hint
+  settlementHint: "Mỗi dòng là một lần chuyển tiền cần thực hiện. Bấm “Đánh dấu đã trả” sau khi đã chuyển.",
+  owesConnector: "nợ",
 
 };
 

@@ -1,4 +1,4 @@
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, Trash2 } from "lucide-react";
 import { formatMoney } from "../../domain/money";
 import { t } from "../../i18n/translations";
 import type { Language, MemberBalance, SettlementPayment, Trip } from "../../domain/types";
@@ -21,6 +21,7 @@ export function BalancesSection({
   setMode,
   trip,
   onMarkPaid,
+  onDeleteTransfer,
 }: {
   balances: MemberBalance[];
   language: Language;
@@ -29,6 +30,7 @@ export function BalancesSection({
   setMode: (mode: SettlementMode) => void;
   trip: Trip;
   onMarkPaid: (payment: SettlementPayment) => void;
+  onDeleteTransfer: (transferId: string) => void;
 }) {
   const hasTransfers = trip.transfers.length > 0;
 
@@ -45,19 +47,19 @@ export function BalancesSection({
       <div className="statCardsRow">
         <div className="statCard">
           <div className="statCardValue">{formatMoney(totalSpent, language)}</div>
-          <div className="statCardLabel">Total Spent</div>
+          <div className="statCardLabel">{t(language, "totalSpent")}</div>
         </div>
         <div className="statCard">
           <div className="statCardValue statValue--danger">
             {formatMoney(totalOwing, language)}
           </div>
-          <div className="statCardLabel">To Pay</div>
+          <div className="statCardLabel">{t(language, "toPay")}</div>
         </div>
         <div className="statCard">
           <div className="statCardValue statValue--success">
             {formatMoney(totalOwed, language)}
           </div>
-          <div className="statCardLabel">To Receive</div>
+          <div className="statCardLabel">{t(language, "toReceive")}</div>
         </div>
       </div>
 
@@ -120,6 +122,7 @@ export function BalancesSection({
       {/* Settlement Mode */}
       <div className="settlementSection">
         <h2>{t(language, "settlement")}</h2>
+        <p className="settlementHintText">{t(language, "settlementHint")}</p>
         <div className="settlementControls">
           <button className={mode === "simplified" ? "active" : ""} onClick={() => setMode("simplified")} type="button">
             <span>{t(language, "simplified")}</span>
@@ -161,6 +164,15 @@ export function BalancesSection({
                   </div>
                   <small>{transfer.date}{transfer.note ? ` · ${transfer.note}` : ""}</small>
                 </div>
+                <button
+                  aria-label={t(language, "deleteTransfer")}
+                  className="iconButton transferDeleteButton"
+                  onClick={() => onDeleteTransfer(transfer.id)}
+                  title={t(language, "deleteTransfer")}
+                  type="button"
+                >
+                  <Trash2 size={14} />
+                </button>
               </div>
             ))}
           </div>

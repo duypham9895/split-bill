@@ -2,10 +2,7 @@ import { Check } from "lucide-react";
 import { formatMoney } from "../../domain/money";
 import { t } from "../../i18n/translations";
 import type { Language, SettlementPayment, Trip } from "../../domain/types";
-
-function getMemberName(trip: Trip, memberId: string) {
-  return trip.members.find((member) => member.id === memberId)?.name ?? memberId;
-}
+import { Avatar } from "../shared/Avatar";
 
 export function SettlementList({
   compact = false,
@@ -27,22 +24,36 @@ export function SettlementList({
   return (
     <div className={compact ? "settlementList compact" : "settlementList"}>
       {payments.map((payment, index) => {
-        const fromName = getMemberName(trip, payment.fromMemberId);
-        const toName = getMemberName(trip, payment.toMemberId);
+        const from = trip.members.find((member) => member.id === payment.fromMemberId);
+        const fromName = from?.name ?? payment.fromMemberId;
+        const toName =
+          trip.members.find((member) => member.id === payment.toMemberId)?.name ??
+          payment.toMemberId;
         return (
           <div className="settlementItem" key={`${payment.fromMemberId}-${payment.toMemberId}-${index}`}>
-            <div className="settlementFlow">
-              <span className="settlementFrom">{fromName}</span>
-              <span className="settlementArrow">&rarr;</span>
-              <span className="settlementAmount">{formatMoney(payment.amountMinor, language)}</span>
-              <span className="settlementArrow">&rarr;</span>
-              <span className="settlementTo">{toName}</span>
+            {/* One readable statement: "[Payer] owes [Receiver]" — the debt fact. */}
+            <div className="settlementSentence">
+              {!compact && <Avatar member={from} />}
+              <span className="settlementSentenceText">
+                <strong className="settlementDebtor">{fromName}</strong>{" "}
+                {t(language, "owesConnector")}{" "}
+                <strong className="settlementCreditor">{toName}</strong>
+              </span>
             </div>
-            {!compact && (
-              <button className="ghostButton" onClick={() => onMarkPaid(payment)} type="button">
-                <Check size={14} /> {t(language, "markPaid")}
-              </button>
-            )}
+            {/* The amount belongs to the statement above, with the action beside it. */}
+            <div className="settlementItemActions">
+              <span className="settlementAmount mono">{formatMoney(payment.amountMinor, language)}</span>
+              {!compact && (
+                <button
+                  aria-label={`${t(language, "markPaid")}: ${fromName} ${t(language, "owesConnector")} ${toName}`}
+                  className="settlementPayButton"
+                  onClick={() => onMarkPaid(payment)}
+                  type="button"
+                >
+                  <Check size={14} /> {t(language, "markPaid")}
+                </button>
+              )}
+            </div>
           </div>
         );
       })}

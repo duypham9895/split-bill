@@ -182,3 +182,12 @@ test("view=share link opens the read-only friend view with a who-are-you picker"
   await expect(page.getByText("You owe")).toBeVisible();
   await expect(page.getByText("100,000 VND").first()).toBeVisible();
 });
+
+test("a broken view=share link shows an error screen, not the sample editor", async ({ page }) => {
+  await page.goto(`/?trip=not-valid-base64-%%%&view=share`);
+
+  // Must not silently fall through to the editor with the sample trip.
+  await expect(page.locator(".sidebar")).toHaveCount(0);
+  await expect(page.getByText("This share link can't be opened")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open the app" })).toBeVisible();
+});

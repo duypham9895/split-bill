@@ -833,8 +833,7 @@ label,
 /* ============================================
    Segmented Control
    ============================================ */
-.segmented,
-.settlementControls {
+.segmented {
   background: var(--color-segment-bg);
   border: 1px solid var(--color-border-input);
   border-radius: var(--radius-md);
@@ -843,13 +842,7 @@ label,
   overflow: hidden;
 }
 
-.settlementControls {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: var(--space-5) 0;
-}
-
-.segmented button,
-.settlementControls button {
+.segmented button {
   background: transparent;
   border: 0;
   color: var(--color-text-label);
@@ -858,13 +851,11 @@ label,
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.segmented button:hover,
-.settlementControls button:hover {
+.segmented button:hover {
   background: rgba(0, 0, 0, 0.04);
 }
 
-.segmented .active,
-.settlementControls .active {
+.segmented .active {
   background: var(--color-primary);
   color: var(--color-surface);
 }
@@ -1166,6 +1157,12 @@ th {
 .settlementSection h2 {
   font-size: var(--text-lg);
   font-weight: 700;
+  margin: 0 0 var(--space-2);
+}
+
+.settlementHintText {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
   margin: 0 0 var(--space-3);
 }
 
@@ -1220,19 +1217,97 @@ th {
   gap: var(--space-3);
 }
 
-.settlementRow {
-  align-items: center;
+.settlementItem {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  display: grid;
-  gap: var(--space-3);
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
 }
 
-.settlementList.compact .settlementRow {
-  grid-template-columns: minmax(0, 1fr) auto;
+.settlementSentence {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.settlementSentence .avatar {
+  flex-shrink: 0;
+  height: var(--avatar-sm, 28px);
+  width: var(--avatar-sm, 28px);
+  font-size: var(--text-xs);
+}
+
+.settlementSentenceText {
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.settlementDebtor {
+  color: var(--color-danger);
+}
+
+.settlementCreditor {
+  color: var(--color-success);
+}
+
+.settlementItemActions {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+
+.settlementAmount {
+  font-size: var(--text-lg, 18px);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.settlementPayButton {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  display: inline-flex;
+  flex-shrink: 0;
+  font-weight: 600;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.settlementPayButton:hover {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+/* Compact variant (summary rail): tighter, no avatars/button. */
+.settlementList.compact {
+  gap: var(--space-2);
+}
+
+.settlementList.compact .settlementItem {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: var(--space-2) 0;
+}
+
+.settlementList.compact .settlementItem:last-child {
+  border-bottom: 0;
+}
+
+.settlementList.compact .settlementAmount {
+  font-size: var(--text-sm);
 }
 
 /* ============================================
@@ -1276,6 +1351,16 @@ th {
 .transferTimelineContent {
   flex: 1;
   min-width: 0;
+}
+
+.transferDeleteButton {
+  align-self: flex-start;
+  color: var(--color-text-muted, #6b7280);
+  flex-shrink: 0;
+}
+
+.transferDeleteButton:hover {
+  color: var(--color-danger);
 }
 
 .transferTimelineHeader {
@@ -2159,6 +2244,12 @@ th {
 
 .shareViewPayment .bankBox {
   width: 100%;
+}
+
+.shareViewCopyButton {
+  width: 100%;
+  justify-content: center;
+  gap: var(--space-2);
 }
 
 .shareViewIncoming {

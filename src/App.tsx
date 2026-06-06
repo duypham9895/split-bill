@@ -20,6 +20,7 @@ import type {
 } from "./domain/types";
 import { t } from "./i18n/translations";
 import { exportCsvBundle, exportTripJson, importTripJson } from "./persistence/import-export";
+import { decodeTripFromShareParam, encodeTripToShareParam } from "./persistence/share-link";
 import { loadTripStore, saveTripStore, type TripStore } from "./persistence/local-storage";
 import { createSampleTrip } from "./app/sample-data";
 
@@ -35,6 +36,7 @@ import {
 import { BalancesSection, type SettlementMode } from "./components/balances/BalancesSection";
 import { SharingSection } from "./components/sharing/SharingSection";
 import { ShareView } from "./components/sharing/ShareView";
+import { ShareLinkError } from "./components/sharing/ShareLinkError";
 
 type Section = "members" | "expenses" | "balances" | "sharing";
 
@@ -106,8 +108,7 @@ function loadTripFromShareUrl(): Trip | null {
   }
 
   try {
-    const bytes = Uint8Array.from(window.atob(payload), (character) => character.charCodeAt(0));
-    return importTripJson(new TextDecoder().decode(bytes));
+    return decodeTripFromShareParam(payload);
   } catch {
     return null;
   }
@@ -140,6 +141,26 @@ function today() {
   return new Date().toISOString().slice(0, 10);
 }
 
+async function copyTextToClipboard(text: string) {
+  // navigator.clipboard needs a secure context (https/localhost); fall back to
+  // the legacy textarea trick for plain-http LAN testing on phones.
+  if (navigator.clipboard) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand("copy");
+  textarea.remove();
+  if (!copied) {
+    throw new Error("Clipboard unavailable");
+  }
+}
+
 function downloadText(filename: string, text: string, type: string) {
   const blob = new Blob([text], { type });
   const url = URL.createObjectURL(blob);
@@ -160,6 +181,10 @@ function App() {
     if (sharedTrip) {
       return <ShareView trip={sharedTrip} />;
     }
+    // A share link that can't be decoded (truncated by a messenger app, stale
+    // version, corrupted paste) must not fall through to the editor — the
+    // friend would land on the sample trip and think it's the real data.
+    return <ShareLinkError />;
   }
 
   return <Editor />;
@@ -381,12 +406,13 @@ function Editor() {
   }
 
   function markPaid(payment: SettlementPayment) {
+    const transferId = `transfer-${Date.now()}`;
     updateActiveTrip((trip) => ({
       ...trip,
       transfers: [
         ...trip.transfers,
         {
-          id: `transfer-${Date.now()}`,
+          id: transferId,
           fromMemberId: payment.fromMemberId,
           toMemberId: payment.toMemberId,
           amountMinor: payment.amountMinor,
@@ -396,6 +422,26 @@ function Editor() {
         },
       ],
     }));
+    // Recording a payment is easy to mis-tap; offer an immediate undo instead
+    // of stranding a phantom transfer the user has no other way to remove.
+    showToast(t(language, "markedPaidToast"), () => removeTransfer(transferId));
+  }
+
+  function removeTransfer(transferId: string) {
+    updateActiveTrip((trip) => ({
+      ...trip,
+      transfers: trip.transfers.filter((transfer) => transfer.id !== transferId),
+    }));
+  }
+
+  function deleteTransfer(transferId: string) {
+    const removed = activeTrip.transfers.find((transfer) => transfer.id === transferId);
+    removeTransfer(transferId);
+    if (removed) {
+      showToast(t(language, "transferDeleted"), () =>
+        updateActiveTrip((trip) => ({ ...trip, transfers: [...trip.transfers, removed] })),
+      );
+    }
   }
 
   function downloadJson() {
@@ -410,7 +456,7 @@ function Editor() {
   }
 
   function getShareUrl() {
-    const payload = encodeURIComponent(btoa(unescape(encodeURIComponent(exportTripJson(activeTrip)))));
+    const payload = encodeTripToShareParam(activeTrip);
     return `${window.location.origin}${window.location.pathname}?trip=${payload}&view=share`;
   }
 
@@ -419,8 +465,7 @@ function Editor() {
     if (url.length > 1800) {
       showToast(t(language, "shareLinkLarge"));
     }
-    await navigator.clipboard.writeText(url);
-    setShareMessage(t(language, "shareCopied"));
+    await copyTextToClipboard(url);
   }
 
   async function nativeShare() {
@@ -433,7 +478,14 @@ function Editor() {
         // User cancelled — ignore
       }
     } else {
-      await copyShareLink();
+      // No Web Share API (desktop browsers) — copy instead and say so, since
+      // the button promised a share dialog.
+      try {
+        await copyShareLink();
+        showToast(t(language, "linkCopied"));
+      } catch {
+        showToast(t(language, "linkCopyFailed"));
+      }
     }
   }
 
@@ -626,6 +678,7 @@ function Editor() {
                 setMode={setSettlementMode}
                 trip={activeTrip}
                 onMarkPaid={markPaid}
+                onDeleteTransfer={deleteTransfer}
               />
             )}
             {section === "sharing" && (
@@ -633,7 +686,7 @@ function Editor() {
                 importJson={importJson}
                 language={language}
                 message={shareMessage}
-                onCopyShareLink={() => void copyShareLink()}
+                onCopyShareLink={copyShareLink}
                 onDownloadCsv={downloadCsv}
                 onDownloadJson={downloadJson}
                 onNativeShare={() => void nativeShare()}
@@ -720,7 +773,7 @@ function Editor() {
         <div className="toast">
           <span>{toast.message}</span>
           {toast.undo && (
-            <button onClick={() => { toast.undo!(); setToast(null); }}>Undo</button>
+            <button onClick={() => { toast.undo!(); setToast(null); }}>{t(language, "undo")}</button>
           )}
         </div>
       )}

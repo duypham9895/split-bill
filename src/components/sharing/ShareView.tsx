@@ -1,4 +1,4 @@
-import { Banknote, Check, ReceiptText } from "lucide-react";
+import { Banknote, Check, Copy, ReceiptText } from "lucide-react";
 import { useMemo, useState } from "react";
 import { calculateTrip } from "../../domain/calculations";
 import { formatMoney } from "../../domain/money";
@@ -194,9 +194,34 @@ function SharePaymentCard({
 }) {
   const receiver = trip.members.find((member) => member.id === payment.toMemberId);
   const { qr, loading } = useGeneratedQr(receiver, payment);
+  const [copied, setCopied] = useState(false);
 
   if (!receiver) {
     return null;
+  }
+
+  const bankDetails = receiver.payment?.accountNumber
+    ? [
+        receiver.payment.bankName,
+        receiver.payment.accountNumber,
+        receiver.payment.accountHolder ?? receiver.name,
+        formatMoney(payment.amountMinor, language),
+      ]
+        .filter(Boolean)
+        .join("\n")
+    : null;
+
+  async function copyBankDetails() {
+    if (!bankDetails) {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(bankDetails);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard unavailable (http on LAN) — details stay visible on screen.
+    }
   }
 
   return (
@@ -225,6 +250,12 @@ function SharePaymentCard({
           <small>{receiver.payment?.accountHolder ?? receiver.name}</small>
         </span>
       </div>
+      {bankDetails && (
+        <button className="ghostButton shareViewCopyButton" onClick={() => void copyBankDetails()} type="button">
+          {copied ? <Check size={14} /> : <Copy size={14} />}
+          {copied ? t(language, "copied") : t(language, "copyBankDetails")}
+        </button>
+      )}
     </div>
   );
 }

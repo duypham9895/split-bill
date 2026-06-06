@@ -109,6 +109,41 @@ function assertTripShape(trip: Trip) {
   if (!Array.isArray(trip.transfers)) {
     throw new Error("Invalid trip export payload");
   }
+
+  // Validate nested shapes so a malformed file fails with a clear message here,
+  // rather than crashing with a cryptic error deep inside calculateTrip().
+  trip.members.forEach((member, index) => {
+    if (!isRecord(member) || typeof member.id !== "string" || typeof member.name !== "string") {
+      throw new Error(`Invalid member at position ${index + 1}`);
+    }
+  });
+
+  trip.expenses.forEach((expense, index) => {
+    const where = expense && typeof expense.title === "string" ? `"${expense.title}"` : `#${index + 1}`;
+    if (!isRecord(expense) || typeof expense.id !== "string" || typeof expense.title !== "string") {
+      throw new Error(`Invalid expense ${where}`);
+    }
+    if (!Number.isFinite(expense.amountMinor)) {
+      throw new Error(`Expense ${where} is missing a valid amount`);
+    }
+    if (!Array.isArray(expense.payers) || expense.payers.length === 0) {
+      throw new Error(`Expense ${where} has no payers`);
+    }
+    if (!Array.isArray(expense.participants) || expense.participants.length === 0) {
+      throw new Error(`Expense ${where} has no participants`);
+    }
+  });
+
+  trip.transfers.forEach((transfer, index) => {
+    if (
+      !isRecord(transfer) ||
+      typeof transfer.fromMemberId !== "string" ||
+      typeof transfer.toMemberId !== "string" ||
+      !Number.isFinite(transfer.amountMinor)
+    ) {
+      throw new Error(`Invalid transfer at position ${index + 1}`);
+    }
+  });
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

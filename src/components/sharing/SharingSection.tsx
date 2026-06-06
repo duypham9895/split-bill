@@ -20,7 +20,7 @@ export function SharingSection({
   importJson: (event: ChangeEvent<HTMLInputElement>) => void;
   language: Language;
   message: string;
-  onCopyShareLink: () => void;
+  onCopyShareLink: () => Promise<void>;
   onDownloadCsv: () => void;
   onDownloadJson: () => void;
   onNativeShare: () => void;
@@ -35,10 +35,10 @@ export function SharingSection({
     try {
       await onCopyShareLink();
       setShareStatus("copied");
-      setShareMessage(language === "vi" ? "Đã sao chép liên kết!" : "Link copied!");
+      setShareMessage(t(language, "linkCopied"));
     } catch {
       setShareStatus("error");
-      setShareMessage(language === "vi" ? "Không thể sao chép liên kết" : "Failed to copy link");
+      setShareMessage(t(language, "linkCopyFailed"));
     }
   };
 
@@ -65,7 +65,7 @@ export function SharingSection({
             </button>
             <button className="ghostButton" onClick={onNativeShare} type="button">
               <Share2 size={18} />
-              {language === "vi" ? "Chia sẻ..." : "Share..."}
+              {t(language, "shareEllipsis")}
             </button>
           </div>
 

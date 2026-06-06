@@ -71,6 +71,50 @@ describe("trip import and export", () => {
     );
   });
 
+  test("rejects an expense with no payers", () => {
+    const invalidTrip = {
+      ...trip,
+      expenses: [{ ...trip.expenses[0], payers: [] }],
+    };
+
+    expect(() => importTripJson(JSON.stringify({ version: 1, trip: invalidTrip }))).toThrow(
+      'Expense "Taxi" has no payers',
+    );
+  });
+
+  test("rejects an expense with a missing amount", () => {
+    const invalidTrip = {
+      ...trip,
+      expenses: [{ ...trip.expenses[0], amountMinor: undefined }],
+    };
+
+    expect(() => importTripJson(JSON.stringify({ version: 1, trip: invalidTrip }))).toThrow(
+      'Expense "Taxi" is missing a valid amount',
+    );
+  });
+
+  test("rejects a member missing its name", () => {
+    const invalidTrip = {
+      ...trip,
+      members: [{ id: "duy" }, ...trip.members.slice(1)],
+    };
+
+    expect(() => importTripJson(JSON.stringify({ version: 1, trip: invalidTrip }))).toThrow(
+      "Invalid member at position 1",
+    );
+  });
+
+  test("rejects a malformed transfer", () => {
+    const invalidTrip = {
+      ...trip,
+      transfers: [{ id: "t1", fromMemberId: "duy" }],
+    };
+
+    expect(() => importTripJson(JSON.stringify({ version: 1, trip: invalidTrip }))).toThrow(
+      "Invalid transfer at position 1",
+    );
+  });
+
   test("exports CSVs for expenses, balances, and settlement", () => {
     const csv = exportCsvBundle(trip);
 
