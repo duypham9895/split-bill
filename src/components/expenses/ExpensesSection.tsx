@@ -1,10 +1,11 @@
-import { Banknote, Car, Check, Hotel, MoreHorizontal, Pencil, PieChart, ReceiptText, ShoppingBag, SplitSquareHorizontal, Ticket, Trash2, Users, UtensilsCrossed, Wine, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Banknote, Car, Check, Hotel, ImagePlus, MoreHorizontal, Pencil, PieChart, ReceiptText, ShoppingBag, SplitSquareHorizontal, Ticket, Trash2, Users, UtensilsCrossed, Wine, X } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
 import type { Expense, Language, SplitMethod, Trip } from "../../domain/types";
 import { formatMoney } from "../../domain/money";
 import { calculateExpenseShares } from "../../domain/split";
 import { cleanOptional } from "../../domain/strings";
 import { t } from "../../i18n/translations";
+import { isImageFile, resizeToDataUrl } from "../../media/resize-image";
 import { PanelHeader } from "../shared/PanelHeader";
 import { SplitMethodPicker } from "./SplitMethodPicker";
 import { ParticipantSelector } from "./ParticipantSelector";
@@ -44,6 +45,7 @@ export type ExpenseDraft = {
   /** When false, the form shows a single "Paid by" picker and the lone payer amount tracks the total. */
   payersExpanded: boolean;
   participants: Record<string, ParticipantDraft>;
+  receiptImageDataUrl?: string;
 };
 
 export function createExpenseDraft(trip: Trip): ExpenseDraft {
@@ -114,6 +116,7 @@ export function createExpenseDraftFromExpense(expense: Expense, trip: Trip): Exp
     })),
     payersExpanded: expense.payers.length > 1,
     participants,
+    receiptImageDataUrl: expense.receiptImageDataUrl,
   };
 }
 
@@ -160,6 +163,7 @@ export function buildExpenseFromDraft(draft: ExpenseDraft, trip: Trip, originalE
     category: draft.category.trim(),
     date: draft.date,
     note: cleanOptional(draft.note),
+    receiptImageDataUrl: draft.receiptImageDataUrl ?? undefined,
     createdAt: originalExpense?.createdAt ?? now,
     updatedAt: now,
   };
@@ -269,6 +273,20 @@ export function ExpensesSection({
   const activeMembers = trip.members.filter((m) => m.active);
   const selectedCount = activeMembers.filter((m) => draft.participants[m.id]?.selected).length;
   const [expenseSearch, setExpenseSearch] = useState("");
+  const receiptInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleReceiptUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!isImageFile(file)) return;
+    try {
+      const dataUrl = await resizeToDataUrl(file);
+      setDraft({ ...draft, receiptImageDataUrl: dataUrl });
+    } catch {
+      // Silently ignore — canvas not available in some environments
+    }
+    event.target.value = "";
+  }
 
   const amountMinor = parseAmount(draft.amount);
   // The form is valid (and Save enabled) only when the live preview computes cleanly:
@@ -542,6 +560,43 @@ export function ExpensesSection({
             placeholder={t(language, "notePlaceholder")}
           />
         </label>
+
+        {/* Receipt photo */}
+        <div className="receiptUploadRow">
+          <input
+            ref={receiptInputRef}
+            accept="image/*"
+            style={{ display: "none" }}
+            type="file"
+            onChange={handleReceiptUpload}
+          />
+          {draft.receiptImageDataUrl ? (
+            <div className="receiptPreview">
+              <img
+                alt="Receipt"
+                className="receiptThumb"
+                src={draft.receiptImageDataUrl}
+              />
+              <button
+                className="ghostButton"
+                type="button"
+                onClick={() => setDraft({ ...draft, receiptImageDataUrl: undefined })}
+              >
+                <X size={16} />
+                {t(language, "removeReceipt")}
+              </button>
+            </div>
+          ) : (
+            <button
+              className="ghostButton"
+              type="button"
+              onClick={() => receiptInputRef.current?.click()}
+            >
+              <ImagePlus size={16} />
+              {t(language, "addReceipt")}
+            </button>
+          )}
+        </div>
 
         {/* Sticky formula preview + save */}
         <div className="stickyActionBar">

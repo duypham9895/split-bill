@@ -189,6 +189,10 @@ const en = {
   startFresh: "Start fresh",
   newTripName: "My trip",
 
+  // Receipt photos
+  addReceipt: "Add receipt photo",
+  removeReceipt: "Remove",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -379,6 +383,10 @@ const vi: Record<keyof typeof en, string> = {
   sampleBanner: "Đây là chuyến đi mẫu để bạn khám phá. Tạo chuyến đi của riêng bạn khi sẵn sàng.",
   startFresh: "Bắt đầu mới",
   newTripName: "Chuyến đi của tôi",
+
+  // Receipt photos
+  addReceipt: "Thêm ảnh hoá đơn",
+  removeReceipt: "Xoá",
 
 };
 
