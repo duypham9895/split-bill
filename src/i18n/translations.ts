@@ -135,6 +135,19 @@ const en = {
   printSummary: "Print summary",
   copyShareLink: "Copy share link",
 
+  // Dialog actions
+  deleteExpenseTitle: "Delete expense",
+  deleteExpenseConfirm: "Are you sure? This can't be undone.",
+  deleteAction: "Delete",
+  importTripTitle: "Import trip",
+  importTripConfirm: "This will replace your current trip. Continue?",
+  importAction: "Import",
+  selectCategory: "Select category…",
+  shareLink: "Share link",
+  exportData: "Export data",
+  importData: "Import data",
+  viewAllTransfers: "View all {count} transfers",
+
   // Status messages
   shareCopied: "Share link copied. Keep in mind that payment details are visible to anyone with the link.",
   tripImported: "Trip imported.",
@@ -291,6 +304,19 @@ const vi: Record<keyof typeof en, string> = {
   printSummary: "In tổng kết",
   copyShareLink: "Copy link chia sẻ",
 
+  // Dialog actions
+  deleteExpenseTitle: "Xóa khoản chi",
+  deleteExpenseConfirm: "Bạn chắc chứ? Không thể hoàn tác.",
+  deleteAction: "Xóa",
+  importTripTitle: "Nhập chuyến đi",
+  importTripConfirm: "Thao tác này sẽ thay thế chuyến đi hiện tại. Tiếp tục?",
+  importAction: "Nhập",
+  selectCategory: "Chọn danh mục…",
+  shareLink: "Chia sẻ liên kết",
+  exportData: "Xuất dữ liệu",
+  importData: "Nhập dữ liệu",
+  viewAllTransfers: "Xem tất cả {count} chuyển khoản",
+
   // Status messages
   shareCopied: "Đã copy link chia sẻ. Lưu ý rằng thông tin thanh toán hiển thị cho bất kỳ ai có link.",
   tripImported: "Đã nhập chuyến đi.",
@@ -333,8 +359,14 @@ export type TranslationKey = keyof typeof en;
 
 const dictionaries = { en, vi };
 
-export function t(language: Language, key: TranslationKey) {
-  return dictionaries[language][key];
+export function t(language: Language, key: TranslationKey, vars?: Record<string, string | number>) {
+  let text: string = dictionaries[language][key];
+  if (vars) {
+    for (const [k, v] of Object.entries(vars)) {
+      text = text.replace(`{${k}}`, String(v));
+    }
+  }
+  return text;
 }
 
 export function getQaChecklist(language: Language) {
