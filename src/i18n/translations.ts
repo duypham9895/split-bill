@@ -168,6 +168,10 @@ const en = {
   expenseAmountRequired: "Enter an amount greater than 0.",
   payerTotalMismatch: "Payer contributions must equal the expense total.",
 
+  // ParticipantSelector
+  all: "All",
+  nSelected: "{n} selected",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -337,6 +341,10 @@ const vi: Record<keyof typeof en, string> = {
   expenseTitleRequired: "Đặt tên cho khoản chi (VD: 'Ăn tối,' 'Taxi').",
   expenseAmountRequired: "Nhập số tiền lớn hơn 0.",
   payerTotalMismatch: "Tổng tiền người trả phải bằng tổng khoản chi.",
+
+  // ParticipantSelector
+  all: "Tất cả",
+  nSelected: "đã chọn {n}",
 
 };
 
