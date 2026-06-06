@@ -87,6 +87,14 @@ const en = {
   exact: "Exact",
   percentage: "Percent",
   shares: "Shares",
+  splitEqualSummary: "Everyone selected pays the same amount.",
+  splitEqualFormula: "each = total ÷ number of people",
+  splitSharesSummary: "Each person pays by weight — more shares means a bigger portion.",
+  splitSharesFormula: "each = total × (your shares ÷ all shares)",
+  splitExactSummary: "You type the exact amount each person owes.",
+  splitExactFormula: "each = the amount you enter (sum must equal the total)",
+  splitPercentSummary: "Each person pays a percentage of the total.",
+  splitPercentFormula: "each = total × (your percent ÷ 100), sum must be 100%",
 
   // Settlement
   simplified: "Simplified",
@@ -249,6 +257,14 @@ const vi: Record<keyof typeof en, string> = {
   exact: "Số tiền cụ thể",
   percentage: "Phần trăm",
   shares: "Theo phần",
+  splitEqualSummary: "Mọi người được chọn trả số tiền bằng nhau.",
+  splitEqualFormula: "mỗi người = tổng ÷ số người",
+  splitSharesSummary: "Mỗi người trả theo số phần — nhiều phần hơn thì trả nhiều hơn.",
+  splitSharesFormula: "mỗi người = tổng × (số phần của bạn ÷ tổng số phần)",
+  splitExactSummary: "Bạn nhập chính xác số tiền mỗi người phải trả.",
+  splitExactFormula: "mỗi người = số tiền bạn nhập (tổng phải bằng tổng chi)",
+  splitPercentSummary: "Mỗi người trả theo phần trăm của tổng số tiền.",
+  splitPercentFormula: "mỗi người = tổng × (phần trăm ÷ 100), tổng phải là 100%",
 
   // Settlement
   simplified: "Rút gọn",
