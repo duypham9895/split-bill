@@ -139,27 +139,32 @@ function createDirectPaybackSettlement(trip: Trip): SettlementPayment[] {
       // didn't personally cover.  Largest-remainder allocation ensures every đồng
       // is conserved with no fractions dropped.
       const otherPayerWeight = otherPayers.reduce((sum, p) => sum + p.amountMinor, 0);
-      const raw = otherPayers.map((payer, index) => {
+      const rawAllocations = otherPayers.map((payer, index) => {
         const exact = (shareAmount * payer.amountMinor) / expense.amountMinor;
         const floor = Math.floor(exact);
         return { payer, amount: floor, fraction: exact - floor, index };
       });
-      // targetTotal = exact amount this participant owes collectively to otherPayers
+      // targetTotal = exact amount this participant owes collectively to otherPayers,
+      // rounded to the nearest đồng. Math.round is provably safe here:
+      //   sum(floors) ≤ floor(share·otherWeight/total) ≤ round(share·otherWeight/total) = targetTotal
+      // (each per-payer floor only loses fractional đồng, so their sum can't exceed the
+      // floor of the collective exact amount). Therefore remaining = targetTotal − sum(floors)
+      // is always ≥ 0 — the loop below only ever distributes leftover đồng, never over-allocates.
       const targetTotal = Math.round((shareAmount * otherPayerWeight) / expense.amountMinor);
-      let remaining = targetTotal - raw.reduce((sum, r) => sum + r.amount, 0);
-      for (const r of [...raw].sort((a, b) =>
-        b.fraction !== a.fraction ? b.fraction - a.fraction : a.index - b.index,
+      let remaining = targetTotal - rawAllocations.reduce((sum, allocation) => sum + allocation.amount, 0);
+      for (const allocation of [...rawAllocations].sort((left, right) =>
+        right.fraction !== left.fraction ? right.fraction - left.fraction : left.index - right.index,
       )) {
         if (remaining <= 0) break;
-        r.amount += 1;
+        allocation.amount += 1;
         remaining -= 1;
       }
-      for (const r of raw) {
-        if (r.amount === 0) continue;
+      for (const allocation of rawAllocations) {
+        if (allocation.amount === 0) continue;
         addNetPayment(netPayments, {
           fromMemberId: participantId,
-          toMemberId: r.payer.memberId,
-          amountMinor: r.amount,
+          toMemberId: allocation.payer.memberId,
+          amountMinor: allocation.amount,
           expenseId: expense.id,
         });
       }
