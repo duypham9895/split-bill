@@ -23,6 +23,7 @@ import { exportCsvBundle, exportTripJson, importTripJson } from "./persistence/i
 import { loadTripStore, saveTripStore, type TripStore } from "./persistence/local-storage";
 import { createSampleTrip } from "./app/sample-data";
 
+import { cleanOptional } from "./domain/strings";
 import { SummaryRail } from "./components/layout/SummaryRail";
 import { MembersSection, type MemberForm } from "./components/members/MembersSection";
 import {
@@ -118,11 +119,6 @@ function cleanPaymentInfo(form: MemberForm): Member["payment"] {
   };
 
   return Object.values(payment).some(Boolean) ? payment : undefined;
-}
-
-function cleanOptional(value: string) {
-  const cleaned = value.trim();
-  return cleaned || undefined;
 }
 
 function slugId(value: string) {

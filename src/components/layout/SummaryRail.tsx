@@ -8,7 +8,6 @@ import { PaymentCard } from "../balances/PaymentCard";
 export function SummaryRail({
   balances,
   language,
-  loading,
   settlement,
   trip,
   onMarkPaid,
@@ -16,35 +15,11 @@ export function SummaryRail({
 }: {
   balances: MemberBalance[];
   language: Language;
-  loading?: boolean;
   settlement: SettlementPayment[];
   trip: Trip;
   onMarkPaid: (payment: SettlementPayment) => void;
   onViewAll?: () => void;
 }) {
-  if (loading) {
-    return (
-      <>
-        <div className="railPanel">
-          <h2>{t(language, "balancesSettlement")}</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-            <div className="skeleton" style={{ height: 60 }} />
-            <div className="skeleton" style={{ height: 60 }} />
-            <div className="skeleton" style={{ height: 60 }} />
-          </div>
-        </div>
-        <div className="railPanel">
-          <h2>{t(language, "settlement")}</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-            <div className="skeleton" style={{ height: 60 }} />
-            <div className="skeleton" style={{ height: 60 }} />
-            <div className="skeleton" style={{ height: 60 }} />
-          </div>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <div className="railPanel">

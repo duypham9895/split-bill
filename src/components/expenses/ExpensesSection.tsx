@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import type { Expense, Language, SplitMethod, Trip } from "../../domain/types";
 import { formatMoney } from "../../domain/money";
 import { calculateExpenseShares } from "../../domain/split";
+import { cleanOptional } from "../../domain/strings";
 import { t } from "../../i18n/translations";
 import { Avatar } from "../shared/Avatar";
 import { PanelHeader } from "../shared/PanelHeader";
@@ -202,11 +203,6 @@ export function parseAmount(value: string) {
   return digits ? Number(digits) : 0;
 }
 
-function cleanOptional(value: string) {
-  const cleaned = value.trim();
-  return cleaned || undefined;
-}
-
 function today() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -234,11 +230,6 @@ function formatDateHeader(date: string): string {
   } catch {
     return date;
   }
-}
-
-function parseAmountInput(value: string): number {
-  const digits = value.replace(/[^\d]/g, "");
-  return digits ? Number(digits) : 0;
 }
 
 export function ExpensesSection({
@@ -406,10 +397,10 @@ export function ExpensesSection({
             </div>
             {draft.payers.length > 0 && (
               <div className={`validationRow ${
-                draft.payers.reduce((sum, p) => sum + (parseAmountInput(p.amount) || 0), 0) === parseAmountInput(draft.amount)
+                draft.payers.reduce((sum, p) => sum + (parseAmount(p.amount) || 0), 0) === parseAmount(draft.amount)
                   ? "valid" : "invalid"
               }`}>
-                {draft.payers.reduce((sum, p) => sum + (parseAmountInput(p.amount) || 0), 0) === parseAmountInput(draft.amount)
+                {draft.payers.reduce((sum, p) => sum + (parseAmount(p.amount) || 0), 0) === parseAmount(draft.amount)
                   ? <><Check size={14} /> Payer total matches expense amount</>
                   : <><AlertCircle size={14} /> Payer total does not match expense amount</>
                 }
