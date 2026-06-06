@@ -681,7 +681,11 @@ function App() {
           <div className="confirmDialog" onClick={(e) => e.stopPropagation()}>
             <h3>{t(language, "importTripTitle")}</h3>
             <p>
-              &ldquo;{importPreview.name}&rdquo; — {t(language, "importTripConfirm")}
+              {t(language, "importTripConfirm", {
+                name: importPreview.name,
+                members: importPreview.members.length,
+                expenses: importPreview.expenses.length,
+              })}
             </p>
             <div className="confirmActions">
               <button className="ghostButton" onClick={() => setImportPreview(null)}>{t(language, "cancel")}</button>
