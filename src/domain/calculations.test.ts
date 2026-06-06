@@ -197,6 +197,32 @@ describe("trip balances and settlement", () => {
     ]);
   });
 
+  test("direct settlement conserves money", () => {
+    // 200,000 split equally among Alvin, Duy, HA → 66,667 / 66,667 / 66,666
+    // (remainder to first members by index). Alvin & Duy are the two payers.
+    // HA owes their full 66,666 share, distributed across the two payers by
+    // payer weight — must total 66,666 exactly.
+    const e = expense({
+      amountMinor: 200_000,
+      payers: [
+        { memberId: "alvin", amountMinor: 120_000 },
+        { memberId: "duy", amountMinor: 80_000 },
+      ],
+      participants: [
+        { memberId: "alvin" },
+        { memberId: "duy" },
+        { memberId: "ha" },
+      ],
+      splitMethod: "equal",
+    });
+    const { directPaybackSettlement } = calculateTrip(trip([e]));
+    const haOutgoing = directPaybackSettlement
+      .filter((p) => p.fromMemberId === "ha")
+      .reduce((sum, p) => sum + p.amountMinor, 0);
+    // With the old Math.floor bug this is 66,665 (one đồng lost). Must be 66,666.
+    expect(haOutgoing).toBe(66_666);
+  });
+
   test("applies transfers to remaining balances", () => {
     const result = calculateTrip(
       trip([expense({})], [

@@ -128,19 +128,38 @@ function createDirectPaybackSettlement(trip: Trip): SettlementPayment[] {
     const shares = calculateExpenseShares(expense);
 
     for (const [participantId, shareAmount] of shares) {
-      for (const payer of expense.payers) {
-        if (participantId === payer.memberId) {
-          continue;
-        }
-        const amountMinor = Math.floor((shareAmount * payer.amountMinor) / expense.amountMinor);
-        if (amountMinor === 0) {
-          continue;
-        }
-
+      const otherPayers = expense.payers.filter((p) => p.memberId !== participantId);
+      if (otherPayers.length === 0) {
+        continue;
+      }
+      // Distribute participant's share across the payers they owe, proportional to
+      // each payer's contribution relative to the full expense amount.
+      // The target total owed is shareAmount scaled by the OTHER payers' combined
+      // weight — so a participant who is also a payer only owes the portion they
+      // didn't personally cover.  Largest-remainder allocation ensures every đồng
+      // is conserved with no fractions dropped.
+      const otherPayerWeight = otherPayers.reduce((sum, p) => sum + p.amountMinor, 0);
+      const raw = otherPayers.map((payer, index) => {
+        const exact = (shareAmount * payer.amountMinor) / expense.amountMinor;
+        const floor = Math.floor(exact);
+        return { payer, amount: floor, fraction: exact - floor, index };
+      });
+      // targetTotal = exact amount this participant owes collectively to otherPayers
+      const targetTotal = Math.round((shareAmount * otherPayerWeight) / expense.amountMinor);
+      let remaining = targetTotal - raw.reduce((sum, r) => sum + r.amount, 0);
+      for (const r of [...raw].sort((a, b) =>
+        b.fraction !== a.fraction ? b.fraction - a.fraction : a.index - b.index,
+      )) {
+        if (remaining <= 0) break;
+        r.amount += 1;
+        remaining -= 1;
+      }
+      for (const r of raw) {
+        if (r.amount === 0) continue;
         addNetPayment(netPayments, {
           fromMemberId: participantId,
-          toMemberId: payer.memberId,
-          amountMinor,
+          toMemberId: r.payer.memberId,
+          amountMinor: r.amount,
           expenseId: expense.id,
         });
       }
