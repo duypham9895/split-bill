@@ -173,6 +173,9 @@ const en = {
   all: "All",
   nSelected: "{n} selected",
 
+  // Member form progressive disclosure
+  addPaymentDetails: "Add payment details",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -347,6 +350,9 @@ const vi: Record<keyof typeof en, string> = {
   // ParticipantSelector
   all: "Tất cả",
   nSelected: "đã chọn {n}",
+
+  // Member form progressive disclosure
+  addPaymentDetails: "Thêm thông tin thanh toán",
 
 };
 

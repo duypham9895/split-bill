@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Plus, Pencil, X, Check, UserPlus, CreditCard } from "lucide-react";
 import { Language, Member, MemberBalance, Trip } from "../../domain/types";
 import { formatMoney } from "../../domain/money";
@@ -61,7 +61,28 @@ export function MembersSection({
   updateTrip: (updater: (trip: Trip) => Trip) => void;
 }) {
   const [showForm, setShowForm] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
   const isEditing = editingMemberId !== null;
+
+  // Auto-expand payment section when editing a member who already has payment data.
+  // Keyed on editingMemberId so it only fires when a new edit session begins, not on every form keystroke.
+  useEffect(() => {
+    if (editingMemberId !== null) {
+      const hasPayment = !!(
+        form.bankName ||
+        form.bankCode ||
+        form.accountNumber ||
+        form.accountHolder ||
+        form.transferNoteTemplate ||
+        form.qrImageDataUrl
+      );
+      setShowPayment(hasPayment);
+    } else {
+      // Form closed (cancel or save) — collapse for next "add" session.
+      setShowPayment(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editingMemberId]);
 
   return (
     <div>
@@ -91,68 +112,80 @@ export function MembersSection({
               placeholder={t(language, "memberNamePlaceholder")}
             />
           </label>
-          <div className="inputGrid">
-            <label>
-              {t(language, "bank")}
-              <input
-                value={form.bankName}
-                onChange={(event) => setForm({ ...form, bankName: event.target.value })}
-                placeholder={t(language, "bankPlaceholder")}
-              />
-            </label>
-            <label>
-              {t(language, "bankCode")}
-              <input
-                value={form.bankCode}
-                onChange={(event) => setForm({ ...form, bankCode: event.target.value })}
-                placeholder={t(language, "bankCodePlaceholder")}
-              />
-            </label>
-          </div>
-          <div className="inputGrid">
-            <label>
-              {t(language, "accountNumber")}
-              <input
-                value={form.accountNumber}
-                onChange={(event) => setForm({ ...form, accountNumber: event.target.value })}
-              />
-            </label>
-            <label>
-              {t(language, "accountHolder")}
-              <input
-                value={form.accountHolder}
-                onChange={(event) => setForm({ ...form, accountHolder: event.target.value })}
-              />
-            </label>
-          </div>
-          <label>
-            {t(language, "transferNoteTemplate")}
-            <input
-              value={form.transferNoteTemplate}
-              onChange={(event) => setForm({ ...form, transferNoteTemplate: event.target.value })}
-              placeholder={t(language, "transferNotePlaceholder")}
-            />
-          </label>
-          <label>
-            {t(language, "paymentQrImage")}
-            <input
-              accept="image/*"
-              type="file"
-              onChange={(event) => uploadMemberQr(event, form, setForm)}
-            />
-          </label>
-          {form.qrImageDataUrl && (
-            <div className="qrPreview">
-              <img alt={t(language, "uploadedQrPreview")} src={form.qrImageDataUrl} />
-              <button
-                className="ghostButton"
-                onClick={() => setForm({ ...form, qrImageDataUrl: "" })}
-                type="button"
-              >
-                <X size={18} />
-                {t(language, "removeQr")}
-              </button>
-            </div>
+          {!showPayment ? (
+            <button
+              className="ghostButton"
+              onClick={() => setShowPayment(true)}
+              type="button"
+            >
+              + {t(language, "addPaymentDetails")}
+            </button>
+          ) : (
+            <>
+              <div className="inputGrid">
+                <label>
+                  {t(language, "bank")}
+                  <input
+                    value={form.bankName}
+                    onChange={(event) => setForm({ ...form, bankName: event.target.value })}
+                    placeholder={t(language, "bankPlaceholder")}
+                  />
+                </label>
+                <label>
+                  {t(language, "bankCode")}
+                  <input
+                    value={form.bankCode}
+                    onChange={(event) => setForm({ ...form, bankCode: event.target.value })}
+                    placeholder={t(language, "bankCodePlaceholder")}
+                  />
+                </label>
+              </div>
+              <div className="inputGrid">
+                <label>
+                  {t(language, "accountNumber")}
+                  <input
+                    value={form.accountNumber}
+                    onChange={(event) => setForm({ ...form, accountNumber: event.target.value })}
+                  />
+                </label>
+                <label>
+                  {t(language, "accountHolder")}
+                  <input
+                    value={form.accountHolder}
+                    onChange={(event) => setForm({ ...form, accountHolder: event.target.value })}
+                  />
+                </label>
+              </div>
+              <label>
+                {t(language, "transferNoteTemplate")}
+                <input
+                  value={form.transferNoteTemplate}
+                  onChange={(event) => setForm({ ...form, transferNoteTemplate: event.target.value })}
+                  placeholder={t(language, "transferNotePlaceholder")}
+                />
+              </label>
+              <label>
+                {t(language, "paymentQrImage")}
+                <input
+                  accept="image/*"
+                  type="file"
+                  onChange={(event) => uploadMemberQr(event, form, setForm)}
+                />
+              </label>
+              {form.qrImageDataUrl && (
+                <div className="qrPreview">
+                  <img alt={t(language, "uploadedQrPreview")} src={form.qrImageDataUrl} />
+                  <button
+                    className="ghostButton"
+                    onClick={() => setForm({ ...form, qrImageDataUrl: "" })}
+                    type="button"
+                  >
+                    <X size={18} />
+                    {t(language, "removeQr")}
+                  </button>
+                </div>
+              )}
+            </>
           )}
                 {error && <div className="errorBox">{error}</div>}
                 <div className="buttonRow">
@@ -167,6 +200,7 @@ export function MembersSection({
                         onCancelEdit();
                       } else {
                         setShowForm(false);
+                        setShowPayment(false);
                       }
                     }}
                     type="button"
