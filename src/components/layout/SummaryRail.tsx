@@ -69,7 +69,7 @@ export function SummaryRail({
             onClick={onViewAll}
             type="button"
           >
-            {language === "vi" ? `Xem tất cả ${settlement.length} chuyển khoản` : `View all ${settlement.length} transfers`}
+            {t(language, "viewAllTransfers", { count: settlement.length })}
           </button>
         )}
       </div>

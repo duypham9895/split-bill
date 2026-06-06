@@ -312,7 +312,7 @@ function App() {
   function saveExpense() {
     try {
       const originalExpense = activeTrip.expenses.find((expense) => expense.id === editingExpenseId);
-      const nextExpense = buildExpenseFromDraft(expenseDraft, activeTrip, originalExpense);
+      const nextExpense = buildExpenseFromDraft(expenseDraft, activeTrip, originalExpense, language);
       calculateExpenseShares(nextExpense);
       calculateTrip({
         ...activeTrip,
@@ -657,10 +657,10 @@ function App() {
       {deleteConfirm && (
         <div className="confirmOverlay" onClick={() => setDeleteConfirm(null)}>
           <div className="confirmDialog" onClick={(e) => e.stopPropagation()}>
-            <h3>Delete Expense</h3>
-            <p>Are you sure you want to delete this expense? This action cannot be undone.</p>
+            <h3>{t(language, "deleteExpenseTitle")}</h3>
+            <p>{t(language, "deleteExpenseConfirm")}</p>
             <div className="confirmActions">
-              <button className="ghostButton" onClick={() => setDeleteConfirm(null)}>Cancel</button>
+              <button className="ghostButton" onClick={() => setDeleteConfirm(null)}>{t(language, "cancel")}</button>
               <button
                 className="primaryButton"
                 style={{ background: "var(--color-danger)", borderColor: "var(--color-danger)" }}
@@ -669,7 +669,7 @@ function App() {
                   setDeleteConfirm(null);
                 }}
               >
-                Delete
+                {t(language, "deleteAction")}
               </button>
             </div>
           </div>
@@ -679,14 +679,13 @@ function App() {
       {importPreview && (
         <div className="confirmOverlay" onClick={() => setImportPreview(null)}>
           <div className="confirmDialog" onClick={(e) => e.stopPropagation()}>
-            <h3>Import Trip</h3>
+            <h3>{t(language, "importTripTitle")}</h3>
             <p>
-              Import &ldquo;{importPreview.name}&rdquo; with {importPreview.members.length} members and{" "}
-              {importPreview.expenses.length} expenses? This will replace your current trip data.
+              &ldquo;{importPreview.name}&rdquo; — {t(language, "importTripConfirm")}
             </p>
             <div className="confirmActions">
-              <button className="ghostButton" onClick={() => setImportPreview(null)}>Cancel</button>
-              <button className="primaryButton" onClick={confirmImport}>Import</button>
+              <button className="ghostButton" onClick={() => setImportPreview(null)}>{t(language, "cancel")}</button>
+              <button className="primaryButton" onClick={confirmImport}>{t(language, "importAction")}</button>
             </div>
           </div>
         </div>

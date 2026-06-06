@@ -107,7 +107,7 @@ export function createExpenseDraftFromExpense(expense: Expense, trip: Trip): Exp
   };
 }
 
-export function buildExpenseFromDraft(draft: ExpenseDraft, trip: Trip, originalExpense?: Expense): Expense {
+export function buildExpenseFromDraft(draft: ExpenseDraft, trip: Trip, originalExpense?: Expense, language: Language = "en"): Expense {
   const amountMinor = parseAmount(draft.amount);
   const now = new Date().toISOString();
   const payers = draft.payers.map((payer) => ({
@@ -116,15 +116,15 @@ export function buildExpenseFromDraft(draft: ExpenseDraft, trip: Trip, originalE
   }));
 
   if (!draft.title.trim()) {
-    throw new Error("Give this expense a name (e.g., 'Dinner,' 'Taxi').");
+    throw new Error(t(language, "expenseTitleRequired"));
   }
 
   if (amountMinor <= 0) {
-    throw new Error("Enter an amount greater than 0.");
+    throw new Error(t(language, "expenseAmountRequired"));
   }
 
   if (payers.reduce((sum, payer) => sum + payer.amountMinor, 0) !== amountMinor) {
-    throw new Error("Payer contributions must equal the expense total.");
+    throw new Error(t(language, "payerTotalMismatch"));
   }
 
   const participants = trip.members
@@ -157,7 +157,7 @@ export function buildExpenseFromDraft(draft: ExpenseDraft, trip: Trip, originalE
 
 export function buildPreview(draft: ExpenseDraft, trip: Trip, language: Language) {
   try {
-    const expense = buildExpenseFromDraft(draft, trip);
+    const expense = buildExpenseFromDraft(draft, trip, undefined, language);
     const shares = Array.from(calculateExpenseShares(expense).entries()).map(
       ([memberId, amount]) => `${getMemberName(trip, memberId)} ${formatMoney(amount, language)}`,
     );
@@ -309,7 +309,7 @@ export function ExpensesSection({
                   value={draft.category}
                   onChange={(e) => setDraft({ ...draft, category: e.target.value })}
                 >
-                  <option value="">Select category...</option>
+                  <option value="">{t(language, "selectCategory")}</option>
                   {EXPENSE_CATEGORIES.map((cat) => (
                     <option key={cat.value} value={cat.value}>{cat.label}</option>
                   ))}

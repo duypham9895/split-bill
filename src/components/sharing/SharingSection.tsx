@@ -50,7 +50,7 @@ export function SharingSection({
       <div className="formCard" style={{ marginBottom: "var(--space-4)" }}>
         <div className="formCardHeader">
           <Link size={18} />
-          {language === "vi" ? "Chia sẻ liên kết" : "Share Link"}
+          {t(language, "shareLink")}
         </div>
         <div className="formCardBody">
           <div className="warningBox" style={{ marginBottom: "var(--space-3)" }}>
@@ -98,7 +98,7 @@ export function SharingSection({
       <div className="formCard" style={{ marginBottom: "var(--space-4)" }}>
         <div className="formCardHeader">
           <Download size={18} />
-          {language === "vi" ? "Xuất dữ liệu" : "Export Data"}
+          {t(language, "exportData")}
         </div>
         <div className="formCardBody">
           <div className="actionGrid actionGrid--secondary">
@@ -118,7 +118,7 @@ export function SharingSection({
       <div className="formCard" style={{ marginBottom: "var(--space-4)" }}>
         <div className="formCardHeader">
           <Upload size={18} />
-          {language === "vi" ? "Nhập dữ liệu" : "Import Data"}
+          {t(language, "importData")}
         </div>
         <div className="formCardBody">
           <label className="fileButton">
