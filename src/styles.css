@@ -899,6 +899,12 @@ label,
   color: var(--color-danger-text);
 }
 
+.formulaHint {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  opacity: 0.85;
+}
+
 .warningBox {
   background: var(--color-warning-light);
   border: 1px solid var(--color-warning-border);

@@ -49,14 +49,17 @@ export type ExpenseDraft = {
 export function createExpenseDraft(trip: Trip): ExpenseDraft {
   const amount = "";
   const members = trip.members.filter((member) => member.active);
-  const equalPercent = members.length > 0 ? String(Math.floor(100 / members.length)) : "0";
+  // Seed percentages so they sum to exactly 100: base = floor(100/n), and the
+  // first `remainder` participants get base + 1 (e.g. 3 people → 34/33/33).
+  const base = members.length > 0 ? Math.floor(100 / members.length) : 0;
+  const remainder = members.length > 0 ? 100 - base * members.length : 0;
   const participants = Object.fromEntries(
-    members.map((member) => [
+    members.map((member, index) => [
       member.id,
       {
         selected: true,
         exactAmount: "0",
-        percentage: equalPercent,
+        percentage: String(index < remainder ? base + 1 : base),
         shares: "1",
       },
     ]),
@@ -272,6 +275,10 @@ export function ExpensesSection({
   // buildPreview runs buildExpenseFromDraft (title + amount + payer-sum checks) then
   // calculateExpenseShares (split validity). preview.ok reflects all of them at once.
   const canSave = preview.ok;
+  // Show a friendly "adjust the split" hint when the blocker is a sum-constrained
+  // split (percentage must total 100, exact amounts must total the expense).
+  const showFixSplitHint =
+    !preview.ok && (draft.splitMethod === "percentage" || draft.splitMethod === "exact");
 
   // Bridge: ParticipantSelector works on a string[] of selected member ids.
   const selectedParticipantIds = activeMembers
@@ -541,6 +548,7 @@ export function ExpensesSection({
           <div className={preview.ok ? "formulaBox" : "formulaBox warning"}>
             <strong>{t(language, "formulaPreview")}</strong>
             <span>{preview.message}</span>
+            {showFixSplitHint && <span className="formulaHint">{t(language, "fixSplit")}</span>}
           </div>
 
           {error && <div className="errorBox">{error}</div>}
