@@ -739,6 +739,36 @@ label,
   grid-template-columns: 1fr 1fr auto;
 }
 
+.payerInputs {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.payerTotal {
+  align-items: center;
+  border-radius: var(--radius-md);
+  display: flex;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+}
+
+.payerTotal.ok {
+  background: var(--color-success-light);
+  color: var(--color-success-text);
+}
+
+.payerTotal.no {
+  background: var(--color-danger-light);
+  color: var(--color-danger-text);
+}
+
+.payerTotalNumbers {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ============================================
    Participant Grid
    ============================================ */
