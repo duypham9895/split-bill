@@ -57,15 +57,17 @@ test("host can edit an existing expense without duplicating it", async ({ page }
   await page.getByRole("button", { name: "Save changes" }).click();
 
   await scrollTo(page, ".expenseList");
-  await expect(page.getByText("Edited seafood dinner")).toBeAttached();
-  await expect(page.getByText(/^Seafood dinner$/)).not.toBeAttached();
+  // Use the expense list specifically to avoid matching QuickAdd chips with the same title.
+  await expect(page.locator(".expenseList strong", { hasText: "Edited seafood dinner" })).toBeAttached();
+  await expect(page.locator(".expenseList strong", { hasText: /^Seafood dinner$/ })).not.toBeAttached();
 });
 
 test("host can remove an existing expense", async ({ page }) => {
   await page.goto("/");
 
   await scrollTo(page, ".expenseList");
-  await expect(page.getByText(/^Airport taxi$/)).toBeAttached();
+  // Use the expense list specifically to avoid matching QuickAdd chips with the same title.
+  await expect(page.locator(".expenseList strong", { hasText: /^Airport taxi$/ })).toBeAttached();
 
   const deleteBtn = page.getByRole("button", { name: "Delete Airport taxi" });
   await deleteBtn.click();
@@ -76,9 +78,9 @@ test("host can remove an existing expense", async ({ page }) => {
   await confirmBtn.click();
 
   await scrollTo(page, ".expenseList");
-  await expect(page.getByText(/^Airport taxi$/)).not.toBeAttached();
-  await expect(page.getByText(/^Seafood dinner$/)).toBeAttached();
-  await expect(page.getByText(/^Hotel deposit$/)).toBeAttached();
+  await expect(page.locator(".expenseList strong", { hasText: /^Airport taxi$/ })).not.toBeAttached();
+  await expect(page.locator(".expenseList strong", { hasText: /^Seafood dinner$/ })).toBeAttached();
+  await expect(page.locator(".expenseList strong", { hasText: /^Hotel deposit$/ })).toBeAttached();
 });
 
 test("host can edit bank payment info for an existing member", async ({ page }) => {

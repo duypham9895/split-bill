@@ -7,6 +7,7 @@ import { cleanOptional } from "../../domain/strings";
 import { t } from "../../i18n/translations";
 import { isImageFile, resizeToDataUrl } from "../../media/resize-image";
 import { PanelHeader } from "../shared/PanelHeader";
+import { QuickAdd } from "./QuickAdd";
 import { SplitMethodPicker } from "./SplitMethodPicker";
 import { ParticipantSelector } from "./ParticipantSelector";
 import { PayerInputs, type PayerRow } from "./PayerInputs";
@@ -270,6 +271,26 @@ export function ExpensesSection({
 }) {
   const preview = useMemo(() => buildPreview(draft, trip, language), [draft, trip, language]);
   const isEditing = editingExpenseId !== null;
+
+  // Quick-add: pre-fill the NEW-expense form from a template (source expense untouched).
+  // We intentionally do NOT call onEditExpense so editingExpenseId stays null — this
+  // starts a brand-new expense pre-filled with the template's structure, not an edit.
+  function handleQuickPick(expense: Expense) {
+    const templated = createExpenseDraftFromExpense(expense, trip);
+    // Blank out amount (user must type the new figure), clear receipt, set today's date.
+    const firstPayer = templated.payers[0];
+    setDraft({
+      ...templated,
+      amount: "",
+      date: new Date().toISOString().slice(0, 10),
+      receiptImageDataUrl: undefined,
+      // Keep single-payer collapsed; reset payer amount to empty too.
+      payers: templated.payersExpanded
+        ? templated.payers.map((row) => ({ ...row, amount: "" }))
+        : [{ rowId: firstPayer?.rowId ?? "payer-1", memberId: firstPayer?.memberId ?? "", amount: "" }],
+      payersExpanded: false,
+    });
+  }
   const activeMembers = trip.members.filter((m) => m.active);
   const selectedCount = activeMembers.filter((m) => draft.participants[m.id]?.selected).length;
   const [expenseSearch, setExpenseSearch] = useState("");
@@ -364,6 +385,10 @@ export function ExpensesSection({
         title={isEditing ? t(language, "editExpense") : t(language, "expensesSplits")}
         subtitle={t(language, "expensesSubtitle")}
       />
+
+      {!isEditing && (
+        <QuickAdd trip={trip} language={language} onPick={handleQuickPick} />
+      )}
 
       <div className="formStack">
         {/* Card 1: Amount → What → Category + Date */}

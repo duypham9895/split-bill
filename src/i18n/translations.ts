@@ -203,6 +203,9 @@ const en = {
   notYou: "Not you? Change",
   readOnlySummary: "Read-only summary · no app needed",
 
+  // Quick-add templates
+  quickAdd: "Quick add",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -407,6 +410,9 @@ const vi: Record<keyof typeof en, string> = {
   howCalculated: "Cách tính",
   notYou: "Không phải bạn? Đổi",
   readOnlySummary: "Bản tóm tắt chỉ đọc · không cần cài app",
+
+  // Quick-add templates
+  quickAdd: "Thêm nhanh",
 
 };
 
