@@ -27,21 +27,6 @@ async function scrollTo(page: import("@playwright/test").Page, selector: string)
   await page.waitForTimeout(300);
 }
 
-/**
- * Assert element is attached to the DOM.
- * Uses toBeVisible on desktop (strict) and toBeAttached on mobile (viewport-independent).
- * This verifies the DOM state is correct regardless of mobile scroll/overflow issues.
- */
-async function expectInDom(locator: ReturnType<typeof expect["getState"]> extends never ? never : import("@playwright/test").Locator) {
-  // Try visible first (desktop), fall back to attached (mobile)
-  const isVisible = await locator.isVisible({ timeout: 500 }).catch(() => false);
-  if (isVisible) {
-    await expect(locator).toBeVisible();
-  } else {
-    await expect(locator).toBeAttached();
-  }
-}
-
 test("host can review expenses, balances, settlement, and sharing sections", async ({ page }) => {
   await page.goto("/");
 
@@ -72,15 +57,17 @@ test("host can edit an existing expense without duplicating it", async ({ page }
   await page.getByRole("button", { name: "Save changes" }).click();
 
   await scrollTo(page, ".expenseList");
-  await expect(page.getByText("Edited seafood dinner")).toBeAttached();
-  await expect(page.getByText(/^Seafood dinner$/)).not.toBeAttached();
+  // Use the expense list specifically to avoid matching QuickAdd chips with the same title.
+  await expect(page.locator(".expenseList strong", { hasText: "Edited seafood dinner" })).toBeAttached();
+  await expect(page.locator(".expenseList strong", { hasText: /^Seafood dinner$/ })).not.toBeAttached();
 });
 
 test("host can remove an existing expense", async ({ page }) => {
   await page.goto("/");
 
   await scrollTo(page, ".expenseList");
-  await expect(page.getByText(/^Airport taxi$/)).toBeAttached();
+  // Use the expense list specifically to avoid matching QuickAdd chips with the same title.
+  await expect(page.locator(".expenseList strong", { hasText: /^Airport taxi$/ })).toBeAttached();
 
   const deleteBtn = page.getByRole("button", { name: "Delete Airport taxi" });
   await deleteBtn.click();
@@ -91,9 +78,9 @@ test("host can remove an existing expense", async ({ page }) => {
   await confirmBtn.click();
 
   await scrollTo(page, ".expenseList");
-  await expect(page.getByText(/^Airport taxi$/)).not.toBeAttached();
-  await expect(page.getByText(/^Seafood dinner$/)).toBeAttached();
-  await expect(page.getByText(/^Hotel deposit$/)).toBeAttached();
+  await expect(page.locator(".expenseList strong", { hasText: /^Airport taxi$/ })).not.toBeAttached();
+  await expect(page.locator(".expenseList strong", { hasText: /^Seafood dinner$/ })).toBeAttached();
+  await expect(page.locator(".expenseList strong", { hasText: /^Hotel deposit$/ })).toBeAttached();
 });
 
 test("host can edit bank payment info for an existing member", async ({ page }) => {
@@ -156,4 +143,42 @@ test("shared trip links load the encoded trip payload", async ({ page }) => {
   await expect(page.locator(".topbar")).toContainText("Shared Link Trip");
   await clickNav(page, "Trip");
   await expect(page.locator(".listPanel strong", { hasText: "Duy" })).toBeVisible();
+});
+
+test("view=share link opens the read-only friend view with a who-are-you picker", async ({ page }) => {
+  const payload = encodeTripSharePayload({
+    id: "share-view-trip",
+    name: "Beach Weekend",
+    currency: "VND",
+    language: "en",
+    members: [
+      { id: "duy", name: "Duy", active: true },
+      { id: "an", name: "An", active: true },
+    ],
+    expenses: [
+      {
+        id: "e1",
+        title: "Dinner",
+        amountMinor: 200000,
+        splitMethod: "equal",
+        date: "2026-06-01",
+        payers: [{ memberId: "duy", amountMinor: 200000 }],
+        participants: [{ memberId: "duy" }, { memberId: "an" }],
+        createdAt: "2026-06-01T00:00:00.000Z",
+        updatedAt: "2026-06-01T00:00:00.000Z",
+      },
+    ],
+    transfers: [],
+  });
+
+  await page.goto(`/?trip=${payload}&view=share`);
+
+  // The editor chrome must NOT render in share view.
+  await expect(page.locator(".sidebar")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Who are you?" })).toBeVisible();
+
+  // An owes their half of the dinner.
+  await page.getByRole("button", { name: "An" }).click();
+  await expect(page.getByText("You owe")).toBeVisible();
+  await expect(page.getByText("100,000 VND").first()).toBeVisible();
 });

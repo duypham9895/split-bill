@@ -1,13 +1,11 @@
 import {
   Check,
   Languages,
-  Moon,
   Pencil,
   Plus,
   ReceiptText,
   Scale,
   Send,
-  Sun,
   Users,
 } from "lucide-react";
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
@@ -25,6 +23,7 @@ import { exportCsvBundle, exportTripJson, importTripJson } from "./persistence/i
 import { loadTripStore, saveTripStore, type TripStore } from "./persistence/local-storage";
 import { createSampleTrip } from "./app/sample-data";
 
+import { cleanOptional } from "./domain/strings";
 import { SummaryRail } from "./components/layout/SummaryRail";
 import { MembersSection, type MemberForm } from "./components/members/MembersSection";
 import {
@@ -35,9 +34,9 @@ import {
 } from "./components/expenses/ExpensesSection";
 import { BalancesSection, type SettlementMode } from "./components/balances/BalancesSection";
 import { SharingSection } from "./components/sharing/SharingSection";
-import { QaSection } from "./components/sharing/QaSection";
+import { ShareView } from "./components/sharing/ShareView";
 
-type Section = "members" | "expenses" | "balances" | "sharing" | "qa";
+type Section = "members" | "expenses" | "balances" | "sharing";
 
 const navSections: Array<{
   id: Section;
@@ -95,6 +94,10 @@ function createInitialStore(): TripStore {
   };
 }
 
+function isShareViewMode(): boolean {
+  return new URLSearchParams(window.location.search).get("view") === "share";
+}
+
 function loadTripFromShareUrl(): Trip | null {
   const payload = new URLSearchParams(window.location.search).get("trip");
 
@@ -123,11 +126,6 @@ function cleanPaymentInfo(form: MemberForm): Member["payment"] {
   return Object.values(payment).some(Boolean) ? payment : undefined;
 }
 
-function cleanOptional(value: string) {
-  const cleaned = value.trim();
-  return cleaned || undefined;
-}
-
 function slugId(value: string) {
   return (
     value
@@ -153,6 +151,21 @@ function downloadText(filename: string, text: string, type: string) {
 }
 
 function App() {
+  // Guest mode: a shared link with `view=share` opens the read-only friend view
+  // instead of the full editor. Determined purely by the URL at page load, so the
+  // branch is stable for the component's whole lifetime (hook order is preserved
+  // because the early-return path runs no hooks on every render).
+  if (isShareViewMode()) {
+    const sharedTrip = loadTripFromShareUrl();
+    if (sharedTrip) {
+      return <ShareView trip={sharedTrip} />;
+    }
+  }
+
+  return <Editor />;
+}
+
+function Editor() {
   const [store, setStore] = useState<TripStore>(createInitialStore);
   const activeTrip = useMemo(
     () => store.trips.find((trip) => trip.id === store.activeTripId) ?? store.trips[0],
@@ -173,20 +186,10 @@ function App() {
   const [editingExpenseId, setEditingExpenseId] = useState<string | null>(null);
   const [formError, setFormError] = useState("");
   const [shareMessage, setShareMessage] = useState("");
-  const [bugText, setBugText] = useState("");
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    const stored = localStorage.getItem("split-bill:theme");
-    if (stored === "light" || stored === "dark") return stored;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  });
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [importPreview, setImportPreview] = useState<Trip | null>(null);
   const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("split-bill:theme", theme);
-  }, [theme]);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   useEffect(() => {
     saveTripStore(store);
@@ -235,6 +238,24 @@ function App() {
       activeTripId: nextTrip.id,
       trips: [...currentStore.trips, nextTrip],
     }));
+    setSection("members");
+  }
+
+  function startFresh() {
+    const newTrip = {
+      id: crypto.randomUUID(),
+      name: t(language, "newTripName"),
+      currency: "VND" as const,
+      language,
+      members: [],
+      expenses: [],
+      transfers: [],
+    };
+    setStore((currentStore) => ({
+      activeTripId: newTrip.id,
+      trips: [...currentStore.trips, newTrip],
+    }));
+    setBannerDismissed(false);
     setSection("members");
   }
 
@@ -312,7 +333,7 @@ function App() {
   function saveExpense() {
     try {
       const originalExpense = activeTrip.expenses.find((expense) => expense.id === editingExpenseId);
-      const nextExpense = buildExpenseFromDraft(expenseDraft, activeTrip, originalExpense);
+      const nextExpense = buildExpenseFromDraft(expenseDraft, activeTrip, originalExpense, language);
       calculateExpenseShares(nextExpense);
       calculateTrip({
         ...activeTrip,
@@ -390,13 +411,13 @@ function App() {
 
   function getShareUrl() {
     const payload = encodeURIComponent(btoa(unescape(encodeURIComponent(exportTripJson(activeTrip)))));
-    return `${window.location.origin}${window.location.pathname}?trip=${payload}`;
+    return `${window.location.origin}${window.location.pathname}?trip=${payload}&view=share`;
   }
 
   async function copyShareLink() {
     const url = getShareUrl();
     if (url.length > 1800) {
-      showToast("Trip data is large. Share link may not work in all browsers.");
+      showToast(t(language, "shareLinkLarge"));
     }
     await navigator.clipboard.writeText(url);
     setShareMessage(t(language, "shareCopied"));
@@ -548,16 +569,22 @@ function App() {
               VN
             </button>
             <Languages size={20} />
-            <button
-              className="iconButton"
-              onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
-              title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-              type="button"
-            >
-              {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
-            </button>
           </div>
         </header>
+
+        {activeTrip.isSample && !bannerDismissed && (
+          <div className="sampleBanner">
+            <span>{t(language, "sampleBanner")}</span>
+            <div className="sampleBannerActions">
+              <button className="primaryButton sampleBannerStart" onClick={startFresh} type="button">
+                {t(language, "startFresh")}
+              </button>
+              <button className="iconButton sampleBannerDismiss" onClick={() => setBannerDismissed(true)} type="button" aria-label="Dismiss">
+                ✕
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="contentGrid">
           <section className="primaryPanel">
@@ -615,13 +642,7 @@ function App() {
                 trip={activeTrip}
               />
             )}
-            {section === "qa" && (
-              <QaSection
-                bugText={bugText}
-                language={language}
-                setBugText={setBugText}
-              />
-            )}
+
           </section>
 
           <aside className="summaryRail">
@@ -657,10 +678,10 @@ function App() {
       {deleteConfirm && (
         <div className="confirmOverlay" onClick={() => setDeleteConfirm(null)}>
           <div className="confirmDialog" onClick={(e) => e.stopPropagation()}>
-            <h3>Delete Expense</h3>
-            <p>Are you sure you want to delete this expense? This action cannot be undone.</p>
+            <h3>{t(language, "deleteExpenseTitle")}</h3>
+            <p>{t(language, "deleteExpenseConfirm")}</p>
             <div className="confirmActions">
-              <button className="ghostButton" onClick={() => setDeleteConfirm(null)}>Cancel</button>
+              <button className="ghostButton" onClick={() => setDeleteConfirm(null)}>{t(language, "cancel")}</button>
               <button
                 className="primaryButton"
                 style={{ background: "var(--color-danger)", borderColor: "var(--color-danger)" }}
@@ -669,7 +690,7 @@ function App() {
                   setDeleteConfirm(null);
                 }}
               >
-                Delete
+                {t(language, "deleteAction")}
               </button>
             </div>
           </div>
@@ -679,14 +700,17 @@ function App() {
       {importPreview && (
         <div className="confirmOverlay" onClick={() => setImportPreview(null)}>
           <div className="confirmDialog" onClick={(e) => e.stopPropagation()}>
-            <h3>Import Trip</h3>
+            <h3>{t(language, "importTripTitle")}</h3>
             <p>
-              Import &ldquo;{importPreview.name}&rdquo; with {importPreview.members.length} members and{" "}
-              {importPreview.expenses.length} expenses? This will replace your current trip data.
+              {t(language, "importTripConfirm", {
+                name: importPreview.name,
+                members: importPreview.members.length,
+                expenses: importPreview.expenses.length,
+              })}
             </p>
             <div className="confirmActions">
-              <button className="ghostButton" onClick={() => setImportPreview(null)}>Cancel</button>
-              <button className="primaryButton" onClick={confirmImport}>Import</button>
+              <button className="ghostButton" onClick={() => setImportPreview(null)}>{t(language, "cancel")}</button>
+              <button className="primaryButton" onClick={confirmImport}>{t(language, "importAction")}</button>
             </div>
           </div>
         </div>

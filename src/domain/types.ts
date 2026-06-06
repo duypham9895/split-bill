@@ -67,6 +67,7 @@ export type Trip = {
   members: Member[];
   expenses: Expense[];
   transfers: Transfer[];
+  isSample?: boolean;
 };
 
 export type MemberBalance = {

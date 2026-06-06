@@ -19,7 +19,7 @@ import QRCode from "qrcode";
 // ---------------------------------------------------------------------------
 
 export interface VietQROptions {
-  /** Bank BIN (6 digits), e.g., "970436" for Vietcombank, "970415" for Techcombank. */
+  /** Bank BIN (6 digits), e.g., "970436" for Vietcombank, "970407" for Techcombank. */
   bankBin: string;
   /** Beneficiary account number. */
   accountNumber: string;

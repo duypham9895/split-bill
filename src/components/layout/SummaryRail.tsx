@@ -8,7 +8,6 @@ import { PaymentCard } from "../balances/PaymentCard";
 export function SummaryRail({
   balances,
   language,
-  loading,
   settlement,
   trip,
   onMarkPaid,
@@ -16,35 +15,11 @@ export function SummaryRail({
 }: {
   balances: MemberBalance[];
   language: Language;
-  loading?: boolean;
   settlement: SettlementPayment[];
   trip: Trip;
   onMarkPaid: (payment: SettlementPayment) => void;
   onViewAll?: () => void;
 }) {
-  if (loading) {
-    return (
-      <>
-        <div className="railPanel">
-          <h2>{t(language, "balancesSettlement")}</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-            <div className="skeleton" style={{ height: 60 }} />
-            <div className="skeleton" style={{ height: 60 }} />
-            <div className="skeleton" style={{ height: 60 }} />
-          </div>
-        </div>
-        <div className="railPanel">
-          <h2>{t(language, "settlement")}</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-            <div className="skeleton" style={{ height: 60 }} />
-            <div className="skeleton" style={{ height: 60 }} />
-            <div className="skeleton" style={{ height: 60 }} />
-          </div>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <div className="railPanel">
@@ -64,12 +39,11 @@ export function SummaryRail({
         <SettlementList language={language} onMarkPaid={onMarkPaid} payments={settlement.slice(0, 3)} trip={trip} compact />
         {settlement.length > 3 && onViewAll && (
           <button
-            className="ghostButton"
-            style={{ fontSize: "var(--text-sm)", marginTop: "var(--space-2)" }}
+            className="ghostButton ghostButton--sm"
             onClick={onViewAll}
             type="button"
           >
-            {language === "vi" ? `Xem tất cả ${settlement.length} chuyển khoản` : `View all ${settlement.length} transfers`}
+            {t(language, "viewAllTransfers", { count: settlement.length })}
           </button>
         )}
       </div>

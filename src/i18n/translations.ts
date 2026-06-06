@@ -16,8 +16,6 @@ const en = {
   balancesSettlementHint: "Balances & transfers",
   sharingPayment: "Share",
   sharingPaymentHint: "Export & share",
-  qaRelease: "QA & Release",
-  qaReleaseHint: "Test like real users",
   trip: "Trip",
   expenses: "Expenses",
   settle: "Settle",
@@ -68,6 +66,7 @@ const en = {
   amountPlaceholder: "Amount",
   removePayer: "Remove payer",
   addPayer: "Add payer",
+  covered: "Covered",
   whoShared: "Who shared this?",
   selected: "selected",
   selectAll: "Select all",
@@ -89,6 +88,14 @@ const en = {
   exact: "Exact",
   percentage: "Percent",
   shares: "Shares",
+  splitEqualSummary: "Everyone selected pays the same amount.",
+  splitEqualFormula: "each = total ÷ number of people",
+  splitSharesSummary: "Each person pays by weight — more shares means a bigger portion.",
+  splitSharesFormula: "each = total × (your shares ÷ all shares)",
+  splitExactSummary: "You type the exact amount each person owes.",
+  splitExactFormula: "each = the amount you enter (sum must equal the total)",
+  splitPercentSummary: "Each person pays a percentage of the total.",
+  splitPercentFormula: "each = total × (your percent ÷ 100), sum must be 100%",
 
   // Settlement
   simplified: "Simplified",
@@ -135,6 +142,19 @@ const en = {
   printSummary: "Print summary",
   copyShareLink: "Copy share link",
 
+  // Dialog actions
+  deleteExpenseTitle: "Delete expense",
+  deleteExpenseConfirm: "Are you sure? This can't be undone.",
+  deleteAction: "Delete",
+  importTripTitle: "Import trip",
+  importTripConfirm: "Import “{name}” with {members} members and {expenses} expenses? This will replace your current trip.",
+  importAction: "Import",
+  selectCategory: "Select category…",
+  shareLink: "Share link",
+  exportData: "Export data",
+  importData: "Import data",
+  viewAllTransfers: "View all {count} transfers",
+
   // Status messages
   shareCopied: "Share link copied. Keep in mind that payment details are visible to anyone with the link.",
   tripImported: "Trip imported.",
@@ -149,11 +169,61 @@ const en = {
   expenseAmountRequired: "Enter an amount greater than 0.",
   payerTotalMismatch: "Payer contributions must equal the expense total.",
 
-  // QA
-  qaReleaseSubtitle: "QA validates the real user path and engineering turns bugs into regression tests.",
-  qaRule: "QA bug -> failing test -> fix -> regression test -> QA retest -> close",
-  qaBugReportDraft: "QA bug report draft",
-  qaBugPlaceholder: "Steps to reproduce, expected result, actual result...",
+  // ParticipantSelector
+  all: "All",
+  nSelected: "{n} selected",
+
+  // Member form progressive disclosure
+  addPaymentDetails: "Add payment details",
+
+  // Expense form (single-payer default + split how)
+  paidBy: "Paid by",
+  splitPayers: "Split payers",
+  singlePayer: "Single payer",
+  splitHow: "Split how?",
+  betweenWho: "Between who?",
+  fixSplit: "Adjust the split so it adds up.",
+
+  // Sample trip banner
+  sampleBanner: "This is a sample trip to explore. Start your own when you're ready.",
+  startFresh: "Start fresh",
+  newTripName: "My trip",
+
+  // Receipt photos
+  addReceipt: "Add receipt photo",
+  removeReceipt: "Remove",
+
+  // Share view (friend-facing read-only)
+  whoAreYou: "Who are you?",
+  youOwe: "You owe",
+  youreOwed: "You'll receive",
+  allSettledUp: "You're all settled up",
+  scanToPay: "Scan with any banking app to pay",
+  howCalculated: "How this was calculated",
+  notYou: "Not you? Change",
+  readOnlySummary: "Read-only summary · no app needed",
+
+  // Quick-add templates
+  quickAdd: "Quick add",
+
+  // Expense categories
+  catFood: "Food & dining",
+  catTransport: "Transport",
+  catHotel: "Lodging",
+  catActivity: "Activities",
+  catShopping: "Shopping",
+  catDrinks: "Drinks",
+  catOther: "Other",
+
+  // Search
+  searchExpenses: "Search expenses",
+
+  // Share link toast
+  shareLinkLarge: "Trip data is large. Share link may not work in all browsers.",
+
+  // Receipt alt text
+  receiptAlt: "Receipt photo",
+
 };
 
 const vi: Record<keyof typeof en, string> = {
@@ -172,8 +242,6 @@ const vi: Record<keyof typeof en, string> = {
   balancesSettlementHint: "Số dư & chuyển tiền",
   sharingPayment: "Chia sẻ",
   sharingPaymentHint: "Xuất & chia sẻ",
-  qaRelease: "QA & Phát hành",
-  qaReleaseHint: "Kiểm thử như người dùng thật",
   trip: "Chuyến đi",
   expenses: "Chi phí",
   settle: "Quyết toán",
@@ -224,6 +292,7 @@ const vi: Record<keyof typeof en, string> = {
   amountPlaceholder: "Số tiền",
   removePayer: "Xóa người trả",
   addPayer: "Thêm người trả",
+  covered: "Đã thu",
   whoShared: "Khoản này chia cho ai?",
   selected: "đã chọn",
   selectAll: "Chọn tất cả",
@@ -245,6 +314,14 @@ const vi: Record<keyof typeof en, string> = {
   exact: "Số tiền cụ thể",
   percentage: "Phần trăm",
   shares: "Theo phần",
+  splitEqualSummary: "Mọi người được chọn trả số tiền bằng nhau.",
+  splitEqualFormula: "mỗi người = tổng ÷ số người",
+  splitSharesSummary: "Mỗi người trả theo số phần — nhiều phần hơn thì trả nhiều hơn.",
+  splitSharesFormula: "mỗi người = tổng × (số phần của bạn ÷ tổng số phần)",
+  splitExactSummary: "Bạn nhập chính xác số tiền mỗi người phải trả.",
+  splitExactFormula: "mỗi người = số tiền bạn nhập (tổng phải bằng tổng chi)",
+  splitPercentSummary: "Mỗi người trả theo phần trăm của tổng số tiền.",
+  splitPercentFormula: "mỗi người = tổng × (phần trăm ÷ 100), tổng phải là 100%",
 
   // Settlement
   simplified: "Rút gọn",
@@ -291,6 +368,19 @@ const vi: Record<keyof typeof en, string> = {
   printSummary: "In tổng kết",
   copyShareLink: "Copy link chia sẻ",
 
+  // Dialog actions
+  deleteExpenseTitle: "Xóa khoản chi",
+  deleteExpenseConfirm: "Bạn chắc chứ? Không thể hoàn tác.",
+  deleteAction: "Xóa",
+  importTripTitle: "Nhập chuyến đi",
+  importTripConfirm: "Nhập “{name}” với {members} thành viên và {expenses} khoản chi? Thao tác này sẽ thay thế chuyến đi hiện tại.",
+  importAction: "Nhập",
+  selectCategory: "Chọn danh mục…",
+  shareLink: "Chia sẻ liên kết",
+  exportData: "Xuất dữ liệu",
+  importData: "Nhập dữ liệu",
+  viewAllTransfers: "Xem tất cả {count} chuyển khoản",
+
   // Status messages
   shareCopied: "Đã copy link chia sẻ. Lưu ý rằng thông tin thanh toán hiển thị cho bất kỳ ai có link.",
   tripImported: "Đã nhập chuyến đi.",
@@ -305,38 +395,73 @@ const vi: Record<keyof typeof en, string> = {
   expenseAmountRequired: "Nhập số tiền lớn hơn 0.",
   payerTotalMismatch: "Tổng tiền người trả phải bằng tổng khoản chi.",
 
-  // QA
-  qaReleaseSubtitle: "QA kiểm thử như người dùng thật và kỹ sư biến bug thành test hồi quy.",
-  qaRule: "Bug QA -> test fail -> sửa -> regression test -> QA retest -> đóng bug",
-  qaBugReportDraft: "Mẫu báo cáo bug QA",
-  qaBugPlaceholder: "Các bước tái hiện, kết quả mong đợi, kết quả thực tế...",
+  // ParticipantSelector
+  all: "Tất cả",
+  nSelected: "đã chọn {n}",
+
+  // Member form progressive disclosure
+  addPaymentDetails: "Thêm thông tin thanh toán",
+
+  // Expense form (single-payer default + split how)
+  paidBy: "Người trả",
+  splitPayers: "Chia nhiều người trả",
+  singlePayer: "Một người trả",
+  splitHow: "Chia thế nào?",
+  betweenWho: "Chia cho ai?",
+  fixSplit: "Điều chỉnh cách chia cho khớp tổng.",
+
+  // Sample trip banner
+  sampleBanner: "Đây là chuyến đi mẫu để bạn khám phá. Tạo chuyến đi của riêng bạn khi sẵn sàng.",
+  startFresh: "Bắt đầu mới",
+  newTripName: "Chuyến đi của tôi",
+
+  // Receipt photos
+  addReceipt: "Thêm ảnh hoá đơn",
+  removeReceipt: "Xoá",
+
+  // Share view (friend-facing read-only)
+  whoAreYou: "Bạn là ai?",
+  youOwe: "Bạn nợ",
+  youreOwed: "Bạn sẽ nhận",
+  allSettledUp: "Bạn đã thanh toán xong",
+  scanToPay: "Quét bằng app ngân hàng để trả",
+  howCalculated: "Cách tính",
+  notYou: "Không phải bạn? Đổi",
+  readOnlySummary: "Bản tóm tắt chỉ đọc · không cần cài app",
+
+  // Quick-add templates
+  quickAdd: "Thêm nhanh",
+
+  // Expense categories
+  catFood: "Ăn uống",
+  catTransport: "Di chuyển",
+  catHotel: "Lưu trú",
+  catActivity: "Hoạt động",
+  catShopping: "Mua sắm",
+  catDrinks: "Đồ uống",
+  catOther: "Khác",
+
+  // Search
+  searchExpenses: "Tìm khoản chi",
+
+  // Share link toast
+  shareLinkLarge: "Dữ liệu chuyến đi lớn. Liên kết chia sẻ có thể không hoạt động trên mọi trình duyệt.",
+
+  // Receipt alt text
+  receiptAlt: "Ảnh hoá đơn",
+
 };
-
-// QA checklist items (arrays, not simple strings)
-const qaChecklistEn = [
-  "Host creates a trip and settlement",
-  "Member reviews shared summary",
-  "VN and EN copy fits mobile",
-  "All split methods match formulas",
-  "QA bug has failing test before fix",
-];
-
-const qaChecklistVi = [
-  "Chủ chuyến đi tạo chuyến đi và quyết toán",
-  "Thành viên xem tổng kết chia sẻ",
-  "Bản VN và EN hiển thị tốt trên mobile",
-  "Tất cả cách chia khớp công thức",
-  "Bug QA có test fail trước khi sửa",
-];
 
 export type TranslationKey = keyof typeof en;
 
 const dictionaries = { en, vi };
 
-export function t(language: Language, key: TranslationKey) {
-  return dictionaries[language][key];
-}
-
-export function getQaChecklist(language: Language) {
-  return language === "vi" ? qaChecklistVi : qaChecklistEn;
+export function t(language: Language, key: TranslationKey, vars?: Record<string, string | number>) {
+  let text: string = dictionaries[language][key];
+  if (vars) {
+    for (const [k, v] of Object.entries(vars)) {
+      text = text.replace(`{${k}}`, String(v));
+    }
+  }
+  return text;
 }

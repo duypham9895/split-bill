@@ -2,38 +2,38 @@
    Design System Tokens
    ============================================ */
 :root {
-  /* Colors — OKLCH-derived from existing hex values */
-  --color-primary: #087f7b;
-  --color-primary-hover: #066966;
-  --color-primary-light: #e9f4f4;
-  --color-primary-bg: #d7f0ee;
-  --color-action: #2563eb;
-  --color-action-hover: #1d4ed8;
-  --color-action-light: #eff6ff;
-  --color-danger: #ef5d54;
-  --color-danger-light: #fff4f2;
-  --color-danger-border: #f5b8b3;
-  --color-danger-text: #b8352d;
-  --color-success: #1a8a56;
-  --color-success-light: #eaf8f4;
-  --color-success-border: #9dd8c9;
-  --color-success-text: #0d635f;
-  --color-warning: #f59e0b;
-  --color-warning-light: #fffbeb;
-  --color-warning-border: #fcd34d;
+  /* Colors — Ink & Amber Receipt palette */
+  --color-primary: #b06a1e;
+  --color-primary-hover: #8f5314;
+  --color-primary-light: #fbf0dd;
+  --color-primary-bg: #f5e8d4;
+  --color-action: #1c1a16;
+  --color-action-hover: #000000;
+  --color-action-light: #f4ecdd;
+  --color-danger: #b3401f;
+  --color-danger-light: #f6e6df;
+  --color-danger-border: #e6c2b4;
+  --color-danger-text: #b3401f;
+  --color-success: #3f6b3a;
+  --color-success-light: #eef3ec;
+  --color-success-border: #c4d6bf;
+  --color-success-text: #2f5a2c;
+  --color-warning: #b06a1e;
+  --color-warning-light: #fbf0dd;
+  --color-warning-border: #e3c99a;
 
-  /* Neutrals */
-  --color-bg: #f6f8fb;
-  --color-surface: #ffffff;
-  --color-border: #dfe5ee;
-  --color-border-light: #edf1f6;
-  --color-border-input: #ccd5e1;
-  --color-text: #162033;
-  --color-text-secondary: #18233a;
-  --color-text-muted: #5a6b82;          /* ↑ from #66758c for 4.6:1 contrast */
-  --color-text-label: #31435d;
-  --color-table-header-bg: #f8fafc;
-  --color-segment-bg: #f1f5f9;
+  /* Neutrals — warm paper tones */
+  --color-bg: #fbf8f1;
+  --color-surface: #fffdf8;
+  --color-border: #e7ddc9;
+  --color-border-light: #f0e9da;
+  --color-border-input: #ddd2bb;
+  --color-text: #1c1a16;
+  --color-text-secondary: #2a2620;
+  --color-text-muted: #8a7f68;
+  --color-text-label: #6b6450;
+  --color-table-header-bg: #f6f1e7;
+  --color-segment-bg: #f4ecdd;
 
   /* Spacing — 4px base grid, extended */
   --space-1: 4px;
@@ -49,7 +49,8 @@
 
   /* Typography — fluid with clamp() */
   --font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --text-xs: clamp(0.7rem, 1.2vw, 0.75rem);
+  --font-mono: "SF Mono", ui-monospace, Menlo, monospace;
+  --text-xs: clamp(0.75rem, 1.2vw, 0.8125rem);
   --text-sm: clamp(0.75rem, 1.4vw, 0.8125rem);
   --text-base: clamp(0.8125rem, 1.6vw, 0.875rem);
   --text-md: clamp(0.875rem, 1.8vw, 0.9375rem);
@@ -134,6 +135,14 @@ button {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ============================================
+   Utility: Monospace / Tabular Figures
+   ============================================ */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ============================================
@@ -270,6 +279,37 @@ button {
   align-items: center;
   display: flex;
   gap: var(--space-3);
+}
+
+/* Sample trip banner */
+.sampleBanner {
+  align-items: center;
+  background: var(--color-primary-light);
+  border-bottom: 1px solid var(--color-warning-border);
+  color: var(--color-text);
+  display: flex;
+  font-size: var(--text-sm);
+  gap: var(--space-3);
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-6);
+}
+
+.sampleBannerActions {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--space-2);
+}
+
+.sampleBannerStart {
+  font-size: var(--text-sm);
+  height: 34px;
+  padding: 0 var(--space-3);
+}
+
+.sampleBannerDismiss {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
 }
 
 .buttonRow {
@@ -420,6 +460,11 @@ button {
   display: none;
 }
 
+.ghostButton--sm {
+  font-size: var(--text-sm);
+  margin-top: var(--space-2);
+}
+
 /* ============================================
    Content Grid
    ============================================ */
@@ -557,6 +602,7 @@ label,
 
 .amountInput {
   font-size: var(--text-2xl) !important;
+  font-family: var(--font-mono);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   letter-spacing: var(--tracking-tight);
@@ -576,6 +622,8 @@ label,
 
 .amountPreview {
   color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-sm);
   text-align: right;
 }
@@ -608,6 +656,7 @@ label,
    ============================================ */
 .expenseItem {
   border: 1px solid var(--color-border);
+  border-bottom: 1px dashed var(--color-border);
   border-radius: var(--radius-md);
   display: grid;
   gap: var(--space-3);
@@ -656,6 +705,8 @@ label,
 
 .expenseItemAmount {
   display: block;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-md);
   font-weight: 700;
   color: var(--color-text-secondary);
@@ -674,7 +725,7 @@ label,
 .balanceRow,
 .transferRow {
   align-items: center;
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: 1px dashed var(--color-border);
   display: grid;
   gap: var(--space-3);
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -717,6 +768,36 @@ label,
   display: grid;
   gap: var(--space-3);
   grid-template-columns: 1fr 1fr auto;
+}
+
+.payerInputs {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.payerTotal {
+  align-items: center;
+  border-radius: var(--radius-md);
+  display: flex;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+}
+
+.payerTotal.ok {
+  background: var(--color-success-light);
+  color: var(--color-success-text);
+}
+
+.payerTotal.no {
+  background: var(--color-danger-light);
+  color: var(--color-danger-text);
+}
+
+.payerTotalNumbers {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ============================================
@@ -847,6 +928,12 @@ label,
   background: var(--color-danger-light);
   border: 1px solid var(--color-danger-border);
   color: var(--color-danger-text);
+}
+
+.formulaHint {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  opacity: 0.85;
 }
 
 .warningBox {
@@ -987,6 +1074,7 @@ th {
 
 .balanceCard--settled {
   border-left: 3px solid var(--color-success);
+  opacity: 0.6;
 }
 
 .balanceCardHeader {
@@ -1018,6 +1106,8 @@ th {
 }
 
 .balanceCardAmount {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-xl);
   font-weight: 700;
 }
@@ -1232,10 +1322,9 @@ th {
 }
 
 /* ============================================
-   Action Grid & QA Grid
+   Action Grid
    ============================================ */
-.actionGrid,
-.qaGrid {
+.actionGrid {
   display: grid;
   gap: var(--space-3);
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1256,14 +1345,6 @@ th {
   margin-bottom: var(--space-3);
 }
 
-.qaItem {
-  align-items: center;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  display: flex;
-  gap: var(--space-3);
-  padding: var(--space-3);
-}
 
 /* ============================================
    Privacy Notice
@@ -1350,6 +1431,7 @@ th {
   gap: var(--space-1);
   padding: 2px var(--space-2);
   border-radius: var(--radius-full);
+  font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -1378,11 +1460,13 @@ th {
   padding: var(--space-5);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
+  border-top: 1.5px dashed var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
 }
 
 .statCardValue {
+  font-family: var(--font-mono);
   font-size: var(--text-2xl);
   font-weight: 800;
   letter-spacing: var(--tracking-tight);
@@ -1443,12 +1527,12 @@ th {
   flex-shrink: 0;
 }
 
-.categoryIconCircle.food { background: #fef3c7; color: #d97706; }
-.categoryIconCircle.transport { background: #dbeafe; color: #2563eb; }
-.categoryIconCircle.hotel { background: #ede9fe; color: #7c3aed; }
-.categoryIconCircle.activity { background: #d1fae5; color: #059669; }
-.categoryIconCircle.shopping { background: #fce7f3; color: #db2777; }
-.categoryIconCircle.drinks { background: #ffedd5; color: #ea580c; }
+.categoryIconCircle.food { background: #f6e6df; color: #b3401f; }
+.categoryIconCircle.transport { background: #e7eef0; color: #3a5560; }
+.categoryIconCircle.hotel { background: #efe7d6; color: #8f5314; }
+.categoryIconCircle.activity { background: #e8efe6; color: #3f6b3a; }
+.categoryIconCircle.shopping { background: #f1e7ed; color: #8a3a63; }
+.categoryIconCircle.drinks { background: #f3ead3; color: #9a6b1e; }
 .categoryIconCircle.other { background: var(--color-segment-bg); color: var(--color-text-muted); }
 
 /* ============================================
@@ -1504,6 +1588,11 @@ th {
   animation: shimmer 1.5s ease-in-out infinite;
   border-radius: var(--radius-sm);
 }
+
+.skeletonBox { height: 60px; border-radius: var(--radius-md); }
+.qrThumb { width: 72px; height: 72px; }
+.statValue--danger { color: var(--color-danger); }
+.statValue--success { color: var(--color-success); }
 
 @keyframes shimmer {
   0% { background-position: 200% 0; }
@@ -1685,7 +1774,7 @@ th {
     background: transparent;
     border: 0;
     color: var(--color-text-muted);
-    font-size: 11px;
+    font-size: var(--text-xs);
     font-weight: 600;
     min-height: 48px;
     padding: var(--space-2) var(--space-1);
@@ -1731,8 +1820,7 @@ th {
   .participantGrid,
   .twoColumn,
   .inputGrid,
-  .actionGrid,
-  .qaGrid {
+  .actionGrid {
     grid-template-columns: 1fr;
   }
 
@@ -1773,97 +1861,6 @@ th {
 }
 
 /* ============================================
-   Dark Mode
-   ============================================ */
-[data-theme="dark"] {
-  --color-bg: #0f1117;
-  --color-surface: #1a1d27;
-  --color-border: #2a2d3a;
-  --color-border-light: #232636;
-  --color-border-input: #353849;
-  --color-table-header-bg: #1e2130;
-  --color-segment-bg: #1e2130;
-
-  --color-text: #e8eaf0;
-  --color-text-secondary: #c8ccd6;
-  --color-text-muted: #8891a5;
-  --color-text-label: #a0a8bc;
-
-  --color-primary: #3ec9c4;
-  --color-primary-hover: #5dd8d3;
-  --color-primary-light: rgba(62, 201, 196, 0.1);
-  --color-primary-bg: rgba(62, 201, 196, 0.08);
-  --color-action: #6b9aff;
-  --color-action-hover: #8db3ff;
-  --color-action-light: rgba(107, 154, 255, 0.1);
-  --color-danger: #ff7b72;
-  --color-danger-light: rgba(255, 123, 114, 0.1);
-  --color-danger-border: rgba(255, 123, 114, 0.2);
-  --color-danger-text: #ffa098;
-  --color-success: #56d6a0;
-  --color-success-light: rgba(86, 214, 160, 0.1);
-  --color-success-border: rgba(86, 214, 160, 0.2);
-  --color-success-text: #7ee8c0;
-  --color-warning: #fbbf24;
-  --color-warning-light: rgba(251, 191, 36, 0.1);
-  --color-warning-border: rgba(251, 191, 36, 0.2);
-
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-}
-
-/* Auto-detect OS preference */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-bg: #0f1117;
-    --color-surface: #1a1d27;
-    --color-border: #2a2d3a;
-    --color-border-light: #232636;
-    --color-border-input: #353849;
-    --color-table-header-bg: #1e2130;
-    --color-segment-bg: #1e2130;
-    --color-text: #e8eaf0;
-    --color-text-secondary: #c8ccd6;
-    --color-text-muted: #8891a5;
-    --color-text-label: #a0a8bc;
-    --color-primary: #3ec9c4;
-    --color-primary-hover: #5dd8d3;
-    --color-primary-light: rgba(62, 201, 196, 0.1);
-    --color-primary-bg: rgba(62, 201, 196, 0.08);
-    --color-action: #6b9aff;
-    --color-action-hover: #8db3ff;
-    --color-action-light: rgba(107, 154, 255, 0.1);
-    --color-danger: #ff7b72;
-    --color-danger-light: rgba(255, 123, 114, 0.1);
-    --color-danger-border: rgba(255, 123, 114, 0.2);
-    --color-danger-text: #ffa098;
-    --color-success: #56d6a0;
-    --color-success-light: rgba(86, 214, 160, 0.1);
-    --color-success-border: rgba(86, 214, 160, 0.2);
-    --color-success-text: #7ee8c0;
-    --color-warning: #fbbf24;
-    --color-warning-light: rgba(251, 191, 36, 0.1);
-    --color-warning-border: rgba(251, 191, 36, 0.2);
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-  }
-}
-
-/* Dark mode category circles */
-[data-theme="dark"] .categoryIconCircle.food { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
-[data-theme="dark"] .categoryIconCircle.transport { background: rgba(107, 154, 255, 0.15); color: #6b9aff; }
-[data-theme="dark"] .categoryIconCircle.hotel { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
-[data-theme="dark"] .categoryIconCircle.activity { background: rgba(52, 211, 153, 0.15); color: #34d399; }
-[data-theme="dark"] .categoryIconCircle.shopping { background: rgba(244, 114, 182, 0.15); color: #f472b6; }
-[data-theme="dark"] .categoryIconCircle.drinks { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
-
-/* ============================================
    Print
    ============================================ */
 @media print {
@@ -1879,4 +1876,425 @@ th {
   .contentGrid {
     display: block;
   }
+}
+
+/* ============================================
+   SplitMethodPicker
+   ============================================ */
+.splitHelp {
+  margin-top: var(--space-2);
+  background: var(--color-primary-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.splitHelpSummary {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-primary-hover);
+}
+
+.splitHelpFormula {
+  display: block;
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text);
+}
+
+/* ============================================
+   ParticipantSelector
+   ============================================ */
+.participantSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.allTag,
+.memberTag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  line-height: 1.5;
+}
+
+.allTag {
+  border: 2px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+}
+
+.allTag.on {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.allTag.some {
+  background: var(--color-primary-light);
+  color: var(--color-primary-hover);
+  border-color: var(--color-primary);
+}
+
+.allTagIndicator {
+  font-size: var(--text-xs);
+  width: 1em;
+  text-align: center;
+}
+
+.memberTag {
+  border: 1.5px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.memberTag.on {
+  border-color: var(--color-action);
+  background: var(--color-action);
+  color: var(--color-surface);
+}
+
+/* ============================================
+   Receipt photo upload
+   ============================================ */
+.receiptUploadRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.receiptPreview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.receiptThumb {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   Share View (friend-facing read-only)
+   ============================================ */
+.shareView {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  justify-content: center;
+  padding: var(--space-5);
+}
+
+.shareViewCard {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.shareViewBrand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text);
+}
+
+.shareViewBrand strong {
+  font-size: var(--text-lg);
+}
+
+.shareViewCard h1 {
+  font-size: var(--text-2xl);
+  margin: 0;
+}
+
+.shareViewPicker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.shareViewMemberButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  cursor: pointer;
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.shareViewMemberButton:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.shareViewHello {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.shareViewHello strong {
+  display: block;
+  font-size: var(--text-md);
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  text-decoration: underline;
+}
+
+.shareViewStatus {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.shareViewStatus small {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.shareViewStatus strong {
+  font-size: var(--text-2xl);
+}
+
+.shareViewStatus--owe {
+  background: var(--color-danger-light);
+  border-color: var(--color-danger-border);
+}
+
+.shareViewStatus--owe strong {
+  color: var(--color-danger-text);
+}
+
+.shareViewStatus--owed {
+  background: var(--color-success-light);
+  border-color: var(--color-success-border);
+}
+
+.shareViewStatus--owed strong {
+  color: var(--color-success-text);
+}
+
+.shareViewStatus--settled {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-success-light);
+  border-color: var(--color-success-border);
+  color: var(--color-success-text);
+}
+
+.shareViewPayment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.shareViewPaymentHead {
+  width: 100%;
+  text-align: center;
+}
+
+.shareViewPaymentHead strong {
+  display: block;
+  font-size: var(--text-md);
+}
+
+.shareViewPaymentHead small {
+  display: block;
+  font-size: var(--text-lg);
+  color: var(--color-primary);
+}
+
+.shareViewQr {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+
+.shareViewScanHint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.shareViewPayment .bankBox {
+  width: 100%;
+}
+
+.shareViewIncoming {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.shareViewIncomingRow {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.shareViewBreakdown {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: var(--space-3) var(--space-4);
+}
+
+.shareViewBreakdown summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.shareViewBreakdownBody {
+  margin-top: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.shareViewBreakdownTotals {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.shareViewBreakdownTotals small {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.shareViewExpenseList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.shareViewExpenseList li {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--space-2);
+}
+
+.shareViewFooter {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin: var(--space-2) 0 0;
+}
+
+@media (max-width: 480px) {
+  .shareViewPicker {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   Quick-add Templates
+   ============================================ */
+.quickAdd {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.quickAddLabel {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.quickAddChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.quickAddChip {
+  align-items: center;
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-warning-border);
+  border-radius: 999px;
+  color: var(--color-primary);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  gap: var(--space-1);
+  line-height: 1;
+  max-width: 160px;
+  overflow: hidden;
+  padding: var(--space-2) var(--space-3);
+  text-overflow: ellipsis;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  white-space: nowrap;
+}
+
+.quickAddChip:hover {
+  background: var(--color-primary-bg);
+  border-color: var(--color-primary);
+  color: var(--color-primary-hover);
+}
+
+.quickAddChip:active {
+  background: var(--color-primary-bg);
+  transform: scale(0.97);
+}
+
+.quickAddChip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -128,19 +128,43 @@ function createDirectPaybackSettlement(trip: Trip): SettlementPayment[] {
     const shares = calculateExpenseShares(expense);
 
     for (const [participantId, shareAmount] of shares) {
-      for (const payer of expense.payers) {
-        if (participantId === payer.memberId) {
-          continue;
-        }
-        const amountMinor = Math.floor((shareAmount * payer.amountMinor) / expense.amountMinor);
-        if (amountMinor === 0) {
-          continue;
-        }
-
+      const otherPayers = expense.payers.filter((p) => p.memberId !== participantId);
+      if (otherPayers.length === 0) {
+        continue;
+      }
+      // Distribute participant's share across the payers they owe, proportional to
+      // each payer's contribution relative to the full expense amount.
+      // The target total owed is shareAmount scaled by the OTHER payers' combined
+      // weight — so a participant who is also a payer only owes the portion they
+      // didn't personally cover.  Largest-remainder allocation ensures every đồng
+      // is conserved with no fractions dropped.
+      const otherPayerWeight = otherPayers.reduce((sum, p) => sum + p.amountMinor, 0);
+      const rawAllocations = otherPayers.map((payer, index) => {
+        const exact = (shareAmount * payer.amountMinor) / expense.amountMinor;
+        const floor = Math.floor(exact);
+        return { payer, amount: floor, fraction: exact - floor, index };
+      });
+      // targetTotal = exact amount this participant owes collectively to otherPayers,
+      // rounded to the nearest đồng. Math.round is provably safe here:
+      //   sum(floors) ≤ floor(share·otherWeight/total) ≤ round(share·otherWeight/total) = targetTotal
+      // (each per-payer floor only loses fractional đồng, so their sum can't exceed the
+      // floor of the collective exact amount). Therefore remaining = targetTotal − sum(floors)
+      // is always ≥ 0 — the loop below only ever distributes leftover đồng, never over-allocates.
+      const targetTotal = Math.round((shareAmount * otherPayerWeight) / expense.amountMinor);
+      let remaining = targetTotal - rawAllocations.reduce((sum, allocation) => sum + allocation.amount, 0);
+      for (const allocation of [...rawAllocations].sort((left, right) =>
+        right.fraction !== left.fraction ? right.fraction - left.fraction : left.index - right.index,
+      )) {
+        if (remaining <= 0) break;
+        allocation.amount += 1;
+        remaining -= 1;
+      }
+      for (const allocation of rawAllocations) {
+        if (allocation.amount === 0) continue;
         addNetPayment(netPayments, {
           fromMemberId: participantId,
-          toMemberId: payer.memberId,
-          amountMinor,
+          toMemberId: allocation.payer.memberId,
+          amountMinor: allocation.amount,
           expenseId: expense.id,
         });
       }
